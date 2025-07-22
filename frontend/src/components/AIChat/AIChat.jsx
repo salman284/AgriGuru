@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AIChat.css';
 import enhancedAIService from '../../services/enhancedAIService';
+import VoiceInput from '../VoiceInput/VoiceInput';
 
 const AIChat = () => {
   const [messages, setMessages] = useState([]);
@@ -14,6 +15,8 @@ const AIChat = () => {
     location: ''
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [lastVoiceInput, setLastVoiceInput] = useState(null);
   
   const messagesEndRef = useRef(null);
   const chatInputRef = useRef(null);
@@ -82,24 +85,60 @@ Just ask me anything about farming in your preferred language, and I'll provide 
     }
   };
 
-  const handleSendMessage = async (e) => {
+  // Handle voice input from VoiceInput component
+  const handleVoiceInput = (voiceText, language, confidence) => {
+    if (voiceText.trim()) {
+      console.log('🎤 Voice input received:', { voiceText, language, confidence });
+      
+      // Set the input message
+      setInputMessage(voiceText);
+      
+      // Store voice input info for message metadata
+      setLastVoiceInput({
+        language,
+        confidence,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Auto-send the message after a brief delay
+      setTimeout(() => {
+        handleSendMessage(null, voiceText, true);
+      }, 500);
+    }
+  };
+
+  const handleVoiceTranscription = (transcription) => {
+    // Update input field in real-time as user speaks
+    setInputMessage(prev => prev + transcription);
+  };
+
+  const handleSendMessage = async (e, messageOverride = null, isVoiceInput = false) => {
     if (e) e.preventDefault();
-    if (!inputMessage.trim()) return;
+    
+    const messageToSend = messageOverride || inputMessage;
+    if (!messageToSend.trim()) return;
 
     const userMessage = {
       id: Date.now(),
-      text: inputMessage,
+      text: messageToSend,
       sender: 'user',
-      timestamp: new Date().toLocaleTimeString()
+      timestamp: new Date().toLocaleTimeString(),
+      isVoiceInput: isVoiceInput,
+      voiceInfo: isVoiceInput ? lastVoiceInput : null
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
+    
+    // Clear voice input info after using it
+    if (isVoiceInput) {
+      setLastVoiceInput(null);
+    }
 
     try {
       // Use the new chat endpoint
-      const response = await enhancedAIService.chat(inputMessage, context);
+      const response = await enhancedAIService.chat(messageToSend, context);
       
       const botMessage = {
         id: Date.now() + 1,
@@ -216,17 +255,37 @@ Just ask me anything about farming in your preferred language, and I'll provide 
               <div className="ai-avatar">🤖</div>
               <div>
                 <h4>AgriGuru AI Assistant</h4>
-                <p>Ask me anything about farming!</p>
+                <p>Voice & Text Support • Multilingual</p>
               </div>
             </div>
-            <button 
-              className="close-btn" 
-              onClick={toggleChat}
-              title="Close Chat"
-            >
-              ✕
-            </button>
+            <div className="chat-header-controls">
+              <button
+                className={`voice-toggle-btn ${voiceEnabled ? 'active' : ''}`}
+                onClick={() => setVoiceEnabled(!voiceEnabled)}
+                title={voiceEnabled ? 'Disable voice input' : 'Enable voice input'}
+              >
+                {voiceEnabled ? '🎤' : '🔇'}
+              </button>
+              <button 
+                className="close-btn" 
+                onClick={toggleChat}
+                title="Close Chat"
+              >
+                ✕
+              </button>
+            </div>
           </div>
+          
+          {/* Voice Input Section */}
+          {voiceEnabled && (
+            <div className="voice-input-section">
+              <VoiceInput
+                onVoiceInput={handleVoiceInput}
+                onTranscription={handleVoiceTranscription}
+                disabled={isLoading}
+              />
+            </div>
+          )}
           
           <div className="chat-messages">
             {messages.map((message) => (
@@ -238,6 +297,26 @@ Just ask me anything about farming in your preferred language, and I'll provide 
                   <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} />
                   <div className="message-meta">
                     <div className="message-time">{message.timestamp}</div>
+                    
+                    {/* Voice input indicator for user messages */}
+                    {message.sender === 'user' && message.isVoiceInput && (
+                      <div className="voice-input-indicator">
+                        <span className="voice-icon">🎤</span>
+                        <span className="voice-text">Voice Input</span>
+                        {message.voiceInfo?.language && (
+                          <span className="voice-language">
+                            ({message.voiceInfo.language})
+                          </span>
+                        )}
+                        {message.voiceInfo?.confidence && (
+                          <span className="voice-confidence">
+                            {Math.round(message.voiceInfo.confidence * 100)}%
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Language info for bot messages */}
                     {message.sender === 'bot' && message.language_info && message.multilingual_support && (
                       <div className="language-info">
                         <span className="language-badge">
@@ -297,28 +376,37 @@ Just ask me anything about farming in your preferred language, and I'll provide 
           </div>
 
           <div className="chat-input">
-            <input
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              placeholder="Ask me about farming, crops, weather..."
-              className="message-input"
-              disabled={isLoading}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage(e);
-                }
-              }}
-            />
-            <button
-              type="button"
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading}
-              className="send-btn"
-            >
-              ➤
-            </button>
+            <div className="input-container">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder={voiceEnabled ? "Type or use voice input above..." : "Ask me about farming, crops, weather..."}
+                className="message-input"
+                disabled={isLoading}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage(e);
+                  }
+                }}
+              />
+              <button
+                className="voice-input-toggle"
+                onClick={() => setVoiceEnabled(!voiceEnabled)}
+                title={voiceEnabled ? 'Hide voice input' : 'Show voice input'}
+              >
+                {voiceEnabled ? '🎤' : '⌨️'}
+              </button>
+              <button
+                type="button"
+                onClick={handleSendMessage}
+                disabled={!inputMessage.trim() || isLoading}
+                className="send-btn"
+              >
+                {isLoading ? '⏳' : '➤'}
+              </button>
+            </div>
           </div>
         </div>
       )}
