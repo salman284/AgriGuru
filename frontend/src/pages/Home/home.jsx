@@ -49,6 +49,15 @@ const Home = () => {
                     <h4 className="feature-title">24/7 Weather Support</h4>
                     <p className="feature-description">Real-time weather updates and forecasts</p>
                   </div>
+                  <div 
+                    className="feature-box marketplace-feature" 
+                    onClick={() => navigate('/marketplace')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="feature-icon">🛒</div>
+                    <h4 className="feature-title">AgriGuru Marketplace</h4>
+                    <p className="feature-description">Shop tractors, fertilizers, seeds & farming tools</p>
+                  </div>
                 </div>
                 
         </div>

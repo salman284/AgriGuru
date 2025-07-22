@@ -1,15 +1,12 @@
 import React from 'react';
 import './dash.css';
-import Navbar from '../../components/Navbar/Navbar';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import SoilWidget from '../../components/SoilWidget/SoilWidget';
 import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget';
-import FertilizationWidget from '../../components/fertilizationWidget/fertilization';
 
 const Dash = () => {
   return (
     <div className="dashboard">
-      <Navbar />
       <div className="sidebar">
         <h2>Dashboard</h2>
         <ul>
@@ -28,7 +25,6 @@ const Dash = () => {
           <WeatherWidget />
           <SoilWidget />
           <CropStatusWidget />
-          <FertilizationWidget />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import Govt from './pages/govt/govtS.jsx';
 import Login from './pages/login/login.jsx';
 import SignUp from './pages/signup/sign.jsx';
 import ContactPage from './pages/contacts/contact.jsx';
+import Ecommerce from './pages/shopping/ecommerce.jsx';
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dash />} />
+          <Route path="/marketplace" element={<Ecommerce />} />
           <Route path="/about" element={<About />} />
           <Route path="/government-schemes" element={<Govt />} />
           <Route path="/login" element={<Login />} />

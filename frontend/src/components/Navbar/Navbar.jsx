@@ -29,6 +29,9 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/contacts" className="navbar-link">Contact ADO</Link>
           </li>
+          <li className="navbar-item">
+            <Link to="/marketplace" className="navbar-link">🛒 Marketplace</Link>
+          </li>
         </ul>
         <div className="navbar-auth">
           <Link to="/login" className="login-btn">Login</Link>

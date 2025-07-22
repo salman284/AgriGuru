@@ -115,6 +115,37 @@
   margin: 0;
 }
 
+/* Marketplace Feature Box Special Styling */
+.marketplace-feature {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+  border: 2px solid #4CAF50;
+}
+
+.marketplace-feature:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+}
+
+.marketplace-feature .feature-title {
+  color: white;
+  font-weight: 700;
+}
+
+.marketplace-feature .feature-description {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.marketplace-feature .feature-icon {
+  color: white;
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .homebg {
