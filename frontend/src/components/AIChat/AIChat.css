@@ -240,6 +240,52 @@
   text-align: left;
 }
 
+/* Multilingual message metadata styling */
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.language-info {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.language-badge, .region-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.language-badge {
+  background: linear-gradient(135deg, #4a7c59, #2d5016);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.region-badge {
+  background: linear-gradient(135deg, #ff7b2c, #e55100);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.language-badge:hover, .region-badge:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

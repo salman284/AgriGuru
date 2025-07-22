@@ -27,7 +27,7 @@ const AIChat = () => {
       id: 1,
       text: `🌾 **Welcome to AgriGuru AI Chat!**
 
-I'm your AI-powered farming assistant, powered by Gemma 2. I can help you with:
+I'm your AI-powered farming assistant, powered by Groq LLaMA 3. I can help you with:
 
 🌱 **Crop cultivation advice**
 🧪 **Fertilizer recommendations**  
@@ -36,7 +36,19 @@ I'm your AI-powered farming assistant, powered by Gemma 2. I can help you with:
 📊 **Market insights**
 📅 **Seasonal farming calendar**
 
-Just ask me anything about farming, and I'll provide detailed, personalized advice!
+🌐 **Multilingual Support**: I can understand and respond in:
+- हिंदी (Hindi) 
+- தமிழ் (Tamil)
+- తెలుగు (Telugu)
+- ਪੰਜਾਬੀ (Punjabi)
+- বাংলা (Bengali)
+- मराठी (Marathi)
+- ગુજરાતી (Gujarati)
+- ಕನ್ನಡ (Kannada)
+- മലയാളം (Malayalam)
+- English
+
+Just ask me anything about farming in your preferred language, and I'll provide detailed, region-specific advice!
 
 *Type your question below to get started...*`,
       sender: 'bot',
@@ -95,7 +107,11 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString(),
         model_type: response.model_type || 'unknown',
-        success: response.success
+        success: response.success,
+        language_info: response.language_info || { language: 'unknown', region: 'unknown' },
+        regional_context: response.regional_context || 'India',
+        multilingual_support: response.multilingual_support || false,
+        provider: response.provider || 'groq'
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -220,7 +236,21 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
               >
                 <div className="message-content">
                   <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} />
-                  <div className="message-time">{message.timestamp}</div>
+                  <div className="message-meta">
+                    <div className="message-time">{message.timestamp}</div>
+                    {message.sender === 'bot' && message.language_info && message.multilingual_support && (
+                      <div className="language-info">
+                        <span className="language-badge">
+                          🌐 {message.language_info.language.charAt(0).toUpperCase() + message.language_info.language.slice(1)}
+                        </span>
+                        {message.regional_context !== 'India' && message.regional_context !== 'Pan-India' && (
+                          <span className="region-badge">
+                            📍 {message.regional_context}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

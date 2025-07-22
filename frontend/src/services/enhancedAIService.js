@@ -3,10 +3,10 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:500
 
 class EnhancedAIService {
   /**
-   * AI Chat endpoint using Gemma 2
+   * Multilingual AI Chat endpoint using Enhanced AgriBot
    * @param {string} message - The chat message
    * @param {Object} context - Additional context (crop, season, location, etc.)
-   * @returns {Promise<Object>} - AI chat response
+   * @returns {Promise<Object>} - AI chat response with language information
    */
   async chat(message, context = {}) {
     try {
@@ -19,7 +19,7 @@ class EnhancedAIService {
           message: message,
           context: context
         }),
-        timeout: 15000 // 15 second timeout for AI processing
+        timeout: 20000 // 20 second timeout for AI processing
       });
 
       if (!response.ok) {
@@ -27,12 +27,18 @@ class EnhancedAIService {
       }
 
       const data = await response.json();
+      
+      // Handle multilingual response data
       return {
         success: true,
         advice: data.advice,
         context: data.context,
         model_type: data.model_type,
-        timestamp: new Date().toISOString()
+        language_info: data.language_info || { language: 'unknown', region: 'unknown' },
+        regional_context: data.regional_context || 'India',
+        multilingual_support: data.multilingual_support || false,
+        provider: data.provider || 'groq',
+        timestamp: data.timestamp || new Date().toISOString()
       };
     } catch (error) {
       console.error('AI Chat error:', error);
@@ -40,7 +46,9 @@ class EnhancedAIService {
       return {
         success: false,
         error: error.message,
-        advice: this.getFallbackChatResponse(message, context)
+        advice: this.getFallbackChatResponse(message, context),
+        language_info: { language: 'unknown', region: 'unknown' },
+        multilingual_support: false
       };
     }
   }

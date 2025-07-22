@@ -48,7 +48,7 @@ class GroqAgriBot:
             "Authorization": f"Bearer {self.api_key}"
         }
         
-        # System prompt for expert farming advice
+        # System prompt for expert farming advice with multilingual support
         self.system_prompt = """You are AgriBot, an expert agricultural advisor AI specifically designed for Indian farmers and global agriculture. You have deep expertise in:
 
 🌾 AGRICULTURE EXPERTISE:
@@ -72,36 +72,141 @@ class GroqAgriBot:
 - Market conditions and pricing
 - Government schemes and subsidies
 
-💡 COMMUNICATION STYLE:
-- Use simple, farmer-friendly language
+�️ MULTILINGUAL SUPPORT:
+- Respond in the same language as the user's question
+- Support Hindi (हिंदी), English, Punjabi (ਪੰਜਾਬੀ), Tamil (தமிழ்), Telugu (తెలుగు), Bengali (বাংলা), Marathi (मराठी), Gujarati (ગુજરાતી), Kannada (ಕನ್ನಡ), Malayalam (മലയാളം)
+- Use regional farming terminology when appropriate
+- Include local crop names and varieties
+- Understand regional dialects and farming practices
+
+�💡 COMMUNICATION STYLE:
+- Use simple, farmer-friendly language in the user's preferred language
 - Provide practical, actionable advice
 - Include specific numbers (costs, quantities, timing)
 - Be encouraging and supportive
-- Use emojis for better readability
-- Consider economic viability
+- Use appropriate emojis for better readability
+- Consider economic viability and local context
 
 🎯 RESPONSE GUIDELINES:
-- Always give practical, implementable solutions
+- Always detect and respond in the user's language
+- Give practical, implementable solutions
 - Consider both modern and traditional methods
 - Include safety warnings when needed
 - Suggest government schemes when applicable
 - Provide region-specific advice when location is mentioned
-- Be accurate and up-to-date with information
+- Use local units of measurement (acres, bigha, quintal, etc.)
+- Include local crop varieties and farming practices
 
-Remember: You're helping real farmers improve their livelihoods. Be accurate, practical, and empathetic."""
+🌏 LANGUAGE EXAMPLES:
+- Hindi: "धान की खेती कैसे करें?" → Respond in Hindi with regional context
+- Tamil: "நெல் சாகுபடி எப்படி செய்வது?" → Respond in Tamil with South Indian context
+- Punjabi: "ਕਣਕ ਦੀ ਖੇਤੀ ਕਿਵੇਂ ਕਰੀਏ?" → Respond in Punjabi with Punjab region context
+- English: "How to grow rice?" → Respond in English with pan-Indian context
+
+Remember: You're helping real farmers improve their livelihoods across different regions and languages. Be accurate, practical, culturally sensitive, and linguistically appropriate."""
 
         self.conversation_history = []
         logger.info("✅ Groq AgriBot initialized successfully")
     
+    def detect_language(self, text: str) -> Dict[str, Any]:
+        """Detect language and regional context from user input"""
+        language_patterns = {
+            'hindi': ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'क', 'ख', 'ग', 'घ', 'च', 'छ', 'ज', 'झ', 'ट', 'ठ', 'ड', 'ढ', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह'],
+            'tamil': ['அ', 'ஆ', 'இ', 'ஈ', 'உ', 'ஊ', 'எ', 'ஏ', 'ஐ', 'ஒ', 'ஓ', 'ஔ', 'க', 'ங', 'ச', 'ஞ', 'ட', 'ண', 'த', 'ந', 'ப', 'ம', 'ய', 'ர', 'ல', 'வ', 'ழ', 'ள', 'ற', 'ன'],
+            'telugu': ['అ', 'ఆ', 'ఇ', 'ఈ', 'ఉ', 'ఊ', 'ఎ', 'ఏ', 'ఐ', 'ఒ', 'ఓ', 'ఔ', 'క', 'ఖ', 'గ', 'ఘ', 'ఙ', 'చ', 'ఛ', 'జ', 'ఝ', 'ఞ', 'ట', 'ఠ', 'డ', 'ఢ', 'ణ', 'త', 'థ', 'ద', 'ధ', 'న', 'ప', 'ఫ', 'బ', 'భ', 'మ', 'య', 'ర', 'ల', 'వ', 'శ', 'ష', 'స', 'హ'],
+            'punjabi': ['ਅ', 'ਆ', 'ਇ', 'ਈ', 'ਉ', 'ਊ', 'ਏ', 'ਐ', 'ਓ', 'ਔ', 'ਕ', 'ਖ', 'ਗ', 'ਘ', 'ਙ', 'ਚ', 'ਛ', 'ਜ', 'ਝ', 'ਞ', 'ਟ', 'ਠ', 'ਡ', 'ਢ', 'ਣ', 'ਤ', 'ਥ', 'ਦ', 'ਧ', 'ਨ', 'ਪ', 'ਫ', 'ਬ', 'ਭ', 'ਮ', 'ਯ', 'ਰ', 'ਲ', 'ਵ', 'ਸ਼', 'ਸ', 'ਹ'],
+            'bengali': ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'ঋ', 'এ', 'ঐ', 'ও', 'ঔ', 'ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ', 'ছ', 'জ', 'ঝ', 'ঞ', 'ট', 'ঠ', 'ড', 'ঢ', 'ণ', 'ত', 'থ', 'দ', 'ধ', 'ন', 'প', 'ফ', 'ব', 'ভ', 'ম', 'য', 'র', 'ল', 'শ', 'ষ', 'স', 'হ'],
+            'marathi': ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ए', 'ऐ', 'ओ', 'औ', 'क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह'],
+            'gujarati': ['અ', 'આ', 'ઇ', 'ઈ', 'ઉ', 'ઊ', 'ઋ', 'એ', 'ઐ', 'ઓ', 'ઔ', 'ક', 'ખ', 'ગ', 'ઘ', 'ઙ', 'ચ', 'છ', 'જ', 'ઝ', 'ઞ', 'ટ', 'ઠ', 'ડ', 'ઢ', 'ણ', 'ત', 'થ', 'દ', 'ધ', 'ન', 'પ', 'ફ', 'બ', 'ભ', 'મ', 'ય', 'ર', 'લ', 'વ', 'શ', 'ષ', 'સ', 'હ'],
+            'kannada': ['ಅ', 'ಆ', 'ಇ', 'ಈ', 'ಉ', 'ಊ', 'ಋ', 'ಎ', 'ಏ', 'ಐ', 'ಒ', 'ಓ', 'ಔ', 'ಕ', 'ಖ', 'ಗ', 'ಘ', 'ಙ', 'ಚ', 'ಛ', 'ಜ', 'ಝ', 'ಞ', 'ಟ', 'ಠ', 'ಡ', 'ಢ', 'ಣ', 'ತ', 'ಥ', 'ದ', 'ಧ', 'ನ', 'ಪ', 'ಫ', 'ಬ', 'ಭ', 'ಮ', 'ಯ', 'ರ', 'ಲ', 'ವ', 'ಶ', 'ಷ', 'ಸ', 'ಹ'],
+            'malayalam': ['അ', 'ആ', 'ഇ', 'ഈ', 'ഉ', 'ഊ', 'ഋ', 'എ', 'ഏ', 'ഐ', 'ഒ', 'ഓ', 'ഔ', 'ക', 'ഖ', 'ഗ', 'ഘ', 'ങ', 'ച', 'ഛ', 'ജ', 'ഝ', 'ഞ', 'ട', 'ഠ', 'ഡ', 'ഢ', 'ണ', 'ത', 'ഥ', 'ദ', 'ധ', 'ന', 'പ', 'ഫ', 'ബ', 'ഭ', 'മ', 'യ', 'ര', 'ല', 'വ', 'ശ', 'ഷ', 'സ', 'ഹ']
+        }
+        
+        detected_language = 'english'  # default
+        confidence = 0
+        
+        for lang, chars in language_patterns.items():
+            char_count = sum(1 for char in text if char in chars)
+            if char_count > confidence:
+                confidence = char_count
+                detected_language = lang
+        
+        # Regional context mapping
+        regional_context = {
+            'hindi': 'North India (UP, Bihar, MP, Rajasthan, Haryana)',
+            'punjabi': 'Punjab, Haryana (Wheat Belt)',
+            'tamil': 'Tamil Nadu (Rice, Sugarcane)',
+            'telugu': 'Andhra Pradesh, Telangana (Cotton, Rice)',
+            'bengali': 'West Bengal (Rice, Jute)',
+            'marathi': 'Maharashtra (Cotton, Sugarcane, Onion)',
+            'gujarati': 'Gujarat (Cotton, Groundnut)',
+            'kannada': 'Karnataka (Coffee, Ragi, Cotton)',
+            'malayalam': 'Kerala (Spices, Coconut, Rice)',
+            'english': 'Pan-India'
+        }
+        
+        # Common crops by region
+        regional_crops = {
+            'hindi': ['गेहूं (wheat)', 'धान (rice)', 'मक्का (maize)', 'बाजरा (millet)'],
+            'punjabi': ['ਕਣਕ (wheat)', 'ਚੌਲ (rice)', 'ਮੱਕੀ (maize)', 'ਕਪਾਹ (cotton)'],
+            'tamil': ['அரிசி (rice)', 'கரும்பு (sugarcane)', 'மிளகாய் (chili)', 'கொள்ளு (horsegram)'],
+            'telugu': ['వరి (rice)', 'పత్తి (cotton)', 'మిర్చి (chili)', 'మామిడి (mango)'],
+            'bengali': ['ধান (rice)', 'পাট (jute)', 'আলু (potato)', 'সরিষা (mustard)'],
+            'marathi': ['कापूस (cotton)', 'ऊस (sugarcane)', 'कांदा (onion)', 'ज्वारी (sorghum)'],
+            'gujarati': ['કપાસ (cotton)', 'મગફળી (groundnut)', 'બાજરી (millet)', 'તલ (sesame)'],
+            'kannada': ['ಅಕ್ಕಿ (rice)', 'ಕಾಫಿ (coffee)', 'ರಾಗಿ (ragi)', 'ತೆಂಗಿನಕಾಯಿ (coconut)'],
+            'malayalam': ['നെൽ (rice)', 'തേങ്ങ (coconut)', 'കുരുമുളക് (pepper)', 'ഏലം (cardamom)'],
+            'english': ['rice', 'wheat', 'cotton', 'sugarcane']
+        }
+        
+        return {
+            'language': detected_language,
+            'confidence': confidence,
+            'region': regional_context.get(detected_language, 'General'),
+            'common_crops': regional_crops.get(detected_language, []),
+            'is_indian_language': detected_language != 'english',
+            'script_detected': confidence > 0
+        }
+    
     def get_farming_advice(self, user_message: str, context: Dict = None) -> Dict[str, Any]:
-        """Get farming advice using Groq API"""
+        """Get multilingual farming advice using Groq API"""
         try:
-            logger.info(f"🔄 Sending request to Groq API...")
+            logger.info(f"🔄 Sending multilingual request to Groq API...")
+            
+            # Detect language and add context
+            lang_info = self.detect_language(user_message)
+            
+            # Enhanced message with language and regional context
+            enhanced_context = f"""
+LANGUAGE DETECTION RESULTS:
+- Detected Language: {lang_info['language'].title()}
+- Regional Context: {lang_info['region']}
+- Common Regional Crops: {', '.join(lang_info['common_crops'])}
+- Script Confidence: {lang_info['confidence']} characters
+
+USER QUERY: {user_message}
+
+IMPORTANT INSTRUCTIONS:
+1. Respond in the SAME LANGUAGE as the user's question
+2. If user wrote in Hindi, respond completely in Hindi
+3. If user wrote in Tamil, respond completely in Tamil
+4. Include regional farming practices specific to {lang_info['region']}
+5. Use local crop names and varieties from the region
+6. Consider local climate, soil, and farming traditions
+7. Use appropriate regional units (acre, bigha, hectare as per region)
+8. Include government schemes available in that state/region
+
+REGIONAL CONTEXT:
+- Focus on crops common to {lang_info['region']}: {', '.join(lang_info['common_crops'])}
+- Consider local farming practices and traditional knowledge
+- Include region-specific pest and disease management
+- Mention local agricultural universities and research centers if relevant
+"""
             
             # Build messages for conversation
             messages = [
                 {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": user_message}
+                {"role": "user", "content": enhanced_context}
             ]
             
             # Prepare API request
@@ -114,7 +219,8 @@ Remember: You're helping real farmers improve their livelihoods. Be accurate, pr
                 "stream": False
             }
             
-            logger.info(f"📡 Making request to: {self.base_url}/chat/completions")
+            logger.info(f"📡 Making multilingual request to: {self.base_url}/chat/completions")
+            logger.info(f"🌐 Detected language: {lang_info['language']} | Region: {lang_info['region']}")
             
             # Make API request
             response = requests.post(
@@ -130,31 +236,35 @@ Remember: You're helping real farmers improve their livelihoods. Be accurate, pr
                 data = response.json()
                 advice = data['choices'][0]['message']['content']
                 
-                # Store in conversation history
+                # Store in conversation history with language info
                 self.conversation_history.append({
                     'user_message': user_message,
                     'agribot_response': advice,
+                    'language_detected': lang_info['language'],
+                    'region': lang_info['region'],
                     'timestamp': datetime.now().isoformat(),
-                    'model': 'grok-beta'
+                    'model': 'llama3-8b-8192'
                 })
                 
-                logger.info(f"✅ Groq response generated: {len(advice)} characters")
+                logger.info(f"✅ Multilingual Groq response generated: {len(advice)} characters in {lang_info['language']}")
                 
                 return {
                     'success': True,
                     'advice': advice,
                     'model_type': 'llama3-8b-8192',
                     'provider': 'groq',
+                    'language_info': lang_info,
                     'cost': 'free',
                     'context': context or {},
+                    'multilingual_support': True,
+                    'regional_context': lang_info['region'],
                     'timestamp': datetime.now().isoformat()
                 }
             else:
-                # Log the actual error details
+                # Error handling same as before
                 error_text = response.text
-                logger.error(f"❌ Grok API error {response.status_code}: {error_text}")
+                logger.error(f"❌ Groq API error {response.status_code}: {error_text}")
                 
-                # Check for common error types
                 if response.status_code == 401:
                     error_msg = "Invalid Groq API key. Please check your GROQ_API_KEY in .env file."
                 elif response.status_code == 429:
@@ -173,6 +283,7 @@ Remember: You're helping real farmers improve their livelihoods. Be accurate, pr
                 'error': 'Groq API timeout',
                 'advice': 'The AI service is taking too long to respond. Please try again.',
                 'model_type': 'groq_timeout',
+                'language_info': lang_info if 'lang_info' in locals() else {'language': 'unknown'},
                 'timestamp': datetime.now().isoformat()
             }
         except requests.exceptions.ConnectionError:
@@ -182,6 +293,7 @@ Remember: You're helping real farmers improve their livelihoods. Be accurate, pr
                 'error': 'Connection error',
                 'advice': 'Cannot connect to Groq AI service. Please check your internet connection.',
                 'model_type': 'groq_connection_error',
+                'language_info': lang_info if 'lang_info' in locals() else {'language': 'unknown'},
                 'timestamp': datetime.now().isoformat()
             }
         except Exception as e:
@@ -191,6 +303,7 @@ Remember: You're helping real farmers improve their livelihoods. Be accurate, pr
                 'error': str(e),
                 'advice': f'Groq AI Error: {str(e)}. Please check your API key and try again.',
                 'model_type': 'groq_error',
+                'language_info': lang_info if 'lang_info' in locals() else {'language': 'unknown'},
                 'fallback': True,
                 'timestamp': datetime.now().isoformat()
             }
@@ -727,7 +840,7 @@ def health_check():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """AgriBot chat endpoint"""
+    """Enhanced multilingual AgriBot chat endpoint"""
     try:
         # Validate request
         if not request.is_json:
@@ -753,11 +866,11 @@ def chat():
         
         context = data.get('context', {})
         
-        logger.info(f"💬 AgriBot chat request: {message[:100]}...")
+        logger.info(f"🌐 Multilingual AgriBot chat request: {message[:100]}...")
         
-        # Generate response using AgriBot (Groq or fallback)
+        # Generate response using AgriBot (Groq with multilingual support or fallback)
         if hasattr(agribot, 'get_farming_advice'):
-            # Groq method
+            # Groq method with multilingual support
             response = agribot.get_farming_advice(message, context)
             
             # If Groq fails, fallback to knowledge base
@@ -767,14 +880,29 @@ def chat():
                 response = fallback_bot.generate_response(message, context)
                 response['fallback_used'] = True
                 response['provider'] = 'knowledge_base'
+                response['multilingual_support'] = False
         else:
             # Knowledge base method
             response = agribot.generate_response(message, context)
+            response['multilingual_support'] = False
         
-        logger.info(f"✅ AgriBot response generated successfully")
+        # Add multilingual information if available
+        if 'language_info' in response:
+            logger.info(f"🗣️ Language detected: {response['language_info'].get('language', 'Unknown')}")
+            logger.info(f"📍 Regional context: {response['language_info'].get('region', 'Unknown')}")
+        
+        logger.info(f"✅ Multilingual AgriBot response generated successfully")
         return jsonify(response)
         
     except Exception as e:
+        logger.error(f"❌ Chat endpoint error: {e}")
+        return jsonify({
+            'success': False,
+            'error': f'Server error: {str(e)}',
+            'advice': 'I am experiencing technical difficulties. Please try again later.',
+            'multilingual_support': False,
+            'timestamp': datetime.now().isoformat()
+        }), 500
         logger.error(f"❌ AgriBot chat error: {e}")
         traceback.print_exc()
         
