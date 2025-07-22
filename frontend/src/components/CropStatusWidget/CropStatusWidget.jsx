@@ -176,11 +176,58 @@ const CropStatusWidget = () => {
           </div>
 
           <div className="result-details">
+            {/* Debug: Log analysis data to console */}
+            {console.log('🔍 Full Analysis data received:', analysis)}
+            {console.log('🍃 Leaf analysis data:', analysis.leafAnalysis)}
+            {console.log('🔍 Leaf detected?:', analysis.leafAnalysis && analysis.leafAnalysis.detected)}
+            
             <p className="description">{analysis.description}</p>
             
             {analysis.cropType && (
               <div className="crop-info">
                 <strong>Detected Crop:</strong> {analysis.cropType}
+              </div>
+            )}
+
+            {/* Enhanced leaf analysis display - will show for any leaf analysis data */}
+            {analysis.leafAnalysis && (analysis.leafAnalysis.detected || analysis.leafAnalysis.type !== 'unknown') && (
+              <div className="leaf-analysis">
+                <strong>🍃 Leaf Analysis:</strong>
+                <div className="leaf-details">
+                  <span className="leaf-status">
+                    Condition: {analysis.leafAnalysis.type || 'Analyzed'}
+                  </span>
+                  {analysis.leafAnalysis.color && analysis.leafAnalysis.color !== 'unknown' && (
+                    <span className="leaf-color">
+                      Color: {analysis.leafAnalysis.color}
+                    </span>
+                  )}
+                  {analysis.leafAnalysis.pattern && analysis.leafAnalysis.pattern !== 'unknown' ? (
+                    <span className="leaf-pattern">
+                      Pattern: {analysis.leafAnalysis.pattern}
+                    </span>
+                  ) : (
+                    <span className="leaf-pattern">
+                      Pattern: Normal (no issues detected)
+                    </span>
+                  )}
+                  <span className="leaf-status">
+                    Detection Status: {analysis.leafAnalysis.detected ? '✅ Leaf Detected' : '⚠️ No Leaf Keywords'}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Debug: Show leaf analysis even if not detected */}
+            {analysis.leafAnalysis && !analysis.leafAnalysis.detected && (
+              <div className="leaf-analysis-debug">
+                <strong>🔍 Debug - Leaf Analysis (not detected):</strong>
+                <div className="leaf-details">
+                  <span>Type: {analysis.leafAnalysis.type}</span>
+                  <span>Color: {analysis.leafAnalysis.color}</span>
+                  <span>Pattern: {analysis.leafAnalysis.pattern}</span>
+                  <span>Detected: {analysis.leafAnalysis.detected ? 'Yes' : 'No'}</span>
+                </div>
               </div>
             )}
 

@@ -106,7 +106,7 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
     } catch (error) {
       const errorMessage = {
         id: Date.now() + 1,
-        text: `❌ **Error:** ${error.message}\n\nPlease check if the AI backend is running.`,
+        text: `❌ **Error:** ${error.message}\\n\\nPlease check if the AI backend is running.`,
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString(),
         model_type: 'error',
@@ -152,10 +152,10 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
   const formatMessage = (content) => {
     // Convert markdown-style formatting to HTML
     return content
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')
+      .replace(/\\*(.*?)\\*/g, '<em>$1</em>')
       .replace(/`(.*?)`/g, '<code>$1</code>')
-      .replace(/\n/g, '<br>');
+      .replace(/\\n/g, '<br>');
   };
 
   const getModelStatusIcon = () => {
@@ -177,122 +177,157 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
   };
 
   return (
-    <div className="ai-chat-container">
+    <>
       {/* Chat Toggle Button */}
-      <button 
-        className="chat-toggle-btn" 
-        onClick={toggleChat}
-        title={isOpen ? "Close Chat" : "Open AgriGuru AI Assistant"}
-      >
-        {isOpen ? "✕" : "🤖"}
+      <div className={`chat-toggle ${isOpen ? 'open' : ''}`} onClick={toggleChat}>
+        {isOpen ? '✕' : '💬'}
         {!isOpen && (
           <div className="chat-notification">
-            <span>💬</span>
+            <span className="status-dot">{getModelStatusIcon()}</span>
+            AI Chat
           </div>
         )}
-      </button>
+      </div>
 
       {/* Chat Window */}
-      {isOpen && (
-        <div className="chat-window">
-          <div className="chat-header">
-            <div className="chat-header-info">
-              <div className="ai-avatar">🤖</div>
-              <div>
-                <h4>AgriGuru AI Assistant</h4>
-                <p>Ask me anything about farming!</p>
+      <div className={`chat-window ${isOpen ? 'open' : ''}`}>
+        <div className="chat-header">
+          <div className="chat-title">
+            <h4>🤖 AgriGuru AI</h4>
+            <div className="model-status">
+              <span className="status-icon">{getModelStatusIcon()}</span>
+              <span className="status-text">{getModelStatusText()}</span>
+            </div>
+          </div>
+          
+          <div className="chat-controls">
+            <button 
+              onClick={checkBackendStatus}
+              className="btn-refresh"
+              title="Check connection"
+            >
+              🔄
+            </button>
+            <button 
+              onClick={clearChat}
+              className="btn-clear"
+              title="Clear chat"
+            >
+              🗑️
+            </button>
+            <button onClick={toggleChat} className="btn-close">✕</button>
+          </div>
+        </div>
+
+        <div className="context-panel">
+          <div className="context-inputs">
+            <select 
+              value={context.crop} 
+              onChange={(e) => handleContextChange('crop', e.target.value)}
+              className="context-select"
+            >
+              <option value="">Crop</option>
+              <option value="rice">Rice</option>
+              <option value="wheat">Wheat</option>
+              <option value="cotton">Cotton</option>
+              <option value="maize">Maize</option>
+              <option value="sugarcane">Sugarcane</option>
+            </select>
+            
+            <select 
+              value={context.season} 
+              onChange={(e) => handleContextChange('season', e.target.value)}
+              className="context-select"
+            >
+              <option value="">Season</option>
+              <option value="kharif">Kharif</option>
+              <option value="rabi">Rabi</option>
+              <option value="summer">Summer</option>
+            </select>
+            
+            <input
+              type="text"
+              placeholder="Location"
+              value={context.location}
+              onChange={(e) => handleContextChange('location', e.target.value)}
+              className="context-input"
+            />
+          </div>
+        </div>
+
+        <div className="chat-messages">
+          {messages.map((message) => (
+            <div key={message.id} className={`message ${message.sender}`}>
+              <div className="message-content">
+                <div 
+                  className="message-text"
+                  dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }}
+                />
+                <div className="message-meta">
+                  <span className="timestamp">{message.timestamp}</span>
+                  {message.model_type && message.sender === 'bot' && (
+                    <span className="model-type">
+                      {message.model_type === 'vertex_ai' ? '☁️' : 
+                       message.model_type === 'local' ? '💻' : 
+                       message.model_type === 'fallback' ? '📱' : 
+                       '🤖'}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-            <button 
-              className="close-btn" 
-              onClick={toggleChat}
-              title="Close Chat"
+          ))}
+          
+          {isLoading && (
+            <div className="message bot">
+              <div className="message-content">
+                <div className="typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="message-meta">
+                  <span className="timestamp">AI is thinking...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form onSubmit={handleSendMessage} className="chat-input-form">
+          <div className="chat-input-wrapper">
+            <textarea
+              ref={chatInputRef}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask about farming... (Enter to send, Shift+Enter for new line)"
+              className="chat-input"
+              rows="2"
+              disabled={isLoading}
+            />
+            <button
+              type="submit"
+              disabled={!inputMessage.trim() || isLoading}
+              className="send-button"
             >
-              ✕
+              {isLoading ? '⏳' : '📤'}
             </button>
           </div>
           
-          <div className="chat-messages">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`message ${message.sender === 'user' ? 'user-message' : 'ai-message'}`}
-              >
-                <div className="message-content">
-                  <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} />
-                  <div className="message-time">{message.timestamp}</div>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="message ai-message">
-                <div className="message-content">
-                  <div className="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Quick Action Buttons */}
-          <div className="quick-actions">
-            <button 
-              className="quick-action-btn" 
-              onClick={() => setInputMessage("What crops should I plant this season?")}
-            >
-              🌱 Crop Selection
-            </button>
-            <button 
-              className="quick-action-btn" 
-              onClick={() => setInputMessage("How do I improve soil health?")}
-            >
-              🌱 Soil Health
-            </button>
-            <button 
-              className="quick-action-btn" 
-              onClick={() => setInputMessage("Pest control advice")}
-            >
-              🐛 Pest Control
-            </button>
-            <button 
-              className="quick-action-btn" 
-              onClick={() => setInputMessage("Irrigation tips")}
-            >
-              💧 Irrigation
-            </button>
-          </div>
-
-          <div className="chat-input">
-            <input
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              placeholder="Ask me about farming, crops, weather..."
-              className="message-input"
-              disabled={isLoading}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage(e);
-                }
-              }}
-            />
-            <button
-              type="button"
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading}
-              className="send-btn"
-            >
-              ➤
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+          {!isConnected && (
+            <div className="connection-warning">
+              ⚠️ AI backend offline. Limited responses available.
+              <button type="button" onClick={checkBackendStatus} className="retry-btn">
+                Retry
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 

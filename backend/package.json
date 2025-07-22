@@ -1,27 +1,26 @@
 {
-  "name": "agriguru-ai-backend",
+  "name": "agriguru-fertilizer-api",
   "version": "1.0.0",
-  "description": "AgriGuru Farming Expert AI Backend Server",
-  "main": "farming_expert_app.py",
+  "description": "AgriGuru Real-Time Fertilizer API - Node.js Backend",
+  "main": "fertilizer-api.js",
   "scripts": {
-    "start": "python farming_expert_app.py",
-    "dev": "python farming_expert_app.py",
-    "test": "python check_server.py",
-    "install": "pip install -r requirements.txt",
-    "check": "python check_server.py"
+    "start": "node fertilizer-api.js",
+    "dev": "node fertilizer-api.js",
+    "test": "node fertilizer-api.js",
+    "fertilizer-api": "node fertilizer-api.js",
+    "check": "node fertilizer-api.js"
   },
   "dependencies": {
-    "flask": "2.3.3",
-    "flask-cors": "4.0.0",
-    "torch": "2.0.1",
-    "pillow": "10.0.0",
-    "requests": "2.31.0"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
   },
   "author": "AgriGuru Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agriguru/agriguru-ai"
+    "url": "git+https://github.com/agriguru/agriguru-ai.git"
   },
   "keywords": [
     "agriculture",
@@ -33,5 +32,9 @@
   ],
   "engines": {
     "python": ">=3.7"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/agriguru/agriguru-ai/issues"
+  },
+  "homepage": "https://github.com/agriguru/agriguru-ai#readme"
 }

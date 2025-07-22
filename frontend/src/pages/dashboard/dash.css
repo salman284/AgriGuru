@@ -61,8 +61,16 @@
 
 .widgets {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: auto auto;
+  gap: 25px;
+  padding: 0 10px;
+}
+
+/* Ensure fertilizer widget always appears in the bottom row */
+.widgets > *:nth-child(4) {
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .widget {

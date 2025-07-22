@@ -296,6 +296,62 @@
   font-size: 0.9em;
 }
 
+.leaf-analysis {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+}
+
+.leaf-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.leaf-status, .leaf-color, .leaf-pattern {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  text-transform: capitalize;
+}
+
+.leaf-color {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.leaf-pattern {
+  background: rgba(255, 193, 7, 0.3);
+}
+
+/* Debug leaf analysis styling */
+.leaf-analysis-debug {
+  background: rgba(255, 152, 0, 0.2);
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 15px 0;
+}
+
+.leaf-analysis-debug .leaf-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.leaf-analysis-debug .leaf-details span {
+  background: rgba(255, 152, 0, 0.3);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
 .recommendations h4 {
   margin: 0 0 10px 0;
   font-size: 1em;

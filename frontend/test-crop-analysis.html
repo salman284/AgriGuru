@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Analysis Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .filename { font-weight: bold; color: #007bff; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .healthy { border-left: 4px solid #28a745; }
+        .warning { border-left: 4px solid #ffc107; }
+        .danger { border-left: 4px solid #dc3545; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 AgriGuru Crop Analysis Test</h1>
+        <p>Test the crop analysis system with different filename patterns:</p>
+
+        <div class="test-section">
+            <h3>Test 1: Healthy Leaf Detection</h3>
+            <div class="filename">healthy_tomato_leaf.jpg</div>
+            <button onclick="testAnalysis('healthy_tomato_leaf.jpg', 1024000)">Test Healthy Tomato</button>
+            <div id="result1" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 2: Disease Detection</h3>
+            <div class="filename">brown_leaf_spots_disease.png</div>
+            <button onclick="testAnalysis('brown_leaf_spots_disease.png', 512000)">Test Disease Detection</button>
+            <div id="result2" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 3: Nutrient Deficiency</h3>
+            <div class="filename">yellow_leaves_nutrient.jpg</div>
+            <button onclick="testAnalysis('yellow_leaves_nutrient.jpg', 768000)">Test Nutrient Issue</button>
+            <div id="result3" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 4: Pest Damage</h3>
+            <div class="filename">leaf_holes_pest_damage.png</div>
+            <button onclick="testAnalysis('leaf_holes_pest_damage.png', 1536000)">Test Pest Damage</button>
+            <div id="result4" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 5: Consistency Check</h3>
+            <div class="filename">tomato_disease.jpg (Same file multiple times)</div>
+            <button onclick="testConsistency()">Test Consistency</button>
+            <div id="result5" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mock file object for testing
+        function createMockFile(filename, size) {
+            return {
+                name: filename,
+                size: size,
+                type: filename.endsWith('.png') ? 'image/png' : 'image/jpeg',
+                lastModified: Date.now()
+            };
+        }
+
+        // Test analysis function
+        async function testAnalysis(filename, size) {
+            const resultDiv = document.getElementById('result' + getCurrentTestNumber());
+            resultDiv.innerHTML = '<p>🔄 Analyzing...</p>';
+
+            try {
+                // Import the analysis function (this would work if connected to React app)
+                const mockFile = createMockFile(filename, size);
+                
+                // Simulate the analysis
+                const result = await simulateAnalysis(mockFile);
+                
+                displayResult(resultDiv, result);
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        function getCurrentTestNumber() {
+            // Simple way to get current test number
+            return document.querySelectorAll('button').length > 0 ? 
+                   Array.from(document.querySelectorAll('button')).indexOf(event.target) + 1 : 1;
+        }
+
+        // Simulate the crop analysis (simplified version)
+        async function simulateAnalysis(imageFile) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
+
+            const fileName = imageFile.name.toLowerCase();
+            
+            // Simulate crop detection
+            let cropType = 'Tomato'; // Default
+            if (fileName.includes('wheat')) cropType = 'Wheat';
+            if (fileName.includes('corn')) cropType = 'Corn';
+            if (fileName.includes('rice')) cropType = 'Rice';
+
+            // Simulate disease analysis
+            let status = 'Healthy';
+            let description = 'Plant appears healthy';
+            let recommendations = ['Continue current care', 'Monitor regularly'];
+            let severity = 'low';
+
+            if (fileName.includes('disease') || fileName.includes('brown') || fileName.includes('spot')) {
+                status = 'Leaf Spot Disease';
+                description = 'Brown spots on leaves indicate fungal infection';
+                recommendations = [
+                    'Brown spots on leaves indicate disease',
+                    'Remove all affected leaves immediately',
+                    'Apply copper fungicide',
+                    'Improve air circulation around plants'
+                ];
+                severity = 'high';
+            } else if (fileName.includes('yellow') || fileName.includes('nutrient')) {
+                status = 'Nutrient Deficiency';
+                description = 'Yellowing leaves suggest nutrient deficiency';
+                recommendations = [
+                    'Yellow leaves detected - check nitrogen levels',
+                    'Test soil pH and nutrient balance',
+                    'Apply balanced fertilizer',
+                    'Remove severely yellowed leaves'
+                ];
+                severity = 'medium';
+            } else if (fileName.includes('hole') || fileName.includes('pest')) {
+                status = 'Pest Damage';
+                description = 'Holes in leaves indicate insect pest activity';
+                recommendations = [
+                    'Leaf holes indicate pest damage',
+                    'Inspect plants for insects, especially undersides',
+                    'Consider organic pest control methods',
+                    'Identify specific pest species'
+                ];
+                severity = 'high';
+            } else if (fileName.includes('healthy')) {
+                status = 'Healthy';
+                description = 'Leaves appear healthy with good green coloration';
+                recommendations = [
+                    'Healthy leaf condition detected',
+                    'Continue current leaf care practices',
+                    'Monitor plant regularly for changes'
+                ];
+                severity = 'low';
+            }
+
+            return {
+                status,
+                description,
+                cropType,
+                recommendations,
+                severity,
+                leafAnalysis: {
+                    detected: fileName.includes('leaf') || fileName.includes('leaves'),
+                    condition: fileName.includes('healthy') ? 'healthy' : 
+                              fileName.includes('yellow') ? 'yellowing' :
+                              fileName.includes('brown') ? 'disease_spots' : 'unknown'
+                },
+                confidence: 0.89,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        function displayResult(container, result) {
+            const severityClass = result.severity === 'low' ? 'healthy' : 
+                                result.severity === 'medium' ? 'warning' : 'danger';
+            
+            container.className = `result ${severityClass}`;
+            container.innerHTML = `
+                <h4>${result.status}</h4>
+                <p><strong>Crop:</strong> ${result.cropType}</p>
+                <p><strong>Description:</strong> ${result.description}</p>
+                <p><strong>Leaf Analysis:</strong> ${result.leafAnalysis.detected ? '✅ Detected' : '❌ Not detected'} 
+                   (${result.leafAnalysis.condition})</p>
+                <p><strong>Confidence:</strong> ${Math.round(result.confidence * 100)}%</p>
+                <div><strong>Recommendations:</strong>
+                    <ul>${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}</ul>
+                </div>
+                <p><small><strong>Analysis Time:</strong> ${new Date(result.timestamp).toLocaleTimeString()}</small></p>
+            `;
+        }
+
+        async function testConsistency() {
+            const resultDiv = document.getElementById('result5');
+            resultDiv.innerHTML = '<p>🔄 Testing consistency (running same analysis 3 times)...</p>';
+
+            const filename = 'tomato_disease.jpg';
+            const mockFile = createMockFile(filename, 1024000);
+            
+            const results = [];
+            for (let i = 0; i < 3; i++) {
+                const result = await simulateAnalysis(mockFile);
+                results.push(result);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Check if all results are identical
+            const isConsistent = results.every(result => 
+                result.status === results[0].status &&
+                result.cropType === results[0].cropType &&
+                result.description === results[0].description
+            );
+
+            resultDiv.className = `result ${isConsistent ? 'healthy' : 'danger'}`;
+            resultDiv.innerHTML = `
+                <h4>${isConsistent ? '✅ CONSISTENT' : '❌ INCONSISTENT'}</h4>
+                <p>Ran analysis 3 times with same filename:</p>
+                <div style="font-family: monospace; font-size: 12px;">
+                    ${results.map((result, i) => `
+                        <div style="margin: 5px 0; padding: 5px; background: #f8f9fa;">
+                            <strong>Run ${i + 1}:</strong> ${result.status} (${result.cropType})
+                        </div>
+                    `).join('')}
+                </div>
+                <p><strong>Result:</strong> ${isConsistent ? 
+                    'All runs produced identical results! ✅' : 
+                    'Results varied between runs! ❌'}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

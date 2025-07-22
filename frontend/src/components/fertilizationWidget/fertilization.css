@@ -1,0 +1,44 @@
+.fertilizer-dashboard {
+  padding: 2rem;
+  background-color: #f0f8ff;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.fertilizer-dashboard h2 {
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+}
+
+.update-time {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.fertilizer-table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.fertilizer-table th,
+.fertilizer-table td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.fertilizer-table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.fertilizer-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.fertilizer-table tr:hover {
+  background-color: #e6ffe6;
+}

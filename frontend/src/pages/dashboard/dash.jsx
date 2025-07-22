@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import SoilWidget from '../../components/SoilWidget/SoilWidget';
 import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget';
+import FertilizationWidget from '../../components/fertilizationWidget/fertilization';
 
 const Dash = () => {
   return (
@@ -16,7 +17,7 @@ const Dash = () => {
           <li><a href="#weather">Weather</a></li>
           <li><a href="#crops">Crops</a></li>
           <li><a href="#soil">Soil</a></li>
-
+          <li><a href="#organic-fertilizers">Organic Fertilizers</a></li>
         </ul>
       </div>
       <div className="main-content">
@@ -27,6 +28,7 @@ const Dash = () => {
           <WeatherWidget />
           <SoilWidget />
           <CropStatusWidget />
+          <FertilizationWidget />
         </div>
       </div>
     </div>

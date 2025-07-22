@@ -171,6 +171,26 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
     if (modelInfo?.model_type === 'local') return 'Local AI';
     return 'Connected';
   };
+        id: Date.now() + 1,
+        text: response.data.advice,
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString()
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "I'm sorry, I'm having trouble connecting to the server. Please try again later.",
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -219,7 +239,7 @@ Just ask me anything about farming, and I'll provide detailed, personalized advi
                 className={`message ${message.sender === 'user' ? 'user-message' : 'ai-message'}`}
               >
                 <div className="message-content">
-                  <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} />
+                  <p>{message.text}</p>
                   <div className="message-time">{message.timestamp}</div>
                 </div>
               </div>

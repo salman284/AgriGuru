@@ -1,9 +1,52 @@
 // Enhanced AI Service for AgriGuru Farming Expert
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
 
 class EnhancedAIService {
   /**
-   * Get expert farming advice
+   * AI Chat endpoint using Gemma 2
+   * @param {string} message - The chat message
+   * @param {Object} context - Additional context (crop, season, location, etc.)
+   * @returns {Promise<Object>} - AI chat response
+   */
+  async chat(message, context = {}) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+          context: context
+        }),
+        timeout: 15000 // 15 second timeout for AI processing
+      });
+
+      if (!response.ok) {
+        throw new Error(`Backend responded with status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        success: true,
+        advice: data.advice,
+        context: data.context,
+        model_type: data.model_type,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('AI Chat error:', error);
+      
+      return {
+        success: false,
+        error: error.message,
+        advice: this.getFallbackChatResponse(message, context)
+      };
+    }
+  }
+
+  /**
+   * Get expert farming advice (legacy compatibility)
    * @param {string} query - The farming question
    * @param {string} crop - Optional crop type (rice, wheat, cotton, maize)
    * @param {string} season - Optional season (kharif, rabi, summer)
@@ -194,6 +237,98 @@ class EnhancedAIService {
   }
 
   /**
+   * Get AI model information and status
+   * @returns {Promise<Object>} - Model information
+   */
+  async getModelInfo() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/model-info`, {
+        method: 'GET'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        success: true,
+        model_info: data.model_info,
+        ai_backend_status: data.ai_backend_status,
+        recent_conversations: data.recent_conversations
+      };
+    } catch (error) {
+      console.error('Model info error:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get conversation history
+   * @param {number} limit - Number of conversations to retrieve
+   * @returns {Promise<Object>} - Conversation history
+   */
+  async getConversationHistory(limit = 10) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/conversation-history?limit=${limit}`, {
+        method: 'GET'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        success: true,
+        conversations: data.conversations,
+        total: data.total
+      };
+    } catch (error) {
+      console.error('Conversation history error:', error);
+      return {
+        success: false,
+        error: error.message,
+        conversations: []
+      };
+    }
+  }
+
+  /**
+   * Clear conversation history
+   * @returns {Promise<Object>} - Success response
+   */
+  async clearConversationHistory() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/clear-history`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        success: true,
+        message: data.message
+      };
+    } catch (error) {
+      console.error('Clear history error:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
    * Extract crop and season from user query
    * @param {string} query - User query
    * @returns {Object} - Extracted crop and season
@@ -253,6 +388,54 @@ class EnhancedAIService {
       console.error('Server status check failed:', error);
       return false;
     }
+  }
+
+  /**
+   * Provide fallback chat response when backend is not available
+   * @param {string} message - User message
+   * @param {Object} context - Context information
+   * @returns {string} - Fallback response
+   */
+  getFallbackChatResponse(message, context = {}) {
+    return `🤖 **AgriGuru AI Assistant** (Offline Mode)\n\n` +
+      `**Your message:** ${message}\n\n` +
+      `I'm currently unable to connect to the enhanced AI backend with Gemma 2.\n\n` +
+      `**To enable full AI chat features:**\n` +
+      `1. Go to the backend folder\n` +
+      `2. Run: python setup_ai_backend.py (first time only)\n` +
+      `3. Run: python farming_expert_app_ai.py\n` +
+      `4. Wait for "Server running on http://localhost:5000"\n` +
+      `5. Then try your question again\n\n` +
+      `**Enhanced AI features include:**\n` +
+      `• Conversational farming advice with Gemma 2\n` +
+      `• Context-aware responses\n` +
+      `• Personalized recommendations\n` +
+      `• Multi-turn conversations\n` +
+      `• Advanced crop analysis\n` +
+      `• Real-time problem solving\n\n` +
+      `**Basic guidance:** ${this.getBasicGuidance(message, context)}`;
+  }
+
+  /**
+   * Get basic guidance based on keywords
+   * @param {string} message - User message
+   * @param {Object} context - Context information
+   * @returns {string} - Basic guidance
+   */
+  getBasicGuidance(message, context) {
+    const messageLower = message.toLowerCase();
+    
+    if (messageLower.includes('chat') || messageLower.includes('conversation')) {
+      return "Enable AI backend for interactive chat with farming experts.";
+    }
+    
+    if (messageLower.includes('gemma') || messageLower.includes('ai')) {
+      return "Gemma 2 AI provides advanced agricultural insights and personalized advice.";
+    }
+    
+    // Use existing fallback logic
+    return this.getFallbackAdvice(message, context.crop, context.season).split('\n\n')[1] || 
+           "Please enable the AI backend for detailed agricultural assistance.";
   }
 
   /**
