@@ -874,6 +874,31 @@ def clear_history():
             'timestamp': datetime.now().isoformat()
         }), 500
 
+@app.route('/api/debug-agribot', methods=['GET'])
+def debug_agribot():
+    """Debug AgriBot object type and methods"""
+    try:
+        agribot_type = type(agribot).__name__
+        agribot_methods = [method for method in dir(agribot) if not method.startswith('_')]
+        has_groq_method = hasattr(agribot, 'get_farming_advice')
+        
+        return jsonify({
+            'success': True,
+            'agribot_type': agribot_type,
+            'agribot_methods': agribot_methods,
+            'has_get_farming_advice': has_groq_method,
+            'groq_enabled_flag': groq_enabled,
+            'api_key_present': bool(os.getenv('GROQ_API_KEY')),
+            'api_key_preview': f"{os.getenv('GROQ_API_KEY', 'None')[:10]}..." if os.getenv('GROQ_API_KEY') else 'None'
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        })
+
 @app.route('/api/debug-grok', methods=['GET'])
 def debug_grok():
     """Debug Grok API connectivity"""
