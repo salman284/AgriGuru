@@ -24,12 +24,12 @@ const About = () => {
             </ul>
             </div>
             <div className='our-services'>
-                <h2>Our Services</h2>
+                <h2>{t('about.services_title')}</h2>
                 <ul className='services-list'>
-                    <li>Crop Analysis and Recommendations</li>
-                    <li>Weather Forecasting and Alerts</li>
-                    <li>Soil Health Monitoring</li>
-                    <li>Pest and Disease Management</li>
+                    <li>{t('about.services.crop_analysis')}</li>
+                    <li>{t('about.services.weather_forecasting')}</li>
+                    <li>{t('about.services.soil_monitoring')}</li>
+                    <li>{t('about.services.pest_management')}</li>
                 </ul>
             </div>
             <div className='mission'>

@@ -217,6 +217,13 @@
       "expert_guidance": "Expert Guidance for Farmers",
       "community": "Community Support and Resources"
     },
+    "services_title": "Our Services",
+    "services": {
+      "crop_analysis": "Crop Analysis and Recommendations",
+      "weather_forecasting": "Weather Forecasting and Alerts",
+      "soil_monitoring": "Soil Health Monitoring",
+      "pest_management": "Pest and Disease Management"
+    },
     "mission": "Our Mission",
     "mission_text": "To empower farmers with technology-driven solutions for sustainable and profitable agriculture."
   },
@@ -233,11 +240,78 @@
   },
   "government": {
     "title": "Government Agricultural Schemes",
-    "subtitle": "Explore beneficial schemes for farmers",
+    "subtitle": "Explore various government initiatives to support farmers",
     "eligibility": "Eligibility",
     "benefits": "Benefits",
     "apply_now": "Apply Now",
-    "learn_more": "Learn More"
+    "learn_more": "Learn More",
+    "help_title": "Need Help?",
+    "help_description": "Contact your local agricultural office or call our toll-free number:",
+    "toll_free": "1800-180-1551",
+    "schemes": {
+      "pm_kisan": {
+        "title": "PM-KISAN",
+        "description": "Direct income support of ₹6,000 per year to eligible farmer families",
+        "eligibility": "All landholding farmer families with cultivable landholding",
+        "benefits": {
+          "financial_support": "Financial support",
+          "installments": "Three equal installments",
+          "direct_transfer": "Direct bank transfer"
+        }
+      },
+      "fasal_bima": {
+        "title": "Pradhan Mantri Fasal Bima Yojana",
+        "description": "Comprehensive crop insurance scheme to protect farmers against crop failure",
+        "eligibility": "All farmers growing notified crops in notified areas",
+        "benefits": {
+          "crop_protection": "Crop loss protection",
+          "low_premium": "Low premium rates",
+          "quick_settlement": "Quick claim settlement"
+        }
+      },
+      "kisan_credit": {
+        "title": "Kisan Credit Card",
+        "description": "Provides farmers with timely access to credit",
+        "eligibility": "All farmers, sharecroppers, and agricultural laborers",
+        "benefits": {
+          "easy_credit": "Easy credit access",
+          "flexible_repayment": "Flexible repayment",
+          "lower_rates": "Lower interest rates"
+        }
+      },
+      "soil_health": {
+        "title": "Soil Health Card Scheme",
+        "description": "Provides information on soil health and recommended fertilizers",
+        "eligibility": "All farmers across India",
+        "benefits": {
+          "free_testing": "Free soil testing",
+          "fertilizer_recommendations": "Fertilizer recommendations",
+          "improved_yield": "Improved crop yield"
+        }
+      },
+      "pm_sinchai": {
+        "title": "PM Krishi Sinchai Yojana",
+        "description": "Enhances water efficiency through 'Per Drop More Crop' and precision irrigation technologies",
+        "eligibility": "Farmers seeking improved irrigation and water conservation",
+        "benefits": {
+          "micro_irrigation": "Micro-irrigation systems",
+          "water_conservation": "Water conservation infrastructure",
+          "water_efficiency": "Enhanced water use efficiency",
+          "sustainable_practices": "Sustainable agriculture practices"
+        }
+      },
+      "enam": {
+        "title": "National Agricultural Market (eNAM)",
+        "description": "Online trading platform for agricultural commodities to get better price discovery",
+        "eligibility": "Farmers, traders, and buyers registered on eNAM platform",
+        "benefits": {
+          "market_access": "Direct market access",
+          "price_discovery": "Better price discovery",
+          "transparent_auction": "Transparent auction process",
+          "reduced_fees": "Reduced market fees"
+        }
+      }
+    }
   },
   "auth": {
     "login": "Login",
