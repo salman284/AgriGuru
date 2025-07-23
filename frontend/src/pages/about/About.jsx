@@ -1,22 +1,26 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import './about.css'
 import Navbar from '../../components/Navbar/Navbar'
+
 const About = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className='About'>
         <Navbar />
         <div className='about-container'>
-            <h1 className='about-title'>About AgriGuru</h1>
+            <h1 className='about-title'>{t('about.title')}</h1>
             <p className='about-description'>
-                AgriGuru is your one-stop solution for all agricultural needs. Our platform connects farmers with experts, providing real-time insights, weather updates, and personalized recommendations to enhance farming practices.
+                {t('about.description')}
             </p>
             <div className='about-features-title'>
-                <h2>Key Features</h2>
+                <h2>{t('about.features_title')}</h2>
             <ul className='about-features-list'>
-                <li>95% Accuracy Rate in Crop Predictions</li>
-                <li>24/7 Weather Support</li>
-                <li>Expert Guidance for Farmers</li>
-                <li>Community Support and Resources</li>
+                <li>{t('about.features.accuracy')}</li>
+                <li>{t('about.features.weather_support')}</li>
+                <li>{t('about.features.expert_guidance')}</li>
+                <li>{t('about.features.community')}</li>
             </ul>
             </div>
             <div className='our-services'>
@@ -29,11 +33,9 @@ const About = () => {
                 </ul>
             </div>
             <div className='mission'>
-                <h2>Our Mission & Visions</h2>
+                <h2>{t('about.mission')}</h2>
                 <p>
-                    Our mission is to empower farmers with the knowledge and tools they need to succeed. <br></br>
-                    We envision a future where technology and agriculture work hand in hand to create sustainable farming practices that benefit both the environment and the economy.<br></br>
-                    Guide by AI Agent and helps to predict crop disease, weather, soil quality
+                    {t('about.mission_text')}
                     </p>
             </div>
         </div>

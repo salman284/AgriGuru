@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import './AIChat.css';
 import enhancedAIService from '../../services/enhancedAIService';
 import VoiceInput from '../VoiceInput/VoiceInput';
 
 const AIChat = () => {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -254,8 +256,8 @@ Just ask me anything about farming in your preferred language, and I'll provide 
             <div className="chat-header-info">
               <div className="ai-avatar">🤖</div>
               <div>
-                <h4>AgriGuru AI Assistant</h4>
-                <p>Voice & Text Support • Multilingual</p>
+                <h4>{t('ai_chat.title')}</h4>
+                <p>{t('ai_chat.voice_subtitle')}</p>
               </div>
             </div>
             <div className="chat-header-controls">
@@ -381,7 +383,7 @@ Just ask me anything about farming in your preferred language, and I'll provide 
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder={voiceEnabled ? "Type or use voice input above..." : "Ask me about farming, crops, weather..."}
+                placeholder={voiceEnabled ? t('ai_chat.voice_placeholder') : t('ai_chat.placeholder')}
                 className="message-input"
                 disabled={isLoading}
                 onKeyDown={(e) => {

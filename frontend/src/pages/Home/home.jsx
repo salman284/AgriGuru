@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import "./home.css"
 import backGround from "./homebg.avif"
 import Navbar from "../../components/Navbar/Navbar"
@@ -7,6 +8,7 @@ import AIChat from "../../components/AIChat/AIChat"
 
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleGetStarted = () => {
     navigate('/dashboard');
@@ -26,28 +28,28 @@ const Home = () => {
         }}
       >
         <div className="content">
-          <h1 className="home-title">Welcome to AgriGuru</h1>
+          <h1 className="home-title">{t('homepage.hero.title')}</h1>
             <h3 className="home-description">
-                Your one-stop solution for all agricultural needs. Explore our services, connect with experts, and enhance your farming experience.
+                {t('homepage.hero.description')}
             </h3>
-            <button className="home-button" onClick={handleGetStarted}>Get Started</button>
+            <button className="home-button" onClick={handleGetStarted}>{t('homepage.hero.cta_primary')}</button>
                 
                 {/* Features Section */}
                 <div className="features-container">
                   <div className="feature-box">
                     <div className="feature-icon">🎯</div>
-                    <h4 className="feature-title">95% Accuracy Rate</h4>
-                    <p className="feature-description">Precise agricultural insights and recommendations</p>
+                    <h4 className="feature-title">{t('homepage.features.ai_chat.title')}</h4>
+                    <p className="feature-description">{t('homepage.features.ai_chat.description')}</p>
                   </div>
                   <div className="feature-box">
                     <div className="feature-icon">👨‍🌾</div>
-                    <h4 className="feature-title">Farmers Help</h4>
-                    <p className="feature-description">Expert guidance for all your farming needs</p>
+                    <h4 className="feature-title">{t('homepage.features.expert_advice.title')}</h4>
+                    <p className="feature-description">{t('homepage.features.expert_advice.description')}</p>
                   </div>
                   <div className="feature-box">
                     <div className="feature-icon">🌤️</div>
-                    <h4 className="feature-title">24/7 Weather Support</h4>
-                    <p className="feature-description">Real-time weather updates and forecasts</p>
+                    <h4 className="feature-title">{t('homepage.features.weather_integration.title')}</h4>
+                    <p className="feature-description">{t('homepage.features.weather_integration.description')}</p>
                   </div>
                   <div 
                     className="feature-box marketplace-feature" 
@@ -55,8 +57,8 @@ const Home = () => {
                     style={{ cursor: 'pointer' }}
                   >
                     <div className="feature-icon">🛒</div>
-                    <h4 className="feature-title">AgriGuru Marketplace</h4>
-                    <p className="feature-description">Shop tractors, fertilizers, seeds & farming tools</p>
+                    <h4 className="feature-title">{t('ecommerce.title')}</h4>
+                    <p className="feature-description">{t('ecommerce.subtitle')}</p>
                   </div>
                 </div>
                 

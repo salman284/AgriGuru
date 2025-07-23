@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import './VoiceInput.css';
 
 const VoiceInput = ({ onVoiceInput, onTranscription, disabled = false }) => {
+  const { t } = useTranslation();
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
   const [transcript, setTranscript] = useState('');

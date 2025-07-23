@@ -1,8 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './govtS.css';
 import Navbar from '../../components/Navbar/Navbar';
 
-const govtS = () => {
+const GovtSchemes = () => {
+  const { t } = useTranslation();
+  
   const schemes = [
     {
       id: 1,
@@ -125,4 +128,4 @@ const govtS = () => {
   );
 };
 
-export default govtS;
+export default GovtSchemes;

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './contact.css';
 
 const ContactPage = () => {
+  const { t } = useTranslation();
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyADOs, setNearbyADOs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,10 +74,10 @@ const ContactPage = () => {
 
   return (
     <div className="contact-page">
-      <h1>Agricultural Development Officers Near You</h1>
+      <h1>{t('contact.title')}</h1>
       
       {loading ? (
-        <div className="loading">Loading nearby ADOs...</div>
+        <div className="loading">{t('contact.loading')}</div>
       ) : (
         <div className="ado-grid">
           {nearbyADOs.map((ado) => (
@@ -85,16 +87,16 @@ const ContactPage = () => {
                 <span className="designation">{ado.designation}</span>
               </div>
               <div className="ado-details">
-                <p><strong>District:</strong> {ado.district}</p>
+                <p><strong>{t('contact.district')}:</strong> {ado.district}</p>
                 <p><strong>Office:</strong> {ado.office}</p>
-                <p><strong>Specialization:</strong> {ado.specialization}</p>
-                <p><strong>Address:</strong> {ado.address}</p>
+                <p><strong>{t('contact.specialization')}:</strong> {ado.specialization}</p>
+                <p><strong>{t('contact.location')}:</strong> {ado.address}</p>
                 <div className="contact-info">
                   <a href={`tel:${ado.phone}`} className="contact-button phone">
-                    Call
+                    {t('contact.call')}
                   </a>
                   <a href={`mailto:${ado.email}`} className="contact-button email">
-                    Email
+                    {t('contact.email')}
                   </a>
                 </div>
               </div>
