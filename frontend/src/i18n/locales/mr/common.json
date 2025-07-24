@@ -1,364 +1,204 @@
-﻿{
+{
   "app": {
-    "title": "AgriGuru - Smart Farming Assistant",
-    "description": "AI-powered farming guidance for Indian farmers",
-    "loading": "Loading...",
-    "error": "Error occurred",
-    "retry": "Retry",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel",
-    "submit": "Submit",
-    "continue": "Continue",
-    "back": "Back",
-    "next": "Next"
+    "title": "अॅग्रिगुरु - स्मार्ट शेती सहाय्यक",
+    "description": "भारतीय शेतकऱ्यांसाठी AI-आधारित शेती मार्गदर्शन",
+    "loading": "लोड होत आहे...",
+    "error": "त्रुटी आली",
+    "retry": "पुन्हा प्रयत्न करा",
+    "close": "बंद करा",
+    "save": "जतन करा",
+    "cancel": "रद्द करा",
+    "submit": "सबमिट करा",
+    "continue": "सुरू ठेवा",
+    "back": "मागे",
+    "next": "पुढे"
   },
   "navbar": {
-    "home": "Home",
-    "dashboard": "Dashboard",
-    "about": "About",
-    "contact": "Contact",
-    "login": "Login",
-    "signup": "Sign Up",
-    "logout": "Logout",
-    "profile": "Profile",
-    "settings": "Settings",
-    "language": "Language",
-    "marketplace": "Marketplace",
-    "contact_ado": "Contact ADO",
-    "government": "Government Schemes"
+    "home": "होम",
+    "dashboard": "डॅशबोर्ड",
+    "about": "आमच्याबद्दल",
+    "contact": "संपर्क",
+    "login": "लॉगिन",
+    "signup": "साइन अप",
+    "logout": "लॉगआउट",
+    "profile": "प्रोफाइल",
+    "settings": "सेटिंग्ज",
+    "language": "भाषा",
+    "marketplace": "मार्केटप्लेस",
+    "contact_ado": "ADO संपर्क",
+    "government": "सरकारी योजना"
   },
   "homepage": {
     "hero": {
-      "title": "अगरगरमधय आपल सवगत",
-      "subtitle": "Get expert farming advice in your language",
-      "description": "AgriGuru provides AI-powered farming guidance, crop recommendations, and weather insights to help Indian farmers increase productivity and income.",
-      "cta_primary": "Start Farming Chat",
-      "cta_secondary": "Learn More",
-      "features_title": "Why Choose AgriGuru?"
+      "title": "अॅग्रिगुरुमध्ये आपले स्वागत",
+      "subtitle": "आपल्या भाषेत तज्ञ शेती सल्ला मिळवा",
+      "description": "अॅग्रिगुरु AI-आधारित शेती मार्गदर्शन, पिक शिफारसी आणि हवामान अंतर्दृष्टी देऊन भारतीय शेतकऱ्यांची उत्पादकता आणि उत्पन्न वाढविण्यात मदत करते।",
+      "cta_primary": "शेती चॅट सुरू करा",
+      "cta_secondary": "अधिक जाणून घ्या",
+      "features_title": "अॅग्रिगुरु का निवडावे?"
     },
     "features": {
       "ai_chat": {
-        "title": "AI-Powered Chat",
-        "description": "Get instant farming advice from our AI assistant in your preferred language"
+        "title": "AI-आधारित चॅट",
+        "description": "आपल्या आवडत्या भाषेत आमच्या AI सहाय्यकाकडून तत्काळ शेती सल्ला मिळवा"
       },
       "voice_support": {
-        "title": "Voice Support", 
-        "description": "Speak in Hindi, Tamil, Telugu, or your regional language for hands-free farming guidance"
+        "title": "आवाज समर्थन",
+        "description": "हँड्स-फ्री शेती मार्गदर्शनासाठी मराठी, हिंदी, तमिळ किंवा आपल्या प्रादेशिक भाषेत बोला"
       },
       "weather_integration": {
-        "title": "Weather Insights",
-        "description": "Real-time weather data and forecasts to plan your farming activities"
+        "title": "हवामान अंतर्दृष्टी",
+        "description": "आपल्या शेती क्रियाकलापांची योजना करण्यासाठी रिअल-टाइम हवामान डेटा आणि अंदाज"
       },
       "crop_recommendations": {
-        "title": "Crop Recommendations",
-        "description": "Get personalized crop suggestions based on your location, soil, and season"
+        "title": "पिक शिफारसी",
+        "description": "आपले स्थान, माती आणि हवामानावर आधारित वैयक्तिक पिक सुचविा मिळवा"
       },
       "market_prices": {
-        "title": "Market Prices",
-        "description": "Stay updated with latest crop prices and market trends"
+        "title": "बाजार दर",
+        "description": "नवीनतम पिक किमती आणि बाजार ट्रेंडसह अपडेट राहा"
       },
       "expert_advice": {
-        "title": "Expert Advice",
-        "description": "Access knowledge from agricultural experts and research institutions"
+        "title": "तज्ञ सल्ला",
+        "description": "शेती तज्ञ आणि संशोधन संस्थांच्या ज्ञानात प्रवेश मिळवा"
       }
     }
   },
   "dashboard": {
-    "title": "Farmer Dashboard",
-    "welcome": "Welcome To Your Dashboard",
-    "overview": "Overview",
-    "my_crops": "My Crops",
-    "weather": "Weather",
-    "tasks": "Today's Tasks",
-    "insights": "Insights",
-    "recent_chats": "Recent Conversations",
-    "quick_actions": "Quick Actions",
-    "view_all": "View All",
-    "add_crop": "Add Crop",
-    "view_weather": "View Weather",
-    "chat_ai": "Chat with AI"
-  },
-  "ai_chat": {
-    "title": "AgriBot - AI Farming Assistant",
-    "subtitle": "Ask me anything about farming!",
-    "voice_subtitle": "Voice & Text Support â€¢ Multilingual",
-    "placeholder": "Ask me about farming, crops, weather...",
-    "voice_placeholder": "Type or use voice input above...",
-    "send": "Send",
-    "listening": "Listening...",
-    "processing": "Processing...",
-    "welcome_message": "ðŸŒ¾ **Welcome to AgriGuru AI Chat!**\n\nI'm your AI-powered farming assistant, powered by Groq LLaMA 3. I can help you with:\n\nðŸŒ± **Crop cultivation advice**\nðŸ§ª **Fertilizer recommendations**\nðŸ› **Pest and disease management**\nðŸŒ¤ï¸ **Weather-based planning**\nðŸ“Š **Market insights**\nðŸ“… **Seasonal farming calendar**\n\nðŸŒ **Multilingual Support**: I can understand and respond in:\n- à¤¹à¤¿à¤‚à¤¦à¥€ (Hindi)\n- à®¤à®®à®¿à®´à¯ (Tamil)\n- à°¤à±†à°²à±à°—à± (Telugu)\n- à¨ªà©°à¨œà¨¾à¨¬à©€ (Punjabi)\n- à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)\n- à¤®à¤°à¤¾à¤ à¥€ (Marathi)\n- àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)\n- à²•à²¨à³à²¨à²¡ (Kannada)\n- à´®à´²à´¯à´¾à´³à´‚ (Malayalam)\n- English\n\nJust ask me anything about farming in your preferred language, and I'll provide detailed, region-specific advice!\n\n*Type your question below to get started...*",
-    "quick_actions": {
-      "crop_selection": "ðŸŒ± Crop Selection",
-      "soil_health": "ðŸŒ± Soil Health", 
-      "pest_control": "ðŸ› Pest Control",
-      "fertilizer": "ðŸ§ª Fertilizer",
-      "irrigation": "ðŸ’§ Irrigation",
-      "weather": "ðŸŒ¤ï¸ Weather"
-    },
-    "voice": {
-      "enable": "Enable Voice",
-      "disable": "Disable Voice",
-      "start_recording": "Start Voice Input",
-      "stop_recording": "Stop Recording",
-      "voice_input": "Voice Input",
-      "language_detected": "Language detected",
-      "confidence": "Confidence",
-      "accuracy": "Accuracy"
-    }
-  },
-  "voice_input": {
-    "title": "Voice Input for AgriBot",
-    "language_select": "Select Language:",
-    "start_recording": "Start Voice Input",
-    "stop_recording": "Stop Recording",
-    "clear": "Clear",
-    "listening": "Listening... Speak now!",
-    "transcript": "Voice Transcript:",
-    "not_supported": "Voice Input Not Supported",
-    "not_supported_message": "Your browser doesn't support voice recognition.",
-    "browser_suggestion": "Please use Chrome, Edge, or Safari for voice input.",
-    "tips": {
-      "title": "Tips for better recognition:",
-      "speak_clearly": "Speak clearly and at normal pace",
-      "use_farming_terms": "Use farming terms in your selected language", 
-      "minimize_noise": "Minimize background noise",
-      "hold_close": "Hold device close to your mouth",
-      "pause_sentences": "Pause between sentences"
-    },
-    "examples": {
-      "title": "Try saying:",
-      "rice_cultivation": "How to grow rice in monsoon?",
-      "pest_control": "Cotton pest control methods",
-      "fertilizer": "Best fertilizer for wheat",
-      "irrigation": "Drip irrigation setup cost"
-    }
-  },
-  "crops": {
-    "title": "Crop Information",
-    "rice": "Rice",
-    "wheat": "Wheat", 
-    "cotton": "Cotton",
-    "sugarcane": "Sugarcane",
-    "maize": "Maize",
-    "tomato": "Tomato",
-    "potato": "Potato",
-    "onion": "Onion",
-    "soybean": "Soybean",
-    "groundnut": "Groundnut",
-    "seasons": {
-      "kharif": "Kharif (Monsoon)",
-      "rabi": "Rabi (Winter)",
-      "zaid": "Zaid (Summer)"
-    }
-  },
-  "weather": {
-    "title": "Weather Information",
-    "current": "Current Weather",
-    "forecast": "Forecast",
-    "temperature": "Temperature",
-    "humidity": "Humidity", 
-    "rainfall": "Rainfall",
-    "wind_speed": "Wind Speed",
-    "pressure": "Pressure",
-    "conditions": {
-      "sunny": "Sunny",
-      "cloudy": "Cloudy",
-      "rainy": "Rainy",
-      "stormy": "Stormy"
-    }
-  },
-  "forms": {
-    "name": "Name",
-    "email": "Email",
-    "phone": "Phone Number",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "location": "Location",
-    "farm_size": "Farm Size (acres)",
-    "crops_grown": "Crops Grown",
-    "experience": "Farming Experience",
-    "language_preference": "Preferred Language",
-    "required_field": "This field is required",
-    "invalid_email": "Please enter a valid email",
-    "invalid_phone": "Please enter a valid phone number",
-    "password_mismatch": "Passwords do not match"
-  },
-  "languages": {
-    "en": "मरठ",
-    "hi": "à¤¹à¤¿à¤‚à¤¦à¥€ (Hindi)",
-    "ta": "à®¤à®®à®¿à®´à¯ (Tamil)",
-    "te": "à°¤à±†à°²à±à°—à± (Telugu)",
-    "bn": "à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)",
-    "mr": "à¤®à¤°à¤¾à¤ à¥€ (Marathi)", 
-    "gu": "àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)",
-    "kn": "à²•à²¨à³à²¨à²¡ (Kannada)",
-    "ml": "à´®à´²à´¯à´¾à´³à´‚ (Malayalam)",
-    "pa": "à¨ªà©°à¨œà¨¾à¨¬à©€ (Punjabi)"
-  },
-  "footer": {
-    "about_agriguru": "About AgriGuru",
-    "about_description": "AgriGuru is an AI-powered platform helping Indian farmers with modern farming techniques, crop guidance, and market insights.",
-    "quick_links": "Quick Links",
-    "contact_info": "Contact Information",
-    "follow_us": "Follow Us",
-    "copyright": "Â© 2025 AgriGuru. All rights reserved.",
-    "privacy_policy": "Privacy Policy",
-    "terms_of_service": "Terms of Service"
+    "title": "शेतकरी डॅशबोर्ड",
+    "welcome": "अॅग्रिगुरुमध्ये आपले स्वागत",
+    "overview": "विहंगावलोकन",
+    "my_crops": "माझी पिके",
+    "weather": "हवामान",
+    "tasks": "आजची कामे",
+    "insights": "अंतर्दृष्टी",
+    "recent_chats": "अलीकडील चॅट्स",
+    "quick_actions": "त्वरित क्रिया",
+    "view_all": "सर्व पहा",
+    "add_crop": "पिक जोडा",
+    "view_weather": "हवामान पहा",
+    "chat_ai": "AI शी चॅट करा"
   },
   "about": {
-    "title": "About AgriGuru",
-    "description": "AgriGuru is your one-stop solution for all agricultural needs. Our platform connects farmers with experts, providing real-time insights, weather updates, and personalized recommendations to enhance farming practices.",
-    "features_title": "Key Features",
+    "title": "अॅग्रिगुरुबद्दल",
+    "description": "अॅग्रिगुरु हे आपल्या सर्व शेती गरजांसाठी वन-स्टॉप सोल्यूशन आहे. आमचे प्लॅटफॉर्म शेतकऱ्यांना तज्ञांशी जोडते, शेती पद्धती सुधारण्यासाठी रिअल-टाइम अंतर्दृष्टी, हवामान अपडेट्स आणि वैयक्तिकृत शिफारसी देते।",
+    "features_title": "मुख्य वैशिष्ट्ये",
     "features": {
-      "accuracy": "95% Accuracy Rate in Crop Predictions",
-      "weather_support": "24/7 Weather Support",
-      "expert_guidance": "Expert Guidance for Farmers",
-      "community": "Community Support and Resources"
+      "accuracy": "पिक अंदाजांमध्ये 95% अचूकता दर",
+      "weather_support": "24/7 हवामान समर्थन",
+      "expert_guidance": "शेतकऱ्यांसाठी तज्ञ मार्गदर्शन",
+      "community": "समुदायिक समर्थन आणि संसाधने"
     },
-    "services_title": "Our Services",
+    "services_title": "आमच्या सेवा",
     "services": {
-      "crop_analysis": "Crop Analysis and Recommendations",
-      "weather_forecasting": "Weather Forecasting and Alerts",
-      "soil_monitoring": "Soil Health Monitoring",
-      "pest_management": "Pest and Disease Management"
+      "crop_analysis": "पिक विश्लेषण आणि शिफारसी",
+      "weather_forecasting": "हवामान अंदाज आणि अलर्ट",
+      "soil_monitoring": "माती आरोग्य निरीक्षण",
+      "pest_management": "कीड आणि रोग व्यवस्थापन"
     },
-    "mission": "Our Mission",
-    "mission_text": "To empower farmers with technology-driven solutions for sustainable and profitable agriculture."
+    "mission": "आमचे ध्येय",
+    "mission_text": "शाश्वत आणि फायदेशीर शेतीसाठी तंत्रज्ञान-चालित समाधानांसह शेतकऱ्यांना सक्षम करणे।"
   },
   "contact": {
-    "title": "Contact Agricultural Development Officers",
-    "subtitle": "Connect with local ADOs for expert guidance",
-    "loading": "Finding nearby ADOs...",
-    "no_ados": "No ADOs found in your area",
-    "call": "Call",
-    "email": "Email",
-    "location": "Office Location",
-    "specialization": "Specialization",
-    "district": "District"
+    "title": "कृषी विकास अधिकाऱ्यांशी संपर्क साधा",
+    "subtitle": "तज्ञ मार्गदर्शनासाठी स्थानिक ADO शी कनेक्ट व्हा",
+    "loading": "जवळील ADO शोधत आहे...",
+    "no_ados": "आपल्या क्षेत्रात कोणते ADO सापडले नाही",
+    "call": "कॉल करा",
+    "email": "ईमेल",
+    "location": "कार्यालय स्थान",
+    "specialization": "तज्ञता",
+    "district": "जिल्हा"
   },
   "government": {
-    "title": "Government Agricultural Schemes",
-    "subtitle": "Explore various government initiatives to support farmers",
-    "eligibility": "Eligibility",
-    "benefits": "Benefits",
-    "apply_now": "Apply Now",
-    "learn_more": "Learn More",
-    "help_title": "Need Help?",
-    "help_description": "Contact your local agricultural office or call our toll-free number:",
+    "title": "सरकारी शेती योजना",
+    "subtitle": "शेतकऱ्यांना समर्थन देणाऱ्या विविध सरकारी उपक्रमांचा शोध घ्या",
+    "eligibility": "पात्रता",
+    "benefits": "फायदे",
+    "apply_now": "आता अर्ज करा",
+    "learn_more": "अधिक जाणून घ्या",
+    "help_title": "मदत हवी?",
+    "help_description": "आपल्या स्थानिक कृषी कार्यालयाशी संपर्क साधा किंवा आमच्या टोल-फ्री नंबरवर कॉल करा:",
     "toll_free": "1800-180-1551",
     "schemes": {
       "pm_kisan": {
-        "title": "PM-KISAN",
-        "description": "Direct income support of â‚¹6,000 per year to eligible farmer families",
-        "eligibility": "All landholding farmer families with cultivable landholding",
+        "title": "पीएम-किसान",
+        "description": "पात्र शेतकरी कुटुंबांना दरवर्षी ₹6,000 प्रत्यक्ष उत्पन्न समर्थन",
+        "eligibility": "शेतीयोग्य जमीन असणारी सर्व भू-मालक शेतकरी कुटुंबे",
         "benefits": {
-          "financial_support": "Financial support",
-          "installments": "Three equal installments",
-          "direct_transfer": "Direct bank transfer"
+          "financial_support": "आर्थिक समर्थन",
+          "installments": "तीन समान हप्ते",
+          "direct_transfer": "प्रत्यक्ष बँक हस्तांतरण"
         }
       },
       "fasal_bima": {
-        "title": "Pradhan Mantri Fasal Bima Yojana",
-        "description": "Comprehensive crop insurance scheme to protect farmers against crop failure",
-        "eligibility": "All farmers growing notified crops in notified areas",
+        "title": "प्रधानमंत्री फसल बीमा योजना",
+        "description": "पिकांच्या अपयशापासून शेतकऱ्यांचे संरक्षण करण्यासाठी सर्वसमावेशक पिक विमा योजना",
+        "eligibility": "अधिसूचित क्षेत्रात अधिसूचित पिके घेणारे सर्व शेतकरी",
         "benefits": {
-          "crop_protection": "Crop loss protection",
-          "low_premium": "Low premium rates",
-          "quick_settlement": "Quick claim settlement"
+          "crop_protection": "पिक नुकसान संरक्षण",
+          "low_premium": "कमी प्रीमियम दर",
+          "quick_settlement": "त्वरित दावा तोडगा"
         }
       },
       "kisan_credit": {
-        "title": "Kisan Credit Card",
-        "description": "Provides farmers with timely access to credit",
-        "eligibility": "All farmers, sharecroppers, and agricultural laborers",
+        "title": "किसान क्रेडिट कार्ड",
+        "description": "शेतकऱ्यांना वेळेवर कर्ज उपलब्धता प्रदान करते",
+        "eligibility": "सर्व शेतकरी, भागीदार आणि कृषी मजूर",
         "benefits": {
-          "easy_credit": "Easy credit access",
-          "flexible_repayment": "Flexible repayment",
-          "lower_rates": "Lower interest rates"
+          "easy_credit": "सहज कर्ज उपलब्धता",
+          "flexible_repayment": "लवचिक परतफेड",
+          "lower_rates": "कमी व्याज दर"
         }
       },
       "soil_health": {
-        "title": "Soil Health Card Scheme",
-        "description": "Provides information on soil health and recommended fertilizers",
-        "eligibility": "All farmers across India",
+        "title": "माती आरोग्य कार्ड योजना",
+        "description": "माती आरोग्य आणि शिफारस केलेल्या खतांची माहिती प्रदान करते",
+        "eligibility": "संपूर्ण भारतातील सर्व शेतकरी",
         "benefits": {
-          "free_testing": "Free soil testing",
-          "fertilizer_recommendations": "Fertilizer recommendations",
-          "improved_yield": "Improved crop yield"
+          "free_testing": "मोफत माती चाचणी",
+          "fertilizer_recommendations": "खत शिफारसी",
+          "improved_yield": "सुधारित पिक उत्पादन"
         }
       },
       "pm_sinchai": {
-        "title": "PM Krishi Sinchai Yojana",
-        "description": "Enhances water efficiency through 'Per Drop More Crop' and precision irrigation technologies",
-        "eligibility": "Farmers seeking improved irrigation and water conservation",
+        "title": "पीएम कृषी सिंचाई योजना",
+        "description": "'प्रत्येक थेंब अधिक पीक' आणि अचूक सिंचन तंत्रज्ञानाद्वारे पाणी कार्यक्षमता वाढवते",
+        "eligibility": "सुधारित सिंचन आणि जल संवर्धन इच्छिणारे शेतकरी",
         "benefits": {
-          "micro_irrigation": "Micro-irrigation systems",
-          "water_conservation": "Water conservation infrastructure",
-          "water_efficiency": "Enhanced water use efficiency",
-          "sustainable_practices": "Sustainable agriculture practices"
+          "micro_irrigation": "सूक्ष्म सिंचन प्रणाली",
+          "water_conservation": "जल संवर्धन पायाभूत सुविधा",
+          "water_efficiency": "सुधारित पाणी वापर कार्यक्षमता",
+          "sustainable_practices": "शाश्वत शेती पद्धती"
         }
       },
       "enam": {
-        "title": "National Agricultural Market (eNAM)",
-        "description": "Online trading platform for agricultural commodities to get better price discovery",
-        "eligibility": "Farmers, traders, and buyers registered on eNAM platform",
+        "title": "राष्ट्रीय कृषी बाजार (e-NAM)",
+        "description": "चांगल्या किंमत शोधासाठी कृषी वस्तूंचे ऑनलाइन ट्रेडिंग प्लॅटफॉर्म",
+        "eligibility": "e-NAM प्लॅटफॉर्मवर नोंदणीकृत शेतकरी, व्यापारी आणि खरेदीदार",
         "benefits": {
-          "market_access": "Direct market access",
-          "price_discovery": "Better price discovery",
-          "transparent_auction": "Transparent auction process",
-          "reduced_fees": "Reduced market fees"
+          "market_access": "प्रत्यक्ष बाजार प्रवेश",
+          "price_discovery": "चांगला किंमत शोध",
+          "transparent_auction": "पारदर्शक लिलाव प्रक्रिया",
+          "reduced_fees": "कमी बाजार शुल्क"
         }
       }
     }
   },
-  "auth": {
-    "login": "Login",
-    "signup": "Sign Up",
-    "username": "Username",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "full_name": "Full Name",
-    "phone": "Phone Number",
-    "location": "Location",
-    "submit": "Submit",
-    "already_account": "Already have an account?",
-    "no_account": "Don't have an account?",
-    "create_account": "Create Account"
-  },
   "ecommerce": {
-    "title": "AgriGuru Marketplace",
-    "subtitle": "Quality farming equipment and supplies",
-    "search_placeholder": "Search products...",
-    "categories": {
-      "all": "All Categories",
-      "tractors": "Tractors",
-      "tools": "Tools",
-      "fertilizers": "Fertilizers",
-      "seeds": "Seeds",
-      "irrigation": "Irrigation"
-    },
-    "sort_by": "Sort By",
-    "price": "Price",
-    "rating": "Rating",
-    "add_to_cart": "Add to Cart",
-    "buy_now": "Buy Now",
-    "cart": "Cart",
-    "total": "Total",
-    "checkout": "Checkout"
+    "title": "अॅग्रिगुरु मार्केटप्लेस",
+    "subtitle": "दर्जेदार शेती उपकरणे आणि पुरवठा"
   },
-  "messages": {
-    "success": {
-      "data_saved": "Data saved successfully",
-      "profile_updated": "Profile updated successfully",
-      "message_sent": "Message sent successfully"
-    },
-    "error": {
-      "network_error": "Network error. Please check your connection.",
-      "server_error": "Server error. Please try again later.",
-      "validation_error": "Please correct the errors and try again."
-    }
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी (Hindi)",
+    "ta": "தமிழ் (Tamil)",
+    "te": "తెలుగు (Telugu)",
+    "bn": "বাংলা (Bengali)",
+    "mr": "मराठी (Marathi)",
+    "gu": "ગુજરાતી (Gujarati)",
+    "kn": "ಕನ್ನಡ (Kannada)",
+    "ml": "മലയാളം (Malayalam)",
+    "pa": "ਪੰਜਾਬੀ (Punjabi)"
   }
 }
-

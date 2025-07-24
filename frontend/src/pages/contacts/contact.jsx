@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './contact.css';
 
 const ContactPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyADOs, setNearbyADOs] = useState([]);
   const [loading, setLoading] = useState(true);

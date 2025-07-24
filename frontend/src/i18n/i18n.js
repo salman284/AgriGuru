@@ -112,7 +112,19 @@ i18n
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage']
+    },
+    
+    // Missing key handling
+    saveMissing: true,
+    missingKeyHandler: (lng, ns, key, fallbackValue) => {
+      console.warn(`🚨 Missing translation key: ${lng}.${ns}.${key}`);
+      return fallbackValue;
     }
+  })
+  .then(() => {
+    console.log('i18n initialized successfully');
+    console.log('Available languages:', Object.keys(resources));
+    console.log('Current language:', i18n.language);
   });
 
 // Language change handler

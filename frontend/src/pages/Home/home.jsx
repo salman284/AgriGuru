@@ -8,7 +8,7 @@ import AIChat from "../../components/AIChat/AIChat"
 
 const Home = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const handleGetStarted = () => {
     navigate('/dashboard');

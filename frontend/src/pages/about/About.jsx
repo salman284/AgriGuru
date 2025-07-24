@@ -4,7 +4,7 @@ import './about.css'
 import Navbar from '../../components/Navbar/Navbar'
 
 const About = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   
   return (
     <div className='About'>

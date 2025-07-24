@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
 
 const LanguageSwitcher = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
@@ -22,14 +22,32 @@ const LanguageSwitcher = () => {
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
   const handleLanguageChange = (languageCode) => {
-    i18n.changeLanguage(languageCode);
-    setIsOpen(false);
+    console.log('🔄 Changing language to:', languageCode);
+    console.log('📊 Before change - Current language:', i18n.language);
+    
+    i18n.changeLanguage(languageCode).then(() => {
+      console.log('✅ Language changed successfully to:', i18n.language);
+      
+      // Force re-render by updating React state
+      setIsOpen(false);
+      
+      // Test a translation
+      const testTranslation = i18n.t('navbar.home', { lng: languageCode });
+      console.log('🧪 Test translation (navbar.home):', testTranslation);
+      
+      // Force page reload for stubborn components
+      window.location.reload();
+    });
     
     // Store language preference in localStorage
     localStorage.setItem('preferredLanguage', languageCode);
+    localStorage.setItem('agriguru_language', languageCode);
     
     // Update document direction for RTL languages if needed
     document.documentElement.setAttribute('dir', languageCode === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', languageCode);
+    
+    console.log('💾 Language saved to localStorage:', languageCode);
   };
 
   const toggleDropdown = () => {

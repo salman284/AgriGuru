@@ -4,69 +4,85 @@ import './govtS.css';
 import Navbar from '../../components/Navbar/Navbar';
 
 const GovtSchemes = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   
   const schemes = [
     {
       id: 1,
-      title: "PM-KISAN",
-      description: "Direct income support of ₹6,000 per year to eligible farmer families",
-      eligibility: "All landholding farmer families with cultivable landholding",
-      benefits: ["Financial support", "Three equal installments", "Direct bank transfer"],
+      title: t('government.schemes.pm_kisan.title'),
+      description: t('government.schemes.pm_kisan.description'),
+      eligibility: t('government.schemes.pm_kisan.eligibility'),
+      benefits: [
+        t('government.schemes.pm_kisan.benefits.financial_support'),
+        t('government.schemes.pm_kisan.benefits.installments'),
+        t('government.schemes.pm_kisan.benefits.direct_transfer')
+      ],
       icon: "🌾",
       officialUrl: "https://pmkisan.gov.in/"
     },
     {
       id: 2,
-      title: "Pradhan Mantri Fasal Bima Yojana",
-      description: "Comprehensive crop insurance scheme to protect farmers against crop failure",
-      eligibility: "All farmers growing notified crops in notified areas",
-      benefits: ["Crop loss protection", "Low premium rates", "Quick claim settlement"],
+      title: t('government.schemes.fasal_bima.title'),
+      description: t('government.schemes.fasal_bima.description'),
+      eligibility: t('government.schemes.fasal_bima.eligibility'),
+      benefits: [
+        t('government.schemes.fasal_bima.benefits.crop_protection'),
+        t('government.schemes.fasal_bima.benefits.low_premium'),
+        t('government.schemes.fasal_bima.benefits.quick_settlement')
+      ],
       icon: "🛡️",
       officialUrl: "https://pmfby.gov.in/"
     },
     {
       id: 3,
-      title: "Kisan Credit Card",
-      description: "Provides farmers with timely access to credit",
-      eligibility: "All farmers, sharecroppers, and agricultural laborers",
-      benefits: ["Easy credit access", "Flexible repayment", "Lower interest rates"],
+      title: t('government.schemes.kisan_credit.title'),
+      description: t('government.schemes.kisan_credit.description'),
+      eligibility: t('government.schemes.kisan_credit.eligibility'),
+      benefits: [
+        t('government.schemes.kisan_credit.benefits.easy_credit'),
+        t('government.schemes.kisan_credit.benefits.flexible_repayment'),
+        t('government.schemes.kisan_credit.benefits.lower_rates')
+      ],
       icon: "💳",
       officialUrl: "https://www.nabard.org/content1.aspx?id=1720&catid=23&mid=23"
     },
     {
       id: 4,
-      title: "Soil Health Card Scheme",
-      description: "Provides information on soil health and recommended fertilizers",
-      eligibility: "All farmers across India",
-      benefits: ["Free soil testing", "Fertilizer recommendations", "Improved crop yield"],
+      title: t('government.schemes.soil_health.title'),
+      description: t('government.schemes.soil_health.description'),
+      eligibility: t('government.schemes.soil_health.eligibility'),
+      benefits: [
+        t('government.schemes.soil_health.benefits.free_testing'),
+        t('government.schemes.soil_health.benefits.fertilizer_recommendations'),
+        t('government.schemes.soil_health.benefits.improved_yield')
+      ],
       icon: "🌱",
       officialUrl: "https://soilhealth.dac.gov.in/"
     },
     {
       id: 5,
-      title: "PM Krishi Sinchai Yojana",
-      description: "Enhances water efficiency through 'Per Drop More Crop' and precision irrigation technologies",
-      eligibility: "Farmers seeking improved irrigation and water conservation",
+      title: t('government.schemes.pm_sinchai.title'),
+      description: t('government.schemes.pm_sinchai.description'),
+      eligibility: t('government.schemes.pm_sinchai.eligibility'),
       benefits: [
-        "Micro-irrigation systems",
-        "Water conservation infrastructure",
-        "Enhanced water use efficiency",
-        "Sustainable agriculture practices"
+        t('government.schemes.pm_sinchai.benefits.micro_irrigation'),
+        t('government.schemes.pm_sinchai.benefits.water_conservation'),
+        t('government.schemes.pm_sinchai.benefits.water_efficiency'),
+        t('government.schemes.pm_sinchai.benefits.sustainable_practices')
       ],
       icon: "💧",
       officialUrl: "https://pmksy.gov.in/"
     },
     {
       id: 6,
-      title: "National Agricultural Market (eNAM)",
-      description: "Online trading platform for agricultural commodities to get better price discovery",
-      eligibility: "Farmers, traders, and buyers registered on eNAM platform",
+      title: t('government.schemes.enam.title'),
+      description: t('government.schemes.enam.description'),
+      eligibility: t('government.schemes.enam.eligibility'),
       benefits: [
-        "Direct market access",
-        "Better price discovery",
-        "Transparent auction process",
-        "Reduced market fees"
+        t('government.schemes.enam.benefits.market_access'),
+        t('government.schemes.enam.benefits.price_discovery'),
+        t('government.schemes.enam.benefits.transparent_auction'),
+        t('government.schemes.enam.benefits.reduced_fees')
       ],
       icon: "🏪",
       officialUrl: "https://www.enam.gov.in/"
@@ -82,8 +98,8 @@ const GovtSchemes = () => {
       <Navbar />
       <div className="schemes-container">
         <div className="schemes-header">
-          <h1>🏛️ Government Agricultural Schemes</h1>
-          <p>Explore various government initiatives to support farmers</p>
+          <h1>🏛️ {t('government.title')}</h1>
+          <p>{t('government.subtitle')}</p>
         </div>
         
         <div className="schemes-grid">
@@ -94,11 +110,11 @@ const GovtSchemes = () => {
               <p className="scheme-description">{scheme.description}</p>
               <div className="scheme-details">
                 <div className="eligibility">
-                  <h3>Eligibility</h3>
+                  <h3>{t('government.eligibility')}</h3>
                   <p>{scheme.eligibility}</p>
                 </div>
                 <div className="benefits">
-                  <h3>Benefits</h3>
+                  <h3>{t('government.benefits')}</h3>
                   <ul>
                     {scheme.benefits.map((benefit, index) => (
                       <li key={index}>{benefit}</li>
@@ -110,17 +126,17 @@ const GovtSchemes = () => {
                 className="learn-more-btn" 
                 onClick={() => handleLearnMore(scheme.officialUrl)}
               >
-                Learn More 🔗
+                {t('government.learn_more')} 🔗
               </button>
             </div>
           ))}
         </div>
 
         <div className="contact-section">
-          <h2>Need Help?</h2>
-          <p>Contact your local agricultural office or call our toll-free number:</p>
-          <a href="tel:1800-180-1551" className="helpline-btn">
-            📞 1800-180-1551
+          <h2>{t('government.help_title')}</h2>
+          <p>{t('government.help_description')}</p>
+          <a href={`tel:${t('government.toll_free')}`} className="helpline-btn">
+            📞 {t('government.toll_free')}
           </a>
         </div>
       </div>

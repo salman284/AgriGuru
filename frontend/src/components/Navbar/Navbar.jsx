@@ -6,7 +6,7 @@ import logo from './logo.png';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'; 
 
 const Navbar = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   
   return (
     <nav className="navbar">

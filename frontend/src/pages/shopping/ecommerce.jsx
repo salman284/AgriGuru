@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './ecommerce.css';
 
 const Ecommerce = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
