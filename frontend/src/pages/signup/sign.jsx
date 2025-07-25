@@ -30,22 +30,28 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch('http://localhost:5001/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fullName: formData.fullName,
+          full_name: formData.fullName,
           email: formData.email,
           phone: formData.phone,
-          location: formData.location,
           password: formData.password
         })
       });
 
       const result = await response.json();
-      alert(result.message || 'Signup successful');
+      
+      if (result.success) {
+        alert(`✅ ${result.message}\nUser ID: ${result.user_id}`);
+        // Optionally redirect to login page
+        // window.location.href = '/login';
+      } else {
+        alert(`❌ Registration failed: ${result.message}`);
+      }
     } catch (error) {
-      alert('Error connecting to the server');
+      alert('❌ Error connecting to the server');
       console.error(error);
     }
   };
