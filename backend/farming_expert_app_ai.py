@@ -18,6 +18,15 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Debug: Print environment loading
+print(f"🔍 Loading environment from: {os.getcwd()}")
+groq_key = os.getenv('GROQ_API_KEY')
+grok_key = os.getenv('GROK_API_KEY')
+print(f"🔑 GROQ_API_KEY found: {'Yes' if groq_key else 'No'}")
+print(f"🔑 GROK_API_KEY found: {'Yes' if grok_key else 'No'}")
+if groq_key:
+    print(f"🔑 GROQ_API_KEY starts with: {groq_key[:10]}...")
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -773,17 +782,19 @@ Ask me anything about farming - I'm here to help you grow better crops! 🚜
             'conversation_count': len(self.conversation_history)
         }
 
-# AgriBot configuration
+# AgriBot configuration - FORCE GROQ USAGE
 AGRIBOT_CONFIG = {
     'name': 'AgriBot with Groq AI',
     'version': '2.0.0',
-    'mode': 'groq_free',
+    'mode': 'groq_forced',
     'ai_provider': 'groq_ai',
-    'knowledge_base': 'built_in'
+    'knowledge_base': 'groq_primary',
+    'force_groq': True,
+    'fallback_enabled': False
 }
 
 def initialize_agribot():
-    """Initialize AgriBot with Groq or fallback"""
+    """Initialize AgriBot with Groq API - force Groq usage"""
     try:
         groq_api_key = os.getenv('GROQ_API_KEY') or os.getenv('GROK_API_KEY')
         
@@ -792,9 +803,12 @@ def initialize_agribot():
             agribot = GroqAgriBot(api_key=groq_api_key)
             print("✅ AgriBot with Groq initialized successfully!")
             print("🆓 Using FREE Groq API quota")
+            print("🔥 Groq ENABLED for all responses!")
             return agribot, True
         else:
-            print("⚠️ Groq API key not found, using knowledge base fallback...")
+            print("❌ GROQ_API_KEY not found in environment!")
+            print("⚠️ Add GROQ_API_KEY to .env file to enable Groq")
+            print("🔄 Using knowledge base fallback...")
             agribot = AgriBotAI()
             print("✅ AgriBot initialized with knowledge base fallback")
             return agribot, False
@@ -867,23 +881,34 @@ def chat():
         context = data.get('context', {})
         
         logger.info(f"🌐 Multilingual AgriBot chat request: {message[:100]}...")
+        logger.info(f"🔍 Debug: groq_enabled = {groq_enabled}")
+        logger.info(f"🔍 Debug: agribot type = {type(agribot)}")
+        logger.info(f"🔍 Debug: has get_farming_advice = {hasattr(agribot, 'get_farming_advice')}")
         
-        # Generate response using AgriBot (Groq with multilingual support or fallback)
-        if hasattr(agribot, 'get_farming_advice'):
-            # Groq method with multilingual support
+        # Force Groq API usage - prioritize Groq over fallback
+        if groq_enabled and hasattr(agribot, 'get_farming_advice'):
+            logger.info("🤖 Using Groq API for response generation...")
             response = agribot.get_farming_advice(message, context)
             
-            # If Groq fails, fallback to knowledge base
-            if not response.get('success', False):
-                logger.warning("Groq failed, using knowledge base fallback...")
+            # Only use fallback if Groq completely fails (not for partial responses)
+            if response.get('success', False):
+                response['provider'] = 'groq_ai'
+                response['fallback_used'] = False
+                response['multilingual_support'] = True
+                logger.info("✅ Groq API response generated successfully")
+            else:
+                logger.warning("⚠️ Groq API failed, using knowledge base fallback...")
                 fallback_bot = AgriBotAI()
                 response = fallback_bot.generate_response(message, context)
                 response['fallback_used'] = True
                 response['provider'] = 'knowledge_base'
                 response['multilingual_support'] = False
         else:
-            # Knowledge base method
+            # Knowledge base method only if Groq is not available
+            logger.info("📚 Using knowledge base (Groq not available)")
             response = agribot.generate_response(message, context)
+            response['fallback_used'] = True
+            response['provider'] = 'knowledge_base'
             response['multilingual_support'] = False
         
         # Add multilingual information if available
@@ -1029,32 +1054,32 @@ def debug_agribot():
 
 @app.route('/api/debug-grok', methods=['GET'])
 def debug_grok():
-    """Debug Grok API connectivity"""
+    """Debug Groq API connectivity"""
     try:
-        grok_api_key = os.getenv('GROK_API_KEY')
+        groq_api_key = os.getenv('GROQ_API_KEY') or os.getenv('GROK_API_KEY')
         
-        if not grok_api_key:
+        if not groq_api_key:
             return jsonify({
                 'success': False,
-                'error': 'GROK_API_KEY not found in environment',
-                'solution': 'Add GROK_API_KEY to your .env file',
+                'error': 'GROQ_API_KEY not found in environment',
+                'solution': 'Add GROQ_API_KEY to your .env file',
                 'grok_enabled': False
-            })
+            }), 200
         
-        # Test simple request
+        # Test simple request to Groq API
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {grok_api_key}"
+            "Authorization": f"Bearer {groq_api_key}"
         }
         
         payload = {
-            "model": "grok-beta",
+            "model": "llama3-8b-8192",
             "messages": [{"role": "user", "content": "Hello"}],
             "max_tokens": 100
         }
         
         response = requests.post(
-            "https://api.x.ai/v1/chat/completions",
+            "https://api.groq.com/openai/v1/chat/completions",
             headers=headers,
             json=payload,
             timeout=10
@@ -1064,16 +1089,16 @@ def debug_grok():
             'success': response.status_code == 200,
             'status_code': response.status_code,
             'response_preview': response.text[:200] + '...' if len(response.text) > 200 else response.text,
-            'api_key_preview': f"{grok_api_key[:10]}...{grok_api_key[-5:]}",
-            'grok_enabled': groq_enabled,
-            'test_message': 'Grok API connectivity test completed'
+            'api_key_preview': f"{groq_api_key[:10]}...{groq_api_key[-5:]}",
+            'groq_enabled': True,
+            'test_message': 'Groq API connectivity test completed'
         })
         
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e),
-            'grok_enabled': groq_enabled,
+            'groq_enabled': False,
             'traceback': traceback.format_exc()
         })
 

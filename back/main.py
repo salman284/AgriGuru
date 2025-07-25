@@ -5,6 +5,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import secrets
 import re
+import smtplib
+import random
+import string
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"], 
@@ -21,6 +26,128 @@ app.config['MONGO_URI'] = 'mongodb+srv://shriompal2435:N2Ry3EfnFDU4FQpg@agriguru
 client = MongoClient(app.config['MONGO_URI'])
 db = client.agrigurudb
 users_collection = db.users
+otp_collection = db.otp_codes
+
+# Email configuration for OTP
+EMAIL_CONFIG = {
+    'smtp_server': 'smtp.gmail.com',
+    'smtp_port': 587,
+    'email': 'YOUR_GMAIL_HERE@gmail.com',           # ⚠️ REPLACE: Your actual Gmail address
+    'password': 'YOUR_16_CHAR_APP_PASSWORD_HERE'    # ⚠️ REPLACE: Your Gmail App Password (16 chars, no spaces)
+}
+
+# OTP Helper Functions
+def generate_otp():
+    """Generate a 6-digit OTP"""
+    return ''.join(random.choices(string.digits, k=6))
+
+def send_email_otp(email, otp):
+    """Send OTP via email"""
+    try:
+        # 🧪 DEVELOPMENT MODE: Mock email sending
+        if EMAIL_CONFIG['email'] == 'YOUR_GMAIL_HERE@gmail.com':
+            print(f"📧 MOCK EMAIL SENT to {email}")
+            print(f"🔢 OTP CODE: {otp}")
+            print(f"⏰ Expires in 10 minutes")
+            print("🔧 To enable real emails, update EMAIL_CONFIG in main.py")
+            return True
+        
+        # Check if email config is set up
+        if EMAIL_CONFIG['email'].startswith('YOUR_') or EMAIL_CONFIG['password'].startswith('YOUR_'):
+            print("❌ EMAIL ERROR: Please update EMAIL_CONFIG with your actual Gmail credentials!")
+            print("🔧 Steps to fix:")
+            print("1. Enable 2FA on your Gmail account")
+            print("2. Generate App Password at: https://myaccount.google.com/security")
+            print("3. Update EMAIL_CONFIG in main.py with your actual credentials")
+            return False
+        
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_CONFIG['email']
+        msg['To'] = email
+        msg['Subject'] = "AgriGuru - Your Verification Code"
+        
+        body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">🌱 AgriGuru</h1>
+            </div>
+            <div style="padding: 30px; background: #f9f9f9;">
+                <h2 style="color: #333;">Verify Your Account</h2>
+                <p style="color: #666; font-size: 16px;">Your verification code is:</p>
+                <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0;">
+                    <h1 style="color: #4CAF50; font-size: 32px; margin: 0; letter-spacing: 5px;">{otp}</h1>
+                </div>
+                <p style="color: #666;">This code will expire in 10 minutes.</p>
+                <p style="color: #666;">If you didn't request this code, please ignore this email.</p>
+            </div>
+            <div style="background: #333; padding: 15px; text-align: center;">
+                <p style="color: #ccc; margin: 0; font-size: 14px;">© 2025 AgriGuru - Your Farming Assistant</p>
+            </div>
+        </body>
+        </html>
+        """
+        
+        msg.attach(MIMEText(body, 'html'))
+        
+        print(f"📧 Attempting to send OTP to {email} from {EMAIL_CONFIG['email']}")
+        
+        server = smtplib.SMTP(EMAIL_CONFIG['smtp_server'], EMAIL_CONFIG['smtp_port'])
+        server.starttls()
+        server.login(EMAIL_CONFIG['email'], EMAIL_CONFIG['password'])
+        text = msg.as_string()
+        server.sendmail(EMAIL_CONFIG['email'], email, text)
+        server.quit()
+        
+        print(f"✅ OTP email sent successfully to {email}")
+        return True
+    except smtplib.SMTPAuthenticationError as e:
+        print(f"❌ SMTP Authentication Error: {e}")
+        print("🔧 Fix: Check your Gmail App Password is correct")
+        return False
+    except smtplib.SMTPException as e:
+        print(f"❌ SMTP Error: {e}")
+        return False
+    except Exception as e:
+        print(f"❌ Email OTP send error: {e}")
+        return False
+
+def store_otp(email, otp, purpose='login'):
+    """Store OTP in database"""
+    otp_doc = {
+        'email': email,
+        'otp': otp,
+        'purpose': purpose,
+        'created_at': datetime.utcnow(),
+        'expires_at': datetime.utcnow() + timedelta(minutes=10),
+        'used': False
+    }
+    
+    # Remove any existing OTPs for this email and purpose
+    otp_collection.delete_many({'email': email, 'purpose': purpose})
+    
+    # Store new OTP
+    result = otp_collection.insert_one(otp_doc)
+    return str(result.inserted_id)
+
+def verify_otp(email, otp, purpose='login'):
+    """Verify OTP code"""
+    otp_doc = otp_collection.find_one({
+        'email': email,
+        'otp': otp,
+        'purpose': purpose,
+        'used': False,
+        'expires_at': {'$gt': datetime.utcnow()}
+    })
+    
+    if otp_doc:
+        # Mark OTP as used
+        otp_collection.update_one(
+            {'_id': otp_doc['_id']},
+            {'$set': {'used': True}}
+        )
+        return True
+    return False
 
 # Helper functions for validation
 def is_valid_email(email):
@@ -107,6 +234,183 @@ def signup():
         
     except Exception as e:
         return jsonify({"success": False, "message": f"Registration failed: {str(e)}"}), 500
+
+@app.route('/api/send-otp', methods=['POST'])
+def send_otp():
+    """Send OTP for verification"""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').lower().strip()
+        purpose = data.get('purpose', 'login')  # 'login', 'signup', 'reset'
+        
+        if not email:
+            return jsonify({"success": False, "message": "Email is required"}), 400
+        
+        if not is_valid_email(email):
+            return jsonify({"success": False, "message": "Invalid email format"}), 400
+        
+        # For login, check if user exists
+        if purpose == 'login':
+            user = users_collection.find_one({"email": email})
+            if not user:
+                return jsonify({"success": False, "message": "No account found with this email"}), 404
+        
+        # For signup, check if user doesn't exist
+        elif purpose == 'signup':
+            user = users_collection.find_one({"email": email})
+            if user:
+                return jsonify({"success": False, "message": "Account already exists with this email"}), 400
+        
+        # Generate and send OTP
+        otp = generate_otp()
+        
+        # Store OTP in database
+        store_otp(email, otp, purpose)
+        
+        # Send OTP via email
+        if send_email_otp(email, otp):
+            return jsonify({
+                "success": True,
+                "message": f"OTP sent to {email}",
+                "email": email,
+                "expires_in": 600  # 10 minutes
+            }), 200
+        else:
+            return jsonify({"success": False, "message": "Failed to send OTP"}), 500
+            
+    except Exception as e:
+        return jsonify({"success": False, "message": f"OTP send failed: {str(e)}"}), 500
+
+@app.route('/api/verify-otp', methods=['POST'])
+def verify_otp_endpoint():
+    """Verify OTP code"""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').lower().strip()
+        otp = data.get('otp', '').strip()
+        purpose = data.get('purpose', 'login')
+        
+        if not email or not otp:
+            return jsonify({"success": False, "message": "Email and OTP are required"}), 400
+        
+        # Verify OTP
+        if verify_otp(email, otp, purpose):
+            if purpose == 'login':
+                # For login, create session
+                user = users_collection.find_one({"email": email})
+                if user:
+                    # Update last login
+                    users_collection.update_one(
+                        {"_id": user["_id"]},
+                        {"$set": {"last_login": datetime.utcnow()}}
+                    )
+                    
+                    # Create session
+                    session.permanent = True
+                    session['user_id'] = str(user["_id"])
+                    session['user_email'] = user["email"]
+                    
+                    return jsonify({
+                        "success": True,
+                        "message": "Login successful",
+                        "user": {
+                            "id": str(user["_id"]),
+                            "email": user["email"],
+                            "full_name": user["full_name"],
+                            "phone": user.get("phone"),
+                            "profile": user.get("profile", {})
+                        }
+                    }), 200
+                else:
+                    return jsonify({"success": False, "message": "User not found"}), 404
+            else:
+                # For signup or reset, return success
+                return jsonify({
+                    "success": True,
+                    "message": "OTP verified successfully",
+                    "email": email
+                }), 200
+        else:
+            return jsonify({"success": False, "message": "Invalid or expired OTP"}), 400
+            
+    except Exception as e:
+        return jsonify({"success": False, "message": f"OTP verification failed: {str(e)}"}), 500
+
+@app.route('/api/signup-with-otp', methods=['POST'])
+def signup_with_otp():
+    """Complete signup after OTP verification"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['email', 'password', 'full_name', 'otp']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({"success": False, "message": f"{field} is required"}), 400
+        
+        email = data['email'].lower().strip()
+        password = data['password']
+        full_name = data['full_name'].strip()
+        phone = data.get('phone', '').strip()
+        otp = data['otp'].strip()
+        
+        # Verify OTP first
+        if not verify_otp(email, otp, 'signup'):
+            return jsonify({"success": False, "message": "Invalid or expired OTP"}), 400
+        
+        # Check if user already exists (double check)
+        if users_collection.find_one({"email": email}):
+            return jsonify({"success": False, "message": "User already exists with this email"}), 400
+        
+        # Validate password strength
+        if not is_strong_password(password):
+            return jsonify({
+                "success": False, 
+                "message": "Password must be at least 8 characters with uppercase, lowercase, and number"
+            }), 400
+        
+        # Hash password and create user
+        password_hash = generate_password_hash(password)
+        
+        user_doc = {
+            "email": email,
+            "password_hash": password_hash,
+            "full_name": full_name,
+            "phone": phone,
+            "created_at": datetime.utcnow(),
+            "last_login": None,
+            "is_active": True,
+            "email_verified": True,  # Since they verified with OTP
+            "profile": {
+                "farm_location": None,
+                "farm_size": None,
+                "crops": [],
+                "language_preference": "en"
+            }
+        }
+        
+        # Insert user into database
+        result = users_collection.insert_one(user_doc)
+        
+        # Auto-login after successful signup
+        session.permanent = True
+        session['user_id'] = str(result.inserted_id)
+        session['user_email'] = email
+        
+        return jsonify({
+            "success": True,
+            "message": "Account created successfully",
+            "user": {
+                "id": str(result.inserted_id),
+                "email": email,
+                "full_name": full_name,
+                "phone": phone,
+                "profile": user_doc["profile"]
+            }
+        }), 201
+        
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Signup failed: {str(e)}"}), 500
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -336,6 +640,10 @@ if __name__ == '__main__':
     print("   POST /api/change-password - Change password")
     print("   GET /api/check-auth - Check authentication status")
     print("   GET /api/test-db - Test database connection and view users")
+    print("🔐 OTP Authentication endpoints:")
+    print("   POST /api/send-otp - Send OTP via email")
+    print("   POST /api/verify-otp - Verify OTP code")
+    print("   POST /api/signup-with-otp - Complete signup with OTP")
     print("🌐 Server running at: http://localhost:5001")
     print("🔍 Test database: http://localhost:5001/api/test-db")
     

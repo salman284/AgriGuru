@@ -54,6 +54,7 @@ const Login = () => {
             onChange={e => setEmail(e.target.value)}
             required
             placeholder="Enter your email"
+            disabled={isLoading}
           />
         </div>
         <div className="input-group">
@@ -64,11 +65,21 @@ const Login = () => {
             onChange={e => setPassword(e.target.value)}
             required
             placeholder="Enter your password"
+            disabled={isLoading}
           />
         </div>
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
+        
+        <div className="login-divider">
+          <span>OR</span>
+        </div>
+        
+        <Link to="/otp-login" className="otp-login-btn">
+          🔐 Login with OTP
+        </Link>
+        
         <h5>Not Registered Yet?</h5>
         <Link to="/signup" className="signup-btn">Sign Up</Link>
         <p className="forgot-password">Forgot Password?</p>
