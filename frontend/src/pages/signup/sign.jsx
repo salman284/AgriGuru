@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext';
 import './sign.css';
 
 const SignUp = () => {
   const { t } = useTranslation();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -30,23 +32,16 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password
-        })
-      });
-
-      const result = await response.json();
+      const result = await signup(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.phone
+      );
       
       if (result.success) {
-        alert(`✅ ${result.message}\nUser ID: ${result.user_id}`);
-        // Optionally redirect to login page
-        // window.location.href = '/login';
+        alert(`✅ ${result.message}`);
+        // User will be automatically logged in and redirected
       } else {
         alert(`❌ Registration failed: ${result.message}`);
       }

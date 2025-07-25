@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Home from './pages/Home/home';
 import Dash from './pages/dashboard/dash.jsx';
 import About from './pages/about/About.jsx';
@@ -14,10 +15,11 @@ import './i18n/i18n'; // Initialize i18n
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Navbar />
-        <Routes>
+    <AuthProvider>
+      <div className="App">
+        <Router>
+          <Navbar />
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dash />} />
@@ -30,6 +32,7 @@ function App() {
         </Routes>
       </Router>
     </div>
+    </AuthProvider>
   );
 }
 
