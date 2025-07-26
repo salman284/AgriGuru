@@ -52,17 +52,25 @@ const Navbar = () => {
             </Link>
           </li>
           
-          {user && (
-            <li className="navbar-item">
-              <Link 
-                to="/dashboard" 
-                className={`navbar-link ${isActive('/dashboard') ? 'active' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t('navbar.dashboard')}
-              </Link>
-            </li>
-          )}
+          <li className="navbar-item">
+            <Link 
+              to="/dashboard" 
+              className={`navbar-link ${isActive('/dashboard') ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t('navbar.dashboard')}
+            </Link>
+          </li>
+          
+          <li className="navbar-item">
+            <Link 
+              to="/market-prices" 
+              className={`navbar-link ${isActive('/market-prices') ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              📊 {t('navbar.market_prices')}
+            </Link>
+          </li>
           
           <li className="navbar-item">
             <Link 

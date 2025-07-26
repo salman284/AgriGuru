@@ -11,6 +11,7 @@ import OTPLogin from './pages/login/OTPLogin.jsx';
 import SignUp from './pages/signup/sign.jsx';
 import ContactPage from './pages/contacts/contact.jsx';
 import Ecommerce from './pages/shopping/ecommerce.jsx';
+import MarketPriceDashboard from './pages/market&loan/ml.jsx';
 import Navbar from './components/Navbar/Navbar';
 import './i18n/i18n'; // Initialize i18n
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dash />} />
+          <Route path="/market-prices" element={<MarketPriceDashboard />} />
           <Route path="/marketplace" element={<Ecommerce />} />
           <Route path="/about" element={<About />} />
           <Route path="/government-schemes" element={<GovtSchemes />} />

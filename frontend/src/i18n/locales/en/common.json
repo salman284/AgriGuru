@@ -16,6 +16,7 @@
   "navbar": {
     "home": "Home",
     "dashboard": "Dashboard",
+    "market_prices": "Market Prices",
     "about": "About",
     "contact": "Contact",
     "login": "Login",
