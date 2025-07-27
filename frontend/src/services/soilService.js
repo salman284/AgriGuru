@@ -127,6 +127,7 @@ export const getSoilColor = (organicCarbon) => {
   return '#d2b48c'; // Light tan - low organic matter
 };
 
+
 // Get soil health emoji
 export const getSoilHealthEmoji = (overall) => {
   switch (overall) {
@@ -135,4 +136,69 @@ export const getSoilHealthEmoji = (overall) => {
     case 'Needs Improvement': return '🌾';
     default: return '🌱';
   }
+};
+
+// Crop requirements mapping (basic demo)
+const cropRequirements = [
+  {
+    name: 'Wheat',
+    minPh: 6.0,
+    maxPh: 7.5,
+    minOrganicCarbon: 1.5,
+    minNitrogen: 50,
+    soilTypes: ['Loam', 'Clay Loam', 'Sandy Loam']
+  },
+  {
+    name: 'Rice',
+    minPh: 5.5,
+    maxPh: 7.0,
+    minOrganicCarbon: 1.2,
+    minNitrogen: 40,
+    soilTypes: ['Clay', 'Silty Loam', 'Loam']
+  },
+  {
+    name: 'Maize',
+    minPh: 5.5,
+    maxPh: 7.5,
+    minOrganicCarbon: 1.0,
+    minNitrogen: 30,
+    soilTypes: ['Sandy Loam', 'Loam']
+  },
+  {
+    name: 'Sugarcane',
+    minPh: 6.0,
+    maxPh: 8.0,
+    minOrganicCarbon: 1.5,
+    minNitrogen: 60,
+    soilTypes: ['Loam', 'Clay Loam']
+  },
+  {
+    name: 'Cotton',
+    minPh: 6.0,
+    maxPh: 8.0,
+    minOrganicCarbon: 1.0,
+    minNitrogen: 30,
+    soilTypes: ['Sandy Loam', 'Loam']
+  },
+  {
+    name: 'Pulses',
+    minPh: 6.0,
+    maxPh: 7.5,
+    minOrganicCarbon: 1.0,
+    minNitrogen: 25,
+    soilTypes: ['Loam', 'Sandy Loam', 'Clay Loam']
+  }
+];
+
+// Recommend suitable crops based on soil data
+export const recommendCropsForSoil = (soilData) => {
+  const soilType = getSoilType(soilData.sand, soilData.clay, soilData.silt);
+  return cropRequirements.filter(crop => {
+    return (
+      soilData.ph >= crop.minPh && soilData.ph <= crop.maxPh &&
+      soilData.organicCarbon >= crop.minOrganicCarbon &&
+      soilData.nitrogen >= crop.minNitrogen &&
+      crop.soilTypes.includes(soilType)
+    );
+  }).map(crop => crop.name);
 };

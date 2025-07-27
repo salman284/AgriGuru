@@ -311,6 +311,42 @@
   font-size: 0.8em;
 }
 
+.crop-recommendations {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  text-align: center;
+  gap: 15px;
+  z-index: 1;
+}
+
+.crop-recommendations ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.crop-recommendations li {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  color: #4e2e0e;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 1em;
+  margin: 4px 0;
+  box-shadow: 0 2px 8px rgba(139,69,19,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .soil-widget {

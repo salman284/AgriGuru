@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSoilData, analyzeSoilHealth, getSoilType, getSoilColor, getSoilHealthEmoji } from '../../services/soilService';
+import { getSoilData, analyzeSoilHealth, getSoilType, getSoilColor, getSoilHealthEmoji, recommendCropsForSoil } from '../../services/soilService';
 import './SoilWidget.css';
 
 
@@ -121,6 +121,7 @@ const SoilWidget = () => {
   const soilType = getSoilType(soilData?.sand || 45, soilData?.clay || 25, soilData?.silt || 30);
   const soilColor = getSoilColor(soilData?.organicCarbon || 2.3);
   const healthEmoji = getSoilHealthEmoji(analysis?.overall || 'Good');
+  const cropRecommendations = soilData ? recommendCropsForSoil(soilData) : [];
 
   return (
     <div className="soil-widget">
@@ -213,12 +214,24 @@ const SoilWidget = () => {
         </div>
       </div>
 
+
       {analysis?.recommendations && analysis.recommendations.length > 0 && (
         <div className="recommendations">
           <h4>💡 Recommendations</h4>
           <ul>
             {analysis.recommendations.map((rec, index) => (
               <li key={index}>{rec}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {cropRecommendations.length > 0 && (
+        <div className="crop-recommendations">
+          <h4>🌾 Suitable Crops for Your Soil</h4>
+          <ul>
+            {cropRecommendations.map((crop, idx) => (
+              <li key={idx}>{crop}</li>
             ))}
           </ul>
         </div>
