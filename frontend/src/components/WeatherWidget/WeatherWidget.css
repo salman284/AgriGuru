@@ -89,15 +89,17 @@
 .weather-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 0.8rem;
 }
 
 .weather-detail {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  padding: 2px 0;
 }
 
 .weather-detail .label {
@@ -215,7 +217,7 @@
 }
 
 .day-name {
-  font-size: 0.7rem;
+  font-size: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 5px;
   text-align: center;

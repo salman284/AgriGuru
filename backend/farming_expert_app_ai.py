@@ -981,6 +981,33 @@ def model_info():
             'timestamp': datetime.now().isoformat()
         }), 500
 
+@app.route('/api/soil-data', methods=['GET'])
+def get_soil_data():
+    import requests
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    if not lat or not lon:
+        return jsonify({'success': False, 'error': 'lat and lon required'}), 400
+
+    api_url = f"https://rest.isric.org/soilgrids/v2.0/properties?lat={lat}&lon={lon}&property=phh2o&property=nitrogen&property=soc&property=sand&property=clay&property=silt&depth=0-30cm&value=mean"
+    try:
+        resp = requests.get(api_url, timeout=10)
+        if resp.status_code == 404:
+            print(f"ISRIC API 404: {resp.text}")
+            return jsonify({
+                'success': False,
+                'error': 'No soil data found for this location. Please try a different location or check the coordinates.',
+                'status_code': 404
+            }), 404
+        resp.raise_for_status()
+        return jsonify({'success': True, 'data': resp.json()})
+    except requests.exceptions.HTTPError as e:
+        print(f"ISRIC API HTTPError: {e}")
+        return jsonify({'success': False, 'error': f'HTTP error: {str(e)}'}), 500
+    except Exception as e:
+        print(f"ISRIC API error: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+    
 @app.route('/api/conversation-history', methods=['GET'])
 def get_history():
     """Get conversation history"""

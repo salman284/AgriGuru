@@ -5,6 +5,21 @@
   margin-top: 80px; /* Add margin for fixed navbar */
 }
 
+.widgets {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 600px;           /* Fixed height for all widgets */
+  max-height: 600px;
+  overflow-y: auto;         /* Enable vertical scrolling */
+  width: 100%;              /* Ensure same width in grid */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
 .sidebar {
   width: 250px;
   background-color: #2d5016 !important;
@@ -77,12 +92,19 @@
   width: 100%;
 }
 
+
 .widget {
   background: white;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 1000px;
+  max-height: 1000px;
+  overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
 }
 
 .widget:hover {

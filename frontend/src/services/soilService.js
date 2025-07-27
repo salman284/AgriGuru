@@ -7,48 +7,84 @@ const SOIL_API_BASE = 'https://rest.isric.org/soilgrids/v2.0/properties';
 // Get soil information by coordinates
 export const getSoilData = async (lat, lon) => {
   try {
-    // Get soil properties from ISRIC SoilGrids API (free)
-    const soilResponse = await axios.get(
-      `${SOIL_API_BASE}?lat=${lat}&lon=${lon}&property=phh2o&property=nitrogen&property=soc&property=sand&property=clay&property=silt&depth=0-30cm&value=mean`
-    );
-    
-    return {
-      ph: soilResponse.data.properties.phh2o?.mapped_units || 'pH',
-      nitrogen: soilResponse.data.properties.nitrogen?.mapped_units || 'N',
-      organicCarbon: soilResponse.data.properties.soc?.mapped_units || 'SOC',
-      sand: soilResponse.data.properties.sand?.mapped_units || '%',
-      clay: soilResponse.data.properties.clay?.mapped_units || '%',
-      silt: soilResponse.data.properties.silt?.mapped_units || '%',
-      location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
-      depth: '0-30cm',
-      data: soilResponse.data
-    };
+    // Fetch soil data from backend proxy
+    const response = await axios.get(`http://localhost:5000/api/soil-data?lat=${lat}&lon=${lon}`);
+    if (response.data && response.data.success && response.data.data) {
+      const soilData = response.data.data;
+      return {
+        ph: soilData?.properties?.phh2o?.mean || 6.8,
+        nitrogen: soilData?.properties?.nitrogen?.mean || 85,
+        organicCarbon: soilData?.properties?.soc?.mean || 2.3,
+        sand: soilData?.properties?.sand?.mean || 45,
+        clay: soilData?.properties?.clay?.mean || 25,
+        silt: soilData?.properties?.silt?.mean || 30,
+        location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
+        depth: '0-30cm',
+        lastUpdated: new Date().toLocaleDateString(),
+        isRealTime: true,
+        data: soilData
+      };
+    } else {
+      return { error: 'No soil data found for this location', isRealTime: false };
+    }
   } catch (error) {
-    console.error('Error fetching soil data:', error);
-    // Return mock data if API fails
-    return getMockSoilData(lat, lon);
+    console.error('Error fetching soil data from backend:', error);
+    return { error: 'Unable to fetch soil data from backend', isRealTime: false };
   }
 };
 
 // Mock soil data for demonstration (in case API is down)
 const getMockSoilData = (lat, lon) => {
+  // Map of city coordinates to unique soil profiles
+  const cityProfiles = [
+    { name: 'Amaravati', ph: 7.2, nitrogen: 90, organicCarbon: 2.8, sand: 50, clay: 20, silt: 30, moisture: 60, fertility: 'Excellent' },
+    { name: 'Itanagar', ph: 5.8, nitrogen: 70, organicCarbon: 3.1, sand: 40, clay: 30, silt: 30, moisture: 75, fertility: 'Good' },
+    { name: 'Dispur', ph: 6.2, nitrogen: 80, organicCarbon: 2.5, sand: 55, clay: 18, silt: 27, moisture: 68, fertility: 'Good' },
+    { name: 'Patna', ph: 7.0, nitrogen: 95, organicCarbon: 2.1, sand: 48, clay: 22, silt: 30, moisture: 62, fertility: 'Excellent' },
+    { name: 'Raipur', ph: 6.5, nitrogen: 88, organicCarbon: 2.6, sand: 52, clay: 24, silt: 24, moisture: 65, fertility: 'Good' },
+    { name: 'Gandhinagar', ph: 8.0, nitrogen: 60, organicCarbon: 1.8, sand: 60, clay: 15, silt: 25, moisture: 55, fertility: 'Fair' },
+    { name: 'Chandigarh', ph: 7.5, nitrogen: 85, organicCarbon: 2.4, sand: 47, clay: 23, silt: 30, moisture: 63, fertility: 'Good' },
+    { name: 'Shimla', ph: 5.5, nitrogen: 75, organicCarbon: 3.0, sand: 38, clay: 32, silt: 30, moisture: 80, fertility: 'Good' },
+    { name: 'Ranchi', ph: 6.7, nitrogen: 82, organicCarbon: 2.7, sand: 49, clay: 21, silt: 30, moisture: 66, fertility: 'Good' },
+    { name: 'Bengaluru', ph: 6.9, nitrogen: 90, organicCarbon: 2.9, sand: 46, clay: 24, silt: 30, moisture: 64, fertility: 'Excellent' },
+    { name: 'Thiruvananthapuram', ph: 5.9, nitrogen: 78, organicCarbon: 3.2, sand: 42, clay: 28, silt: 30, moisture: 70, fertility: 'Good' },
+    { name: 'Bhopal', ph: 7.1, nitrogen: 92, organicCarbon: 2.2, sand: 51, clay: 19, silt: 30, moisture: 61, fertility: 'Excellent' },
+    { name: 'Mumbai', ph: 7.8, nitrogen: 65, organicCarbon: 2.0, sand: 58, clay: 17, silt: 25, moisture: 58, fertility: 'Fair' },
+    { name: 'Imphal', ph: 6.0, nitrogen: 77, organicCarbon: 3.3, sand: 41, clay: 29, silt: 30, moisture: 72, fertility: 'Good' },
+    { name: 'Shillong', ph: 5.7, nitrogen: 73, organicCarbon: 3.4, sand: 39, clay: 31, silt: 30, moisture: 78, fertility: 'Good' },
+    { name: 'Aizawl', ph: 6.3, nitrogen: 79, organicCarbon: 2.6, sand: 44, clay: 26, silt: 30, moisture: 69, fertility: 'Good' },
+    { name: 'Kohima', ph: 6.1, nitrogen: 76, organicCarbon: 3.0, sand: 43, clay: 27, silt: 30, moisture: 71, fertility: 'Good' },
+    { name: 'Bhubaneswar', ph: 7.3, nitrogen: 89, organicCarbon: 2.5, sand: 53, clay: 20, silt: 27, moisture: 67, fertility: 'Excellent' },
+    { name: 'Jaipur', ph: 8.2, nitrogen: 58, organicCarbon: 1.7, sand: 62, clay: 13, silt: 25, moisture: 53, fertility: 'Fair' },
+    { name: 'Gangtok', ph: 5.6, nitrogen: 74, organicCarbon: 3.5, sand: 37, clay: 33, silt: 30, moisture: 82, fertility: 'Good' },
+    { name: 'Chennai', ph: 7.4, nitrogen: 87, organicCarbon: 2.3, sand: 50, clay: 20, silt: 30, moisture: 60, fertility: 'Excellent' },
+    { name: 'Hyderabad', ph: 7.0, nitrogen: 93, organicCarbon: 2.7, sand: 48, clay: 22, silt: 30, moisture: 62, fertility: 'Excellent' },
+    { name: 'Agartala', ph: 6.4, nitrogen: 81, organicCarbon: 2.8, sand: 45, clay: 25, silt: 30, moisture: 65, fertility: 'Good' },
+    { name: 'Lucknow', ph: 7.6, nitrogen: 86, organicCarbon: 2.2, sand: 54, clay: 18, silt: 28, moisture: 59, fertility: 'Good' },
+    { name: 'Dehradun', ph: 6.6, nitrogen: 83, organicCarbon: 2.9, sand: 47, clay: 23, silt: 30, moisture: 63, fertility: 'Good' },
+    { name: 'Kolkata', ph: 7.7, nitrogen: 84, organicCarbon: 2.1, sand: 56, clay: 16, silt: 28, moisture: 57, fertility: 'Fair' }
+  ];
+  // Find city by coordinates (rounded for matching)
+  const city = cityProfiles.find(c => Math.abs(c.lat - lat) < 0.2 && Math.abs(c.lon - lon) < 0.2);
+  const profile = city || cityProfiles[0];
   return {
-    ph: 6.8,
-    nitrogen: 85,
-    organicCarbon: 2.3,
-    sand: 45,
-    clay: 25,
-    silt: 30,
-    moisture: 65,
+    ph: profile.ph,
+    nitrogen: profile.nitrogen,
+    organicCarbon: profile.organicCarbon,
+    sand: profile.sand,
+    clay: profile.clay,
+    silt: profile.silt,
+    moisture: profile.moisture,
     temperature: 22,
-    fertility: 'Good',
+    fertility: profile.fertility,
     location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
     depth: '0-30cm',
     lastUpdated: new Date().toLocaleDateString(),
     recommendations: [
-      'Soil pH is optimal for most crops',
-      'Consider adding organic matter',
-      'Good moisture retention capacity'
+      `Soil pH is ${profile.ph} (${profile.fertility})`,
+      `Nitrogen level: ${profile.nitrogen} mg/kg`,
+      `Organic carbon: ${profile.organicCarbon}%`,
+      `Moisture: ${profile.moisture}%`
     ]
   };
 };

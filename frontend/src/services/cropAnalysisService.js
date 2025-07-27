@@ -1,3 +1,56 @@
+// Call Plant.id API for plant and disease identification
+const callPlantIdAPI = async (imageFile) => {
+  try {
+    console.log('🌱 Starting Plant.id API call...');
+    console.log('API Key:', PLANT_ID_API_KEY ? `${PLANT_ID_API_KEY.substring(0, 8)}...` : 'Missing');
+    console.log('Image file:', imageFile.name, imageFile.size, 'bytes');
+
+    // Test API connectivity first
+    const testResult = await testPlantIdAPI();
+    if (!testResult.success) {
+      throw new Error(`Plant.id API not accessible: ${testResult.error}`);
+    }
+
+    // Convert image to base64
+    const base64Image = await convertImageToBase64(imageFile);
+
+    // Plant.id API request for health assessment and disease detection
+    const requestBody = {
+      images: [base64Image],
+      modifiers: ["crops", "similar_images", "health_only", "disease_similar_images"],
+      disease_details: ["common_names", "url", "description", "treatment", "classification", "cause"],
+      plant_details: ["common_names", "url", "name_authority", "wiki_description", "taxonomy"],
+      plant_language: "en",
+      disease_language: "en"
+    };
+
+    const response = await fetch(`${PLANT_ID_BASE_URL}/health_assessment`, {
+      method: 'POST',
+      headers: {
+        'Api-Key': PLANT_ID_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    console.log('📡 Response status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Plant.id API Error:', errorText);
+      throw new Error(`Plant.id API request failed: ${response.status} - ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log('✅ Plant.id API Success:', result);
+
+    // Process Plant.id response
+    return processPlantIdResponse(result, imageFile);
+  } catch (error) {
+    console.error('💥 Plant.id API Call Failed:', error);
+    throw error;
+  }
+};
 // Crop Analysis Service using Plant.id API for advanced crop disease detection
 
 // Plant.id API configuration (Better than PlantNet for disease detection)
@@ -9,8 +62,8 @@ const PLANTNET_API_KEY = process.env.REACT_APP_PLANTNET_API_KEY || 'your_plantne
 const PLANTNET_BASE_URL = 'https://my-api.plantnet.org/v1';
 const PLANTNET_PROJECT = process.env.REACT_APP_PLANTNET_PROJECT || 'weurope';
 
-// Set to false to use real Plant.id API
-const MOCK_AI_ANALYSIS = true; // Using improved mock disease analysis
+// Set to false to use real Plant.id/PlantNet API
+const MOCK_AI_ANALYSIS = false; // Use real image detection
 
 // Simulated crop diseases and conditions database
 const cropConditions = {
@@ -182,6 +235,13 @@ export const analyzeCropImage = async (imageFile) => {
         commonNames: [mockPlantName],
         plantIdentificationConfidence: confidence,
         cropType: mockPlantName,
+        recommendations: diseaseAnalysis.recommendations && Array.isArray(diseaseAnalysis.recommendations)
+          ? diseaseAnalysis.recommendations
+          : [
+              'Unable to analyze crop health due to mock analysis error.',
+              'Please check your mock configuration.',
+              'Monitor plant health manually and consult an expert if needed.'
+            ],
         additionalInfo: {
           imageSize: `${Math.round(imageFile.size / 1024)}KB`,
           resolution: 'High Quality',
@@ -215,6 +275,13 @@ export const analyzeCropImage = async (imageFile) => {
       commonNames: [mockPlantName],
       plantIdentificationConfidence: 0.75,
       cropType: mockPlantName,
+      recommendations: diseaseAnalysis.recommendations && Array.isArray(diseaseAnalysis.recommendations)
+        ? diseaseAnalysis.recommendations
+        : [
+            'Unable to analyze crop health due to API errors.',
+            'Please check your API key, quota, or network connection.',
+            'Monitor plant health manually and consult an expert if needed.'
+          ],
       additionalInfo: {
         imageSize: `${Math.round(imageFile.size / 1024)}KB`,
         resolution: 'Fallback Analysis',
@@ -229,128 +296,24 @@ export const analyzeCropImage = async (imageFile) => {
 };
 
 // Intelligent crop type detection based on filename analysis
-const detectCropType = (filename) => {
+export function detectCropType(filename) {
   const lowerFilename = filename.toLowerCase();
-  
-  // Comprehensive crop detection with multiple keywords per crop
-  const cropDetectionMap = {
-    'Tomato': ['tomato', 'cherry', 'beefsteak', 'roma', 'heirloom', 'solanum'],
-    'Wheat': ['wheat', 'grain', 'cereal', 'triticum', 'flour'],
-    'Rice': ['rice', 'paddy', 'oryza', 'basmati', 'jasmine'],
-    'Corn': ['corn', 'maize', 'kernel', 'cob', 'zea', 'sweet'],
-    'Potato': ['potato', 'spud', 'tuber', 'russet', 'yukon'],
-    'Soybean': ['soy', 'soybean', 'edamame', 'glycine'],
-    'Cotton': ['cotton', 'fiber', 'boll', 'gossypium']
-  };
-  
-  // Check for direct crop name matches
-  for (const [cropName, keywords] of Object.entries(cropDetectionMap)) {
-    if (keywords.some(keyword => lowerFilename.includes(keyword))) {
-      return cropName;
-    }
-  }
-  
-  // Check for plant-related keywords to determine if it's a crop
-  const plantKeywords = ['leaf', 'plant', 'crop', 'farm', 'field', 'agriculture', 'garden'];
-  const diseaseKeywords = ['disease', 'sick', 'spot', 'blight', 'rot', 'wilt', 'fungus'];
-  const healthKeywords = ['healthy', 'green', 'fresh', 'good'];
-  
-  let mostLikelyCategory = '';
-  
-  if (plantKeywords.some(keyword => lowerFilename.includes(keyword))) {
-    mostLikelyCategory = 'general_crop';
-  }
-  
-  if (diseaseKeywords.some(keyword => lowerFilename.includes(keyword))) {
-    // If disease keywords are present, it's likely a common crop that gets diseases
-    mostLikelyCategory = 'disease_prone';
-  }
-  
-  if (healthKeywords.some(keyword => lowerFilename.includes(keyword))) {
-    mostLikelyCategory = 'healthy_crop';
-  }
-  
-  // Smart defaults based on filename characteristics for better variety
-  if (mostLikelyCategory === 'disease_prone') {
-    // Vary crop selection based on filename characteristics for more variety
-    const nameLength = lowerFilename.length;
-    const firstChar = lowerFilename.charCodeAt(0);
-    
-    if (nameLength % 5 === 0) return 'Tomato';
-    if (nameLength % 5 === 1) return 'Potato';
-    if (nameLength % 5 === 2) return 'Rice';
-    if (nameLength % 5 === 3) return 'Corn';
-    return 'Wheat';
-  } else if (mostLikelyCategory === 'healthy_crop') {
-    // Healthy crops variation based on filename
-    const vowelCount = (lowerFilename.match(/[aeiou]/g) || []).length;
-    if (vowelCount % 3 === 0) return 'Wheat';
-    if (vowelCount % 3 === 1) return 'Soybean';
-    return 'Cotton';
-  } else {
-    // Use filename characteristics for maximum variety
-    const vowels = (lowerFilename.match(/[aeiou]/g) || []).length;
-    const consonants = lowerFilename.length - vowels;
-    const nameHash = lowerFilename.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    const crops = ['Tomato', 'Wheat', 'Corn', 'Rice', 'Potato', 'Soybean', 'Cotton'];
-    return crops[nameHash % crops.length];
-  }
-};
-
-// Plant.id API integration for advanced disease detection
-const callPlantIdAPI = async (imageFile) => {
-  try {
-    console.log('🌱 Starting Plant.id API call...');
-    console.log('API Key:', PLANT_ID_API_KEY ? `${PLANT_ID_API_KEY.substring(0, 8)}...` : 'Missing');
-    console.log('Image file:', imageFile.name, imageFile.size, 'bytes');
-
-    // Test API connectivity first
-    const testResult = await testPlantIdAPI();
-    if (!testResult.success) {
-      throw new Error(`Plant.id API not accessible: ${testResult.error}`);
-    }
-
-    // Convert image to base64
-    const base64Image = await convertImageToBase64(imageFile);
-    
-    // Plant.id API request for health assessment and disease detection
-    const requestBody = {
-      images: [base64Image],
-      modifiers: ["crops", "similar_images", "health_only", "disease_similar_images"],
-      disease_details: ["common_names", "url", "description", "treatment", "classification", "cause"],
-      plant_details: ["common_names", "url", "name_authority", "wiki_description", "taxonomy"],
-      plant_language: "en",
-      disease_language: "en"
-    };
-    
-    const response = await fetch(`${PLANT_ID_BASE_URL}/health_assessment`, {
-      method: 'POST',
-      headers: {
-        'Api-Key': PLANT_ID_API_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody)
-    });
-    
-    console.log('📡 Response status:', response.status);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Plant.id API Error:', errorText);
-      throw new Error(`Plant.id API request failed: ${response.status} - ${errorText}`);
-    }
-    
-    const result = await response.json();
-    console.log('✅ Plant.id API Success:', result);
-    
-    // Process Plant.id response
-    return processPlantIdResponse(result, imageFile);
-  } catch (error) {
-    console.error('💥 Plant.id API Call Failed:', error);
-    throw error;
-  }
-};
+  if (lowerFilename.includes('wheat')) return 'Wheat';
+  if (lowerFilename.includes('rice')) return 'Rice';
+  if (lowerFilename.includes('corn') || lowerFilename.includes('maize')) return 'Corn';
+  if (lowerFilename.includes('tomato')) return 'Tomato';
+  if (lowerFilename.includes('potato')) return 'Potato';
+  if (lowerFilename.includes('soy')) return 'Soybean';
+  if (lowerFilename.includes('cotton')) return 'Cotton';
+  if (lowerFilename.includes('bean')) return 'Bean';
+  if (lowerFilename.includes('pea')) return 'Pea';
+  if (lowerFilename.includes('carrot')) return 'Carrot';
+  if (lowerFilename.includes('lettuce')) return 'Lettuce';
+  if (lowerFilename.includes('cabbage')) return 'Cabbage';
+  // Add more crops as needed
+  return 'Unknown Crop';
+}
+// ...existing code...
 
 // PlantNet API integration (renamed for clarity)
 const callPlantNetAPI = async (imageFile) => {

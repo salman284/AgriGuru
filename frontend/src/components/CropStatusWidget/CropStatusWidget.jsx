@@ -233,11 +233,17 @@ const CropStatusWidget = () => {
 
             <div className="recommendations">
               <h4>💡 Recommendations:</h4>
-              <ul>
-                {analysis.recommendations.map((rec, index) => (
-                  <li key={index}>{rec}</li>
-                ))}
-              </ul>
+              {Array.isArray(analysis.recommendations) && analysis.recommendations.length > 0 ? (
+                <ul>
+                  {analysis.recommendations.map((rec, index) => (
+                    <li key={index}>{rec}</li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="recommendations-fallback">
+                  <em>No recommendations available. Please check your image or try again.</em>
+                </div>
+              )}
             </div>
 
             {analysis.additionalInfo && (
