@@ -11,25 +11,46 @@ export const getSoilData = async (lat, lon) => {
     const response = await axios.get(`http://localhost:5000/api/soil-data?lat=${lat}&lon=${lon}`);
     if (response.data && response.data.success && response.data.data) {
       const soilData = response.data.data;
-      return {
-        ph: soilData?.properties?.phh2o?.mean || 6.8,
-        nitrogen: soilData?.properties?.nitrogen?.mean || 85,
-        organicCarbon: soilData?.properties?.soc?.mean || 2.3,
-        sand: soilData?.properties?.sand?.mean || 45,
-        clay: soilData?.properties?.clay?.mean || 25,
-        silt: soilData?.properties?.silt?.mean || 30,
-        location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
-        depth: '0-30cm',
-        lastUpdated: new Date().toLocaleDateString(),
-        isRealTime: true,
-        data: soilData
-      };
+      // If backend returns fallback demo data, use it as mock
+      if (soilData.source && soilData.source.includes('Demo Fallback')) {
+        // Use fallback structure
+        return {
+          ph: soilData?.properties?.phh2o?.values?.[0] || 6.8,
+          nitrogen: soilData?.properties?.nitrogen?.values?.[0] || 85,
+          organicCarbon: soilData?.properties?.soc?.values?.[0] || 2.3,
+          sand: soilData?.properties?.sand?.values?.[0] || 45,
+          clay: soilData?.properties?.clay?.values?.[0] || 25,
+          silt: soilData?.properties?.silt?.values?.[0] || 30,
+          location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
+          depth: soilData?.properties?.phh2o?.depths?.[0] || '0-30cm',
+          lastUpdated: new Date().toLocaleDateString(),
+          isRealTime: false,
+          data: soilData
+        };
+      } else {
+        // If backend returns real data (structure may differ), fallback to previous logic
+        return {
+          ph: soilData?.properties?.phh2o?.mean || 6.8,
+          nitrogen: soilData?.properties?.nitrogen?.mean || 85,
+          organicCarbon: soilData?.properties?.soc?.mean || 2.3,
+          sand: soilData?.properties?.sand?.mean || 45,
+          clay: soilData?.properties?.clay?.mean || 25,
+          silt: soilData?.properties?.silt?.mean || 30,
+          location: `${lat.toFixed(4)}, ${lon.toFixed(4)}`,
+          depth: '0-30cm',
+          lastUpdated: new Date().toLocaleDateString(),
+          isRealTime: true,
+          data: soilData
+        };
+      }
     } else {
-      return { error: 'No soil data found for this location', isRealTime: false };
+      // If backend fails, use local mock data
+      return getMockSoilData(lat, lon);
     }
   } catch (error) {
     console.error('Error fetching soil data from backend:', error);
-    return { error: 'Unable to fetch soil data from backend', isRealTime: false };
+    // Use local mock data on error
+    return getMockSoilData(lat, lon);
   }
 };
 
