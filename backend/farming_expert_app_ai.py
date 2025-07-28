@@ -15,8 +15,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Explicitly load .env from backend directory
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(env_path)
 
 # Debug: Print environment loading
 print(f"🔍 Loading environment from: {os.getcwd()}")
@@ -822,6 +823,9 @@ def initialize_agribot():
 # Initialize AgriBot on startup
 agribot, groq_enabled = initialize_agribot()
 
+# In-memory farmer chat storage (for demo; use DB in production)
+farmer_chat_messages = []
+
 # Flask Routes
 @app.route('/')
 def health_check():
@@ -1129,6 +1133,49 @@ def debug_grok():
             'traceback': traceback.format_exc()
         })
 
+@app.route('/api/chat/messages', methods=['GET'])
+def get_farmer_messages():
+    """Get messages between two farmers"""
+    from_id = request.args.get('from')
+    to_id = request.args.get('to')
+    if not from_id or not to_id:
+        return jsonify({'success': False, 'error': 'from and to required'}), 400
+    # Filter messages for this pair (both directions)
+    msgs = [m for m in farmer_chat_messages if (
+        (m['from'] == from_id and m['to'] == to_id) or (m['from'] == to_id and m['to'] == from_id)
+    )]
+    return jsonify({'success': True, 'messages': msgs})
+
+@app.route('/api/chat/send', methods=['POST'])
+def send_farmer_message():
+    """Send a message from one farmer to another"""
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Request must be JSON'}), 400
+    data = request.get_json()
+    required = ['text', 'sender', 'from', 'to']
+    if not all(k in data for k in required):
+        return jsonify({'success': False, 'error': 'Missing fields'}), 400
+    msg = {
+        'text': data['text'],
+        'sender': data['sender'],
+        'from': str(data['from']),
+        'to': str(data['to']),
+        'timestamp': datetime.now().isoformat()
+    }
+    farmer_chat_messages.append(msg)
+    return jsonify({'success': True, 'message': msg})
+
+# --- Farmer User List Endpoint ---
+# For demo, use static list. Replace with DB in production.
+@app.route('/api/users', methods=['GET'])
+def get_farmer_users():
+    users = [
+        {'id': 1, 'name': 'Ramesh Singh'},
+        {'id': 2, 'name': 'Suresh Patel'},
+        {'id': 3, 'name': 'Amit Kumar'},
+        {'id': 4, 'name': 'Priya Sharma'}
+    ]
+    return jsonify({'success': True, 'users': users})
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""
@@ -1182,6 +1229,8 @@ if __name__ == '__main__':
     print("   ℹ️ Model Info: /api/model-info")
     print("   📜 Chat History: /api/conversation-history")
     print("   🔍 Debug Grok: /api/debug-grok")
+    print("   💬 Farmer Messages (GET): /api/chat/messages")
+    print("   📤 Send Farmer Message (POST): /api/chat/send")
     print("=" * 60)
     print("🚀 AgriBot is ready! Ask farming questions and get expert advice!")
     print("💡 Example: POST to /api/chat with {'message': 'How to grow rice?'}")

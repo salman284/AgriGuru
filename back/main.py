@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from pymongo import MongoClient
+import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import secrets
@@ -20,11 +21,13 @@ CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://loc
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
-app.config['MONGO_URI'] = 'mongodb+srv://shriompal2435:N2Ry3EfnFDU4FQpg@agrigurudb.lttawpv.mongodb.net/'
+app.config['MONGO_URI'] = 'mongodb+srv://shriompal2435:N2Ry3EfnFDU4FQpg@agrigurudb.lttawpv.mongodb.net/agrigurudb?retryWrites=true&w=majority'
 
-# Connect to MongoDB
-client = MongoClient(app.config['MONGO_URI'])
+ # Connect to MongoDB with certifi CA bundle for SSL, explicit TLS, and allow invalid certificates (debug only)
+client = MongoClient(app.config['MONGO_URI'], tls=True, tlsCAFile=certifi.where(), tlsAllowInvalidCertificates=True)
+
 db = client.agrigurudb
+chat_messages_collection = db.chat_messages  # New collection for group chat messages
 users_collection = db.users
 otp_collection = db.otp_codes
 

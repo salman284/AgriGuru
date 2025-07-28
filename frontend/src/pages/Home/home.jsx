@@ -6,9 +6,21 @@ import backGround from "./homebg.avif"
 import Navbar from "../../components/Navbar/Navbar"
 import AIChat from "../../components/AIChat/AIChat"
 
+import ChatBox from "../../components/chatBox/chat"
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // TEMP: Hardcode demo user to test chat icon
+    setCurrentUser({ id: 1, name: "Demo Farmer" });
+    setUsers([{ id: 1, name: "Demo Farmer" }, { id: 2, name: "Other Farmer" }]);
+  }, []);
 
   const handleGetStarted = () => {
     navigate('/dashboard');
@@ -33,7 +45,6 @@ const Home = () => {
                 {t('homepage.hero.description')}
             </h3>
             <button className="home-button" onClick={handleGetStarted}>{t('homepage.hero.cta_primary')}</button>
-                
                 {/* Features Section */}
                 <div className="features-container">
                   <div className="feature-box">
@@ -61,10 +72,10 @@ const Home = () => {
                     <p className="feature-description">{t('ecommerce.subtitle')}</p>
                   </div>
                 </div>
-                
         </div>
       </div>
-      
+      {/* Farmer ChatBar (floating icon and chat) */}
+      {currentUser && <ChatBox currentUser={currentUser} users={users} />}
       {/* AI Chat Component */}
       <AIChat />
     </div>
