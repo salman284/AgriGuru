@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -11,12 +12,18 @@ import random
 import string
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+# --- SocketIO imports ---
+from flask_socketio import SocketIO, join_room, leave_room, emit
+
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"], 
      supports_credentials=True, 
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+
+# --- Initialize SocketIO ---
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"], async_mode="threading")
 
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -623,6 +630,7 @@ def test_db():
             "error": str(e)
         }), 500
 
+
 if __name__ == '__main__':
     # Create indexes for better performance
     try:
@@ -632,8 +640,8 @@ if __name__ == '__main__':
         print("✅ Database indexes created successfully!")
     except Exception as e:
         print(f"ℹ️ Indexes may already exist: {e}")
-    
-    print("🚀 Starting AgriGuru Authentication API on port 5001...")
+
+    print("🚀 Starting AgriGuru Authentication & Chat API on port 5001...")
     print("📊 Available endpoints:")
     print("   POST /api/signup - Register new user")
     print("   POST /api/login - User login")
@@ -647,7 +655,58 @@ if __name__ == '__main__':
     print("   POST /api/send-otp - Send OTP via email")
     print("   POST /api/verify-otp - Verify OTP code")
     print("   POST /api/signup-with-otp - Complete signup with OTP")
+    print("💬 Real-time chat enabled at ws://localhost:5001/socket.io/")
     print("🌐 Server running at: http://localhost:5001")
     print("🔍 Test database: http://localhost:5001/api/test-db")
-    
-    app.run(debug=True, host='0.0.0.0', port=5001)
+
+    # Use SocketIO to run the app (enables WebSocket)
+    socketio.run(app, debug=True, host='0.0.0.0', port=5001)
+
+# --- SocketIO event handlers for real-time chat ---
+@socketio.on('join')
+def handle_join(data):
+    """User joins a chat room (e.g., group or private)"""
+    room = data.get('room')
+    username = data.get('username')
+    if room and username:
+        join_room(room)
+        emit('user_joined', {'username': username, 'room': room}, room=room)
+
+@socketio.on('leave')
+def handle_leave(data):
+    room = data.get('room')
+    username = data.get('username')
+    if room and username:
+        leave_room(room)
+        emit('user_left', {'username': username, 'room': room}, room=room)
+
+@socketio.on('chat_message')
+def handle_chat_message(data):
+    """Handle incoming chat message and broadcast to room (including sender)"""
+    room = data.get('room')
+    message = data.get('message')
+    username = data.get('username')
+    timestamp = datetime.utcnow().isoformat()
+    if room and message and username:
+        # Store message in DB
+        chat_doc = {
+            'room': room,
+            'username': username,
+            'message': message,
+            'timestamp': timestamp
+        }
+        chat_messages_collection.insert_one(chat_doc)
+        # Broadcast to room (include sender)
+        emit('chat_message', {
+            'room': room,
+            'username': username,
+            'message': message,
+            'timestamp': timestamp
+        }, room=room, include_self=True)
+
+@socketio.on('typing')
+def handle_typing(data):
+    room = data.get('room')
+    username = data.get('username')
+    if room and username:
+        emit('typing', {'username': username, 'room': room}, room=room, include_self=False)
