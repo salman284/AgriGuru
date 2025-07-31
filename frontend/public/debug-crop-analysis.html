@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Analysis Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #218838;
+        }
+        .results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .leaf-analysis {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .leaf-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .leaf-details span {
+            background: #d4edda;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Crop Analysis Debug Test</h1>
+        <p>This page will help debug the crop analysis and leaf detection issues.</p>
+        
+        <div class="test-section">
+            <h3>Test Different Filenames</h3>
+            <p>Click buttons to test different filename patterns:</p>
+            
+            <button class="test-button" onclick="testFilename('healthy_tomato_leaf.jpg')">healthy_tomato_leaf.jpg</button>
+            <button class="test-button" onclick="testFilename('diseased_corn_leaf.png')">diseased_corn_leaf.png</button>
+            <button class="test-button" onclick="testFilename('yellow_leaf_spots.jpg')">yellow_leaf_spots.jpg</button>
+            <button class="test-button" onclick="testFilename('brown_leaf_disease.png')">brown_leaf_disease.png</button>
+            <button class="test-button" onclick="testFilename('white_powder_leaves.jpg')">white_powder_leaves.jpg</button>
+            <button class="test-button" onclick="testFilename('crop_image.jpg')">crop_image.jpg (no leaf)</button>
+            
+            <div id="filename-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Leaf Analysis Function Test</h3>
+            <input type="text" id="custom-filename" placeholder="Enter custom filename..." 
+                   style="width: 300px; padding: 8px; margin-right: 10px;">
+            <button class="test-button" onclick="testCustomFilename()">Test Custom</button>
+            
+            <div id="custom-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Full Analysis Test</h3>
+            <p>Test the complete crop analysis pipeline:</p>
+            <button class="test-button" onclick="testFullAnalysis()">Run Full Analysis</button>
+            
+            <div id="full-results" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Leaf analysis function (copied from the service)
+        function analyzeLeafCondition(fileName) {
+            const condition = {
+                detected: false,
+                type: 'unknown',
+                color: 'unknown',
+                pattern: 'unknown'
+            };
+            
+            console.log('Analyzing filename:', fileName);
+            
+            if (fileName.includes('leaf') || fileName.includes('leaves')) {
+                condition.detected = true;
+                
+                // Color analysis
+                if (fileName.includes('yellow') || fileName.includes('yellowing')) {
+                    condition.color = 'yellow';
+                    condition.type = 'nutrient_issue';
+                } else if (fileName.includes('brown') || fileName.includes('dark')) {
+                    condition.color = 'brown';
+                    condition.type = 'disease_spots';
+                } else if (fileName.includes('white')) {
+                    condition.color = 'white';
+                    condition.type = 'fungal_coating';
+                } else if (fileName.includes('green')) {
+                    condition.color = 'green';
+                    condition.type = 'healthy';
+                } else if (fileName.includes('healthy')) {
+                    condition.color = 'green';
+                    condition.type = 'healthy';
+                }
+                
+                // Pattern analysis
+                if (fileName.includes('spot') || fileName.includes('spots')) {
+                    condition.pattern = 'spots';
+                } else if (fileName.includes('curl') || fileName.includes('twisted')) {
+                    condition.pattern = 'deformed';
+                } else if (fileName.includes('hole') || fileName.includes('holes')) {
+                    condition.pattern = 'holes';
+                }
+            }
+            
+            return condition;
+        }
+        
+        function testFilename(filename) {
+            const result = analyzeLeafCondition(filename.toLowerCase());
+            const resultsDiv = document.getElementById('filename-results');
+            
+            resultsDiv.innerHTML = `
+                <h4>Testing: ${filename}</h4>
+                <div class="leaf-analysis">
+                    <strong>🍃 Leaf Analysis Result:</strong>
+                    <div class="leaf-details">
+                        <span>Detected: ${result.detected ? '✅ Yes' : '❌ No'}</span>
+                        <span>Type: ${result.type}</span>
+                        <span>Color: ${result.color}</span>
+                        <span>Pattern: ${result.pattern}</span>
+                    </div>
+                </div>
+                <strong>Raw JSON:</strong>
+                ${JSON.stringify(result, null, 2)}
+            `;
+        }
+        
+        function testCustomFilename() {
+            const filename = document.getElementById('custom-filename').value;
+            if (!filename) {
+                alert('Please enter a filename');
+                return;
+            }
+            
+            const result = analyzeLeafCondition(filename.toLowerCase());
+            const resultsDiv = document.getElementById('custom-results');
+            
+            resultsDiv.innerHTML = `
+                <h4>Testing: ${filename}</h4>
+                <div class="leaf-analysis">
+                    <strong>🍃 Leaf Analysis Result:</strong>
+                    <div class="leaf-details">
+                        <span>Detected: ${result.detected ? '✅ Yes' : '❌ No'}</span>
+                        <span>Type: ${result.type}</span>
+                        <span>Color: ${result.color}</span>
+                        <span>Pattern: ${result.pattern}</span>
+                    </div>
+                </div>
+                <strong>Raw JSON:</strong>
+                ${JSON.stringify(result, null, 2)}
+            `;
+        }
+        
+        function testFullAnalysis() {
+            const resultsDiv = document.getElementById('full-results');
+            
+            // Simulate what the React component should receive
+            const mockAnalysis = {
+                status: 'Healthy',
+                description: 'Your tomato leaves appear to be in excellent condition with good green coloring',
+                confidence: 0.92,
+                severity: 'low',
+                color: '#28a745',
+                plantName: 'Tomato',
+                cropType: 'Tomato',
+                leafAnalysis: analyzeLeafCondition('healthy_tomato_leaf.jpg'),
+                recommendations: [
+                    'Continue current watering schedule',
+                    'Monitor for any changes in leaf color',
+                    'Consider light fertilization in 2 weeks'
+                ]
+            };
+            
+            resultsDiv.innerHTML = `
+                <h4>Full Analysis Simulation</h4>
+                <div class="leaf-analysis">
+                    <strong>🍃 Leaf Analysis (as React would receive):</strong>
+                    <div class="leaf-details">
+                        <span>Detected: ${mockAnalysis.leafAnalysis.detected ? '✅ Yes' : '❌ No'}</span>
+                        <span>Type: ${mockAnalysis.leafAnalysis.type}</span>
+                        <span>Color: ${mockAnalysis.leafAnalysis.color}</span>
+                        <span>Pattern: ${mockAnalysis.leafAnalysis.pattern}</span>
+                    </div>
+                </div>
+                
+                <strong>Condition Check:</strong>
+                analysis.leafAnalysis: ${mockAnalysis.leafAnalysis ? '✅ Present' : '❌ Missing'}
+                analysis.leafAnalysis.detected: ${mockAnalysis.leafAnalysis && mockAnalysis.leafAnalysis.detected ? '✅ True' : '❌ False'}
+                
+                <strong>Full Analysis Object:</strong>
+                ${JSON.stringify(mockAnalysis, null, 2)}
+            `;
+        }
+        
+        // Auto-test the default filename when page loads
+        window.onload = function() {
+            testFilename('healthy_tomato_leaf.jpg');
+        };
+    </script>
+</body>
+</html>

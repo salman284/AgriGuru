@@ -1,0 +1,430 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  padding: 0;
+  border-bottom: 1px solid rgba(45, 80, 22, 0.1);
+}
+
+.navbar-container {
+  max-width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  height: 65px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo h2 {
+  color: #2d5016;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.logo-image {
+  height: 55px;
+  width: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #2d5016;
+  padding: 1px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.15);
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-image {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(45, 80, 22, 0.3);
+  border-color: #1a3009;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.navbar-item {
+  position: relative;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.navbar-link:hover {
+  color: #2d5016;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2d5016;
+  transition: width 0.3s ease;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+/* Special styling for marketplace link */
+.navbar-link[href="/marketplace"] {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.navbar-link[href="/marketplace"]:hover {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  color: white;
+}
+
+.navbar-link[href="/marketplace"]::after {
+  display: none; /* Remove the underline effect for marketplace */
+}
+
+.navbar-auth {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Mobile menu button */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1000;
+}
+
+.mobile-menu-btn span {
+  width: 24px;
+  height: 3px;
+  background: #333;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  transform-origin: 1px;
+}
+
+.mobile-menu-btn.active span:first-child {
+  transform: rotate(45deg);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Auth section styles */
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-section.authenticated {
+  gap: 0;
+}
+
+.auth-section.unauthenticated {
+  gap: 12px;
+}
+
+/* Active link style */
+.navbar-link.active {
+  color: #2d5016;
+  font-weight: 600;
+}
+
+.navbar-link.active::after {
+  width: 100%;
+}
+
+.login-btn, .signup-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  min-width: 90px;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn {
+  background-color: #2d5016;
+  color: white;
+  border: 2px solid #2d5016;
+}
+
+.signup-btn {
+  background-color: white;
+  color: #2d5016;
+  border: 2px solid #2d5016;
+  margin-top: 10px;
+}
+
+.login-btn:hover, .signup-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px rgba(45, 80, 22, 0.15);
+}
+
+.login-btn:hover {
+  background-color: #1a3009;
+  border-color: #1a3009;
+  color: white;
+}
+
+.signup-btn:hover {
+  background-color: #2d5016;
+  color: white;
+  border-color: #2d5016;
+  box-shadow: 0 3px 12px rgba(45, 80, 22, 0.25);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.5rem 0.5rem;
+    height: 56px;
+  }
+  .navbar-logo h2 {
+    font-size: 1.2rem;
+  }
+  .logo-image {
+    height: 40px;
+    width: 40px;
+  }
+  /* LanguageSwitcher in mobile dropdown */
+  .mobile-dropdown-menu .mobile-language-switcher {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0 0.5rem 0;
+  }
+  .mobile-dropdown-menu .mobile-language-switcher button,
+  .mobile-dropdown-menu .mobile-language-switcher select {
+    background: #eaf6e6;
+    color: #2d5016;
+    border: 2px solid #2d5016;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.20rem 0.6rem;
+    max-height: 2px;
+    margin: 0 0.2rem;
+    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.08);
+    transition: background 0.18s, color 0.18s;
+    cursor: pointer;
+  }
+  .mobile-dropdown-menu .mobile-language-switcher button:hover,
+  .mobile-dropdown-menu .mobile-language-switcher select:hover {
+    background: #d2e9d0;
+    color: #1a3009;
+    border-color: #1a3009;
+  }
+  .navbar-auth {
+    gap: 0.35rem;
+  }
+  /* Make LanguageSwitcher button compact in navbar for mobile */
+  .navbar-auth .LanguageSwitcher button,
+  .navbar-auth .LanguageSwitcher select {
+    padding: 0.12rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    max-height: 20px !important;
+    height: 20px !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+  .login-btn, .signup-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 70px;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .navbar-menu {
+    display: none;
+  }
+
+  /* Mobile dropdown menu styles */
+  .mobile-dropdown-menu {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(45, 80, 22, 0.12);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 2001;
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    animation: dropdownFadeIn 0.25s ease;
+  }
+  @keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .mobile-dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .mobile-dropdown-menu .navbar-link {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    color: #2d5016;
+    background: none;
+    font-weight: 600;
+    transition: background 0.18s, color 0.18s;
+    text-align: left;
+  }
+  .mobile-dropdown-menu .navbar-link.active,
+  .mobile-dropdown-menu .navbar-link:hover {
+    background: #eaf6e6;
+    color: #1a3009;
+  }
+  .mobile-dropdown-menu .navbar-link[href="/marketplace"] {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border-radius: 20px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.12);
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .mobile-dropdown-menu .navbar-link[href="/marketplace"]:hover {
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+    color: white;
+  }
+  .mobile-auth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    align-items: stretch;
+  }
+  .mobile-auth-section .login-btn,
+  .mobile-auth-section .signup-btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin: 0;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.08);
+    text-align: center;
+  }
+  .mobile-auth-section .login-btn {
+    background-color: #2d5016;
+    color: white;
+    border: 2px solid #2d5016;
+  }
+  .mobile-auth-section .signup-btn {
+    background-color: white;
+    color: #2d5016;
+    border: 2px solid #2d5016;
+  }
+  .mobile-auth-section .login-btn:hover {
+    background-color: #1a3009;
+    border-color: #1a3009;
+    color: white;
+  }
+  .mobile-auth-section .signup-btn:hover {
+    background-color: #2d5016;
+    color: white;
+    border-color: #2d5016;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 380px) {
+  .navbar-container {
+    padding: 0.3rem 0.2rem;
+    height: 48px;
+  }
+  .navbar-logo h2 {
+    font-size: 1rem;
+  }
+  .logo-image {
+    height: 32px;
+    width: 32px;
+  }
+  .navbar-auth {
+    gap: 0.2rem;
+  }
+  .login-btn, .signup-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    min-width: 55px;
+  }
+}

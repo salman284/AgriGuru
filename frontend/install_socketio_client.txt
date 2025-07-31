@@ -1,0 +1,2 @@
+Run this in your frontend directory to enable real-time chat:
+npm install socket.io-client

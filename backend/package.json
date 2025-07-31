@@ -1,0 +1,40 @@
+{
+  "name": "agriguru-fertilizer-api",
+  "version": "1.0.0",
+  "description": "AgriGuru Real-Time Fertilizer API - Node.js Backend",
+  "main": "fertilizer-api.js",
+  "scripts": {
+    "start": "node fertilizer-api.js",
+    "dev": "node fertilizer-api.js",
+    "test": "node fertilizer-api.js",
+    "fertilizer-api": "node fertilizer-api.js",
+    "check": "node fertilizer-api.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  },
+  "author": "AgriGuru Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agriguru/agriguru-ai.git"
+  },
+  "keywords": [
+    "agriculture",
+    "farming",
+    "ai",
+    "expert-system",
+    "flask",
+    "python"
+  ],
+  "engines": {
+    "python": ">=3.7"
+  },
+  "bugs": {
+    "url": "https://github.com/agriguru/agriguru-ai/issues"
+  },
+  "homepage": "https://github.com/agriguru/agriguru-ai#readme"
+}
