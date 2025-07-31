@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 import './chat.css';
 import { useNavigate } from 'react-router-dom';
 
-const SOCKET_URL = 'http://localhost:5001';
+const SOCKET_URL = 'http://127.0.0.1:5001';
 const ROOM = 'agriguru-group';
 
 
@@ -36,9 +36,15 @@ function ChatBoxInner({ currentUser, users, onLoginRequest }) {
       transports: ['websocket'],
       withCredentials: true
     });
-    socketRef.current.emit('join', { room: ROOM, username: name });
-
+    socketRef.current.on('connect', () => {
+      console.log('[SOCKET] Connected to server:', socketRef.current.id);
+      socketRef.current.emit('join', { room: ROOM, username: name });
+    });
+    socketRef.current.on('disconnect', () => {
+      console.log('[SOCKET] Disconnected from server');
+    });
     socketRef.current.on('chat_message', (msg) => {
+      console.log('[SOCKET] Received chat_message:', msg);
       setMessages((prev) => [...prev, msg]);
     });
     socketRef.current.on('typing', (data) => {
@@ -47,8 +53,10 @@ function ChatBoxInner({ currentUser, users, onLoginRequest }) {
     });
 
     return () => {
-      socketRef.current.emit('leave', { room: ROOM, username: name });
-      socketRef.current.disconnect();
+      if (socketRef.current) {
+        socketRef.current.emit('leave', { room: ROOM, username: name });
+        socketRef.current.disconnect();
+      }
     };
   }, [name, open, currentUser]);
 
@@ -68,7 +76,8 @@ function ChatBoxInner({ currentUser, users, onLoginRequest }) {
       image: imagePreview || null,
       timestamp: new Date().toISOString()
     };
-    setMessages((prev) => [...prev, msg]);
+    console.log('[SOCKET] Sending chat_message:', msg);
+    setMessages((prev) => [...prev, msg]); // Show sent message instantly
     socketRef.current.emit('chat_message', msg);
     setInput('');
     setImage(null);

@@ -663,11 +663,20 @@ if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=5001)
 
 # --- SocketIO event handlers for real-time chat ---
+@socketio.on('connect')
+def handle_connect():
+    print(f"[SOCKET] Client connected: {request.sid}")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print(f"[SOCKET] Client disconnected: {request.sid}")
+
 @socketio.on('join')
 def handle_join(data):
     """User joins a chat room (e.g., group or private)"""
     room = data.get('room')
     username = data.get('username')
+    print(f"[SOCKET] {username} joining room: {room} (sid={request.sid})")
     if room and username:
         join_room(room)
         emit('user_joined', {'username': username, 'room': room}, room=room)
@@ -685,14 +694,17 @@ def handle_chat_message(data):
     """Handle incoming chat message and broadcast to room (including sender)"""
     room = data.get('room')
     message = data.get('message')
+    image = data.get('image')
     username = data.get('username')
     timestamp = datetime.utcnow().isoformat()
-    if room and message and username:
+    print(f"[SOCKET] chat_message from {username} in room {room}: {message} (image={'yes' if image else 'no'})")
+    if room and username and (message or image):
         # Store message in DB
         chat_doc = {
             'room': room,
             'username': username,
             'message': message,
+            'image': image,
             'timestamp': timestamp
         }
         chat_messages_collection.insert_one(chat_doc)
@@ -701,6 +713,7 @@ def handle_chat_message(data):
             'room': room,
             'username': username,
             'message': message,
+            'image': image,
             'timestamp': timestamp
         }, room=room, include_self=True)
 

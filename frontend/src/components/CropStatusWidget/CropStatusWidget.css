@@ -4,10 +4,12 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
-  min-height: 400px;
+  max-height: 560px;
+  min-height: 320px;
   font-family: 'Arial', sans-serif;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .crop-status-widget::before {

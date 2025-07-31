@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import './dash.css';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
@@ -8,6 +8,12 @@ import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget
 const Dash = () => {
   const { t } = useTranslation('common');
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [weatherHighlight, setWeatherHighlight] = useState(false);
+  const [soilHighlight, setSoilHighlight] = useState(false);
+  const weatherRef = useRef(null);
+  const soilRef = useRef(null);
+  const cropRef = useRef(null);
+  const [cropHighlight, setCropHighlight] = useState(false);
   // Optionally, get user's current location if nothing is selected
   useEffect(() => {
     if (!selectedLocation && window.navigator.geolocation) {
@@ -28,10 +34,71 @@ const Dash = () => {
         <h2>{t('dashboard.title')}</h2>
         <ul>
           <li><a href="#overview">{t('dashboard.overview')}</a></li>
-          <li><a href="#weather">{t('dashboard.weather')}</a></li>
-          <li><a href="#crops">{t('dashboard.my_crops')}</a></li>
-          <li><a href="#soil">Soil</a></li>
-          <li><a href="#organic-fertilizers">Organic Fertilizers</a></li>
+          <li>
+            <a
+              href="#weather"
+              onClick={e => {
+                e.preventDefault();
+                if (weatherRef && weatherRef.current) {
+                  weatherRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  setWeatherHighlight(true);
+                }
+              }}
+            >
+              {t('dashboard.weather')}
+            </a>
+          </li>
+          <li>
+            <a
+              href="#crops"
+              onClick={e => {
+                e.preventDefault();
+                if (cropRef && cropRef.current) {
+                  cropRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  setCropHighlight(true);
+                }
+              }}
+            >
+              {t('dashboard.my_crops')}
+            </a>
+          </li>
+          <li>
+            <a
+              href="#soil"
+              onClick={e => {
+                e.preventDefault();
+                if (soilRef && soilRef.current) {
+                  soilRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  setSoilHighlight(true);
+                }
+              }}
+            >
+              Soil
+            </a>
+          </li>
+          <li>
+            <a href="#organic-fertilizers">Organic Fertilizers</a>
+            <div style={{ marginTop: '8px', textAlign: 'center' }}>
+              <a
+                href="/Organic-Fertilizers-Guide.pdf"
+                download
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 16px',
+                  background: '#205ecaff',
+                  color: '#fff',
+                  borderRadius: '6px',
+                  fontWeight: 'bold',
+                  textDecoration: 'none',
+                  fontSize: '0.95rem',
+                  marginTop: '4px',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                }}
+              >
+                Download PDF
+              </a>
+            </div>
+          </li>
         </ul>
       </div>
       <div className="main-content">
@@ -74,9 +141,30 @@ const Dash = () => {
           </div>
         </div>
         <div className="widgets">
-          <WeatherWidget location={selectedLocation} />
-          <SoilWidget location={selectedLocation} />
-          <CropStatusWidget />
+          <div
+            ref={weatherRef}
+            id="weather"
+            className={weatherHighlight ? 'widget widget-highlight' : 'widget'}
+            onAnimationEnd={() => setWeatherHighlight(false)}
+          >
+            <WeatherWidget location={selectedLocation} />
+          </div>
+          <div
+            ref={soilRef}
+            id="soil"
+            className={soilHighlight ? 'widget widget-highlight' : 'widget'}
+            onAnimationEnd={() => setSoilHighlight(false)}
+          >
+            <SoilWidget location={selectedLocation} />
+          </div>
+          <div
+            ref={cropRef}
+            id="crops"
+            className={cropHighlight ? 'widget widget-highlight' : 'widget'}
+            onAnimationEnd={() => setCropHighlight(false)}
+          >
+            <CropStatusWidget />
+          </div>
         </div>
       </div>
     </div>
