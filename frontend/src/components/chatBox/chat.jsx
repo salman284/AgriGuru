@@ -1,71 +1,80 @@
+
+
+
+
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import io from 'socket.io-client';
 import './chat.css';
+import { useNavigate } from 'react-router-dom';
 
-const BACKEND_URL = 'http://localhost:5001/api/chat'; // Adjust as needed
+const SOCKET_URL = 'http://localhost:5001';
+const ROOM = 'agriguru-group';
 
-const ChatBox = ({ currentUser }) => {
+
+
+function ChatBoxInner({ currentUser, users, onLoginRequest }) {
+  const name = currentUser?.name;
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  // Image upload state
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [typingStatus, setTypingStatus] = useState(null);
-  const pollingRef = useRef(null);
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-  // No user selection needed for group chat
-
-  useEffect(() => {
-    // Poll for group messages and typing status when chat is open
-    if (currentUser && open) {
-      pollingRef.current = setInterval(() => {
-        axios.get(`${BACKEND_URL}/messages`)
-          .then(res => {
-            setMessages(res.data.messages || []);
-            setTypingStatus(res.data.typing || null); // expects backend to send { typing: 'UserName' } or null
-          })
-          .catch(() => {});
-      }, 2000);
-    }
-    return () => clearInterval(pollingRef.current);
-  }, [currentUser, open]);
-
-  // Simulate login (replace with real auth)
-  if (!currentUser) {
-    return <div className="chat-login-msg">Please login to access farmer chat.</div>;
-  }
-
+  // Only show the chat icon if logged in
   const handleOpenChat = () => {
     setOpen(true);
   };
+  const handleCloseChat = () => setOpen(false);
 
-  const handleCloseChat = () => {
-    setOpen(false);
-    setMessages([]);
-  };
+  // Only connect socket if logged in and chat is open
+  useEffect(() => {
+    if (!open || !currentUser) return;
+    socketRef.current = io(SOCKET_URL, {
+      transports: ['websocket'],
+      withCredentials: true
+    });
+    socketRef.current.emit('join', { room: ROOM, username: name });
 
-  // Send message or image to group
-  const handleSend = async () => {
-    if (input.trim() === '' && !imagePreview) return;
-    const newMsg = {
-      text: input,
-      sender: currentUser.name,
-      from: currentUser.id,
-      image: imagePreview || null
+    socketRef.current.on('chat_message', (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+    socketRef.current.on('typing', (data) => {
+      setTypingStatus(data.username);
+      setTimeout(() => setTypingStatus(null), 2000);
+    });
+
+    return () => {
+      socketRef.current.emit('leave', { room: ROOM, username: name });
+      socketRef.current.disconnect();
     };
-    setMessages([...messages, newMsg]);
+  }, [name, open, currentUser]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  const handleSend = () => {
+    if (!socketRef.current) return;
+    if (input.trim() === '' && !imagePreview) return;
+    const msg = {
+      room: ROOM,
+      username: name,
+      message: input,
+      image: imagePreview || null,
+      timestamp: new Date().toISOString()
+    };
+    setMessages((prev) => [...prev, msg]);
+    socketRef.current.emit('chat_message', msg);
     setInput('');
     setImage(null);
     setImagePreview(null);
-    try {
-      await axios.post(`${BACKEND_URL}/send`, newMsg);
-    } catch (err) {
-      // Optionally show error
-    }
   };
 
-  // Handle image selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -75,7 +84,6 @@ const ChatBox = ({ currentUser }) => {
     reader.readAsDataURL(file);
   };
 
-  // Remove selected image
   const handleRemoveImage = () => {
     setImage(null);
     setImagePreview(null);
@@ -83,20 +91,21 @@ const ChatBox = ({ currentUser }) => {
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
-    // Typing indicator POST removed to prevent network error
-    // axios.post(`${BACKEND_URL}/typing`, { user: currentUser.name, typing: !!e.target.value });
+    if (socketRef.current) {
+      socketRef.current.emit('typing', { room: ROOM, username: name });
+    }
   };
 
   return (
     <>
-      {/* Floating Chat Icon (bottom right) */}
-      {!open && (
+      {/* Floating Chat Icon (bottom right) - only if logged in */}
+      {!open && currentUser && (
         <div className="chat-icon" onClick={handleOpenChat} title="Farmer Chat">
           <span role="img" aria-label="chat">💬</span>
         </div>
       )}
-      {/* Modern Group Chat Bar */}
-      {open && (
+      {/* Modern Group Chat Bar - only if logged in */}
+      {open && currentUser && (
         <div className="chat-bar modern-chat">
           <div className="chat-header modern-chat-header">
             <div className="chat-avatar">
@@ -108,16 +117,15 @@ const ChatBox = ({ currentUser }) => {
             </div>
             <button className="close-btn" onClick={handleCloseChat}>×</button>
           </div>
-          {/* Group Chat Window */}
           <div className="chat-messages modern-chat-messages">
             {messages.length === 0 ? (
               <div className="chat-empty">No messages yet. Start the conversation!</div>
             ) : (
               messages.map((msg, idx) => (
-                <div key={idx} className={`chat-message modern-message-bubble ${msg.sender === currentUser.name ? 'user' : 'other'}`}>
+                <div key={idx} className={`chat-message modern-message-bubble ${msg.username === name ? 'user' : 'other'}`}>
                   <div className="bubble-content">
-                    <span className="bubble-sender">{msg.sender === currentUser.name ? 'You' : msg.sender}</span>
-                    {msg.text && <span className="bubble-text">{msg.text}</span>}
+                    <span className="bubble-sender">{msg.username === name ? 'You' : msg.username}</span>
+                    {msg.message && <span className="bubble-text">{msg.message}</span>}
                     {msg.image && (
                       <img src={msg.image} alt="Sent" className="bubble-image" />
                     )}
@@ -125,6 +133,7 @@ const ChatBox = ({ currentUser }) => {
                 </div>
               ))
             )}
+            <div ref={messagesEndRef} />
           </div>
           <div className="chat-input-area modern-input-area">
             <input
@@ -150,13 +159,91 @@ const ChatBox = ({ currentUser }) => {
               <button className="remove-image-btn" onClick={handleRemoveImage} title="Remove Image">✖</button>
             </div>
           )}
-          {typingStatus && typingStatus !== currentUser.name && (
+          {typingStatus && typingStatus !== name && (
             <div className="typing-indicator">{typingStatus} is typing...</div>
           )}
         </div>
       )}
     </>
   );
-};
+}
+
+
+// Wrapper to handle login prompt
+function ChatBox(props) {
+  // Debug: log currentUser value
+  console.log('ChatBox currentUser:', props.currentUser);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const navigate = useNavigate();
+
+  // Show login prompt automatically if not logged in
+  useEffect(() => {
+    if (!props.currentUser) {
+      setShowLoginPrompt(true);
+    } else {
+      setShowLoginPrompt(false);
+    }
+  }, [props.currentUser]);
+
+  // When user logs in, close the login prompt and open the chat icon
+  useEffect(() => {
+    if (props.currentUser) {
+      setShowLoginPrompt(false);
+    }
+  }, [props.currentUser]);
+
+  const handleLoginRequest = () => {
+    setShowLoginPrompt(true);
+  };
+  const handleClosePrompt = () => {
+    setShowLoginPrompt(false);
+  };
+
+  const handleGoToLogin = () => {
+    navigate('/login');
+    setShowLoginPrompt(false);
+  };
+
+  return (
+    <>
+      <ChatBoxInner {...props} onLoginRequest={handleLoginRequest} />
+      {showLoginPrompt && (
+        <div
+          className="chat-login-prompt-overlay"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            className="chat-login-prompt-modal"
+            style={{
+              background: '#fff',
+              padding: '2rem',
+              borderRadius: '10px',
+              boxShadow: '0 2px 16px rgba(0,0,0,0.2)',
+              minWidth: '300px',
+              textAlign: 'center',
+            }}
+          >
+            <h3>Please log in to use the chat</h3>
+            <div className="chat-login-prompt-buttons" style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button onClick={handleGoToLogin} className="login-btn" style={{ padding: '0.5rem 1.5rem', background: '#2e7d32', color: '#fff', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>Login</button>
+              <button onClick={handleClosePrompt} className="close-btn" style={{ padding: '0.5rem 1.5rem', background: '#aaa', color: '#fff', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 export default ChatBox;

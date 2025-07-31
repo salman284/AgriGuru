@@ -26,9 +26,7 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
         }
       });
-      
       const data = await response.json();
-      
       if (data.authenticated) {
         // Get full user profile
         const profileResponse = await fetch('http://localhost:5001/api/profile', {
@@ -37,14 +35,22 @@ export const AuthProvider = ({ children }) => {
             'Content-Type': 'application/json',
           }
         });
-        
         if (profileResponse.ok) {
           const profileData = await profileResponse.json();
-          setUser(profileData.user);
+          if (profileData.user && Object.keys(profileData.user).length > 0) {
+            setUser(profileData.user);
+          } else {
+            setUser(null);
+          }
+        } else {
+          setUser(null);
         }
+      } else {
+        setUser(null);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -63,10 +69,11 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (data.success && data.user && Object.keys(data.user).length > 0) {
         setUser(data.user);
         return { success: true, message: data.message };
       } else {
+        setUser(null);
         return { success: false, message: data.message };
       }
     } catch (error) {

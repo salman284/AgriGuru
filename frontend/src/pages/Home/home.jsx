@@ -1,4 +1,5 @@
 import React from 'react'
+import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import "./home.css"
@@ -13,12 +14,11 @@ import axios from "axios";
 const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
-  const [currentUser, setCurrentUser] = useState(null);
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // TEMP: Hardcode demo user to test chat icon
-    setCurrentUser({ id: 1, name: "Demo Farmer" });
+    // TODO: Fetch users if needed
     setUsers([{ id: 1, name: "Demo Farmer" }, { id: 2, name: "Other Farmer" }]);
   }, []);
 
@@ -75,7 +75,8 @@ const Home = () => {
         </div>
       </div>
       {/* Farmer ChatBar (floating icon and chat) */}
-      {currentUser && <ChatBox currentUser={currentUser} users={users} />}
+      {/* Always render ChatBox, but pass currentUser as null until login. ChatBox will handle hiding itself. */}
+      <ChatBox currentUser={currentUser} users={users} />
       {/* AI Chat Component */}
       <AIChat />
     </div>
