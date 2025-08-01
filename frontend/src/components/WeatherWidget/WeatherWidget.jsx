@@ -97,7 +97,7 @@ const WeatherWidget = ({ location }) => {
     return (
       <div className="weather-widget loading">
         <h3>🌤️ Weather Forecast</h3>
-        <div className="loading-spinner">Loading...</div>
+        <div className="loading-spinner"></div>
       </div>
     );
   }
@@ -179,21 +179,40 @@ const WeatherWidget = ({ location }) => {
 
   const renderThirtyDayForecast = () => (
     <div className="thirtyday-forecast" style={{ marginTop: 24 }}>
-      <h4 style={{ marginBottom: 16, fontWeight: 600, fontSize: '1.2em', color: '#2a7be4' }}>Upcoming 30-Day Weather</h4>
+      <h4 style={{ marginBottom: 16, fontWeight: 500, fontSize: '1.20em', color: '#1a5bbf', letterSpacing: '0.5px' }}>Upcoming 30-Day Weather</h4>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: '16px',
-        justifyItems: 'center'
+        gap: '10px',
+        justifyItems: 'center',
+        overflowX: 'auto',
+        minWidth: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}>
-        {/* First 9 days: show only the date, styled same as next 21 days */}
         {thirtyDayForecast.slice(0, 9).map((day, index) => (
-          <div key={day.date} className="forecast-day" style={{ background: '#f8fbff', borderRadius: '12px', boxShadow: '0 2px 8px rgba(42,123,228,0.08)', padding: '16px', maxWidth: '90px', maxHeight: '140px', textAlign: 'center', marginBottom: '8px', border: '1px solid #e3eaf3' }}>
-            <div className="day-date" style={{ fontWeight: 'bold', fontSize: '1em', color: '#888', marginBottom: '4px' }}>{day.date}</div>
-            <div className="day-icon" style={{ fontSize: '2em', marginBottom: '4px' }}>{day.weatherIcon}</div>
-            <div className="day-temps" style={{ fontSize: '1em', color: '#333' }}>
-              <span className="high-temp" style={{ color: '#e67e22', fontWeight: 500 }}>High: {day.maxTemp}°</span><br/>
-              <span className="low-temp" style={{ color: '#3498db', fontWeight: 500 }}>Low: {day.minTemp}°</span>
+          <div key={day.date} className="forecast-day" style={{
+            background: 'linear-gradient(135deg, #e3f0ff 0%, #fafdff 100%)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 16px rgba(42,123,228,0.10)',
+            padding: '14px 10px 6px 10px',
+            maxWidth: '80px',
+            minWidth: '80px',
+            maxHeight: '130px',
+            textAlign: 'center',
+            marginBottom: '8px',
+            border: '1.5px solid #dbeafe',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontFamily: 'inherit'
+          }}>
+            <div className="day-date" style={{ fontWeight: 600, fontSize: '1em', color: '#1a5bbf', marginBottom: '4px', letterSpacing: '0.2px' }}>{day.date}</div>
+            <div className="day-icon" style={{ fontSize: '2.1em', marginBottom: '4px' }}>{day.weatherIcon}</div>
+            <div className="day-temps" style={{ fontSize: '1.05em', color: '#1a5bbf', fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center' }}>
+              <span className="high-temp" style={{ color: '#e67e22', fontWeight: 700 }}>▲ {day.maxTemp}°</span>
+              <span className="low-temp" style={{ color: '#3498db', fontWeight: 700 }}>▼ {day.minTemp}°</span>
             </div>
           </div>
         ))}
@@ -201,20 +220,39 @@ const WeatherWidget = ({ location }) => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: '16px',
+        gap: '10px',
         justifyItems: 'center',
-        marginTop: '12px',
-        borderTop: '1px solid #e3eaf3',
-        paddingTop: '16px'
+        marginTop: '14px',
+        borderTop: '1.5px solid #dbeafe',
+        paddingTop: '18px',
+        overflowX: 'auto',
+        minWidth: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}>
-        {/* Next 21 days: show only the date */}
         {thirtyDayForecast.slice(9).map((day, index) => (
-          <div key={day.date} className="forecast-day" style={{ background: '#f8fbff', borderRadius: '12px', boxShadow: '0 2px 8px rgba(42,123,228,0.08)', padding: '16px',  maxWidth: '90px', maxHeight: '140px', textAlign: 'center', marginBottom: '8px', border: '1px solid #e3eaf3' }}>
-            <div className="day-date" style={{ fontWeight: 'bold', fontSize: '1em', color: '#888', marginBottom: '4px' }}>{day.date}</div>
-            <div className="day-icon" style={{ fontSize: '2em', marginBottom: '4px' }}>{day.weatherIcon}</div>
-            <div className="day-temps" style={{ fontSize: '1em', color: '#333' }}>
-              <span className="high-temp" style={{ color: '#e67e22', fontWeight: 500 }}>High: {day.maxTemp}°</span><br/>
-              <span className="low-temp" style={{ color: '#3498db', fontWeight: 500 }}>Low: {day.minTemp}°</span>
+          <div key={day.date} className="forecast-day" style={{
+            background: 'linear-gradient(135deg, #e3f0ff 0%, #fafdff 100%)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 16px rgba(42,123,228,0.10)',
+            padding: '14px 10px 6px 10px',
+            maxWidth: '80px',
+            minWidth: '80px',
+            maxHeight: '130px',
+            textAlign: 'center',
+            marginBottom: '8px',
+            border: '1.5px solid #dbeafe',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontFamily: 'inherit'
+          }}>
+            <div className="day-date" style={{ fontWeight: 600, fontSize: '1em', color: '#1a5bbf', marginBottom: '4px', letterSpacing: '0.2px' }}>{day.date}</div>
+            <div className="day-icon" style={{ fontSize: '2.1em', marginBottom: '4px' }}>{day.weatherIcon}</div>
+            <div className="day-temps" style={{ fontSize: '1.05em', color: '#1a5bbf', fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center' }}>
+              <span className="high-temp" style={{ color: '#e67e22', fontWeight: 700 }}>▲ {day.maxTemp}°</span>
+              <span className="low-temp" style={{ color: '#3498db', fontWeight: 700 }}>▼ {day.minTemp}°</span>
             </div>
           </div>
         ))}

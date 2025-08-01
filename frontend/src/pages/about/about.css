@@ -224,7 +224,7 @@
   color: white;
   padding: 50px 40px;
   border-radius: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 3px;
   box-shadow: 0 12px 40px rgba(255, 152, 0, 0.3);
   position: relative;
   overflow: hidden;
@@ -427,5 +427,80 @@
   
   .about-title {
     color: #FFD700;
+  }
+}
+
+.about-feedback-section {
+  background: #fff;
+  border: 1.5px solid #dbeafe;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  width: 20%;
+  box-shadow: 0 2px 8px rgba(42,123,228,0.06);
+  margin: 0 auto 32px auto;
+}
+
+.about-feedback-section h2 {
+  font-size: 1.5rem;
+  color: #1a5bbf;
+  margin-bottom: 1rem;
+@media (max-width: 768px) {
+  .about-feedback-section {
+    padding: 1.2rem 0.5rem;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(42,123,228,0.04);
+  }
+  .about-feedback-section h2 {
+    font-size: 1.2rem;
+  }
+}
+}
+@media (max-width: 768px) {
+  .about-feedback-section {
+    padding: 1.2rem 0.5rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(42,123,228,0.04);
+    margin: 0 0 24px 0;
+  }
+  .about-feedback-section h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .about-feedback-section form {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .about-feedback-section textarea {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+  .about-feedback-section button {
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-feedback-section {
+    padding: 0.8rem 0.2rem;
+    border-radius: 8px;
+    margin: 0 0 16px 0;
+  }
+  .about-feedback-section h2 {
+    font-size: 1rem;
+  }
+  .about-feedback-section form {
+    font-size: 0.95rem;
+  }
+  .about-feedback-section textarea {
+    font-size: 0.95rem;
+    padding: 0.4rem;
+  }
+  .about-feedback-section button {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.7rem;
   }
 }

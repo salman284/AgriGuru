@@ -4,10 +4,12 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 8px 32px rgba(139, 69, 19, 0.3);
-  min-height: 400px;
+  max-height: 560px;
+  min-height: 320px;
   font-family: 'Arial', sans-serif;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .soil-widget::before {
@@ -34,6 +36,7 @@
   margin: 0;
   font-size: 1.3em;
   font-weight: bold;
+  color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -137,12 +140,14 @@
   justify-content: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   border: 3px solid rgba(255, 255, 255, 0.3);
+  color: #fff !important;
 }
 
 .status-text {
   font-size: 0.8em;
   font-weight: bold;
   text-align: center;
+  color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 

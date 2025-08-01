@@ -244,45 +244,187 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar-container {
-    padding: 0.75rem;
+    padding: 0.5rem 0.5rem;
+    height: 56px;
   }
-  
+  .navbar-logo h2 {
+    font-size: 1.2rem;
+  }
+  .logo-image {
+    height: 40px;
+    width: 40px;
+  }
+  /* LanguageSwitcher in mobile dropdown */
+  .mobile-dropdown-menu .mobile-language-switcher {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0 0.5rem 0;
+  }
+  .mobile-dropdown-menu .mobile-language-switcher button,
+  .mobile-dropdown-menu .mobile-language-switcher select {
+    background: #eaf6e6;
+    color: #2d5016;
+    border: 2px solid #2d5016;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.20rem 0.6rem;
+    max-height: 2px;
+    margin: 0 0.2rem;
+    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.08);
+    transition: background 0.18s, color 0.18s;
+    cursor: pointer;
+  }
+  .mobile-dropdown-menu .mobile-language-switcher button:hover,
+  .mobile-dropdown-menu .mobile-language-switcher select:hover {
+    background: #d2e9d0;
+    color: #1a3009;
+    border-color: #1a3009;
+  }
+  .navbar-auth {
+    gap: 0.35rem;
+  }
+  /* Make LanguageSwitcher button compact in navbar for mobile */
+  .navbar-auth .LanguageSwitcher button,
+  .navbar-auth .LanguageSwitcher select {
+    padding: 0.12rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    max-height: 20px !important;
+    height: 20px !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+  .login-btn, .signup-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 70px;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
   .navbar-menu {
     display: none;
   }
-  
-  .navbar-logo h2 {
-    font-size: 1.5rem;
+
+  /* Mobile dropdown menu styles */
+  .mobile-dropdown-menu {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(45, 80, 22, 0.12);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 2001;
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    animation: dropdownFadeIn 0.25s ease;
   }
-  
-  .navbar-auth {
-    gap: 0.5rem;
+  @keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  
-  .login-btn, .signup-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    min-width: 80px;
+  .mobile-dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .mobile-dropdown-menu .navbar-link {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    color: #2d5016;
+    background: none;
+    font-weight: 600;
+    transition: background 0.18s, color 0.18s;
+    text-align: left;
+  }
+  .mobile-dropdown-menu .navbar-link.active,
+  .mobile-dropdown-menu .navbar-link:hover {
+    background: #eaf6e6;
+    color: #1a3009;
+  }
+  .mobile-dropdown-menu .navbar-link[href="/marketplace"] {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border-radius: 20px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.12);
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .mobile-dropdown-menu .navbar-link[href="/marketplace"]:hover {
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+    color: white;
+  }
+  .mobile-auth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    align-items: stretch;
+  }
+  .mobile-auth-section .login-btn,
+  .mobile-auth-section .signup-btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin: 0;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.08);
+    text-align: center;
+  }
+  .mobile-auth-section .login-btn {
+    background-color: #2d5016;
+    color: white;
+    border: 2px solid #2d5016;
+  }
+  .mobile-auth-section .signup-btn {
+    background-color: white;
+    color: #2d5016;
+    border: 2px solid #2d5016;
+  }
+  .mobile-auth-section .login-btn:hover {
+    background-color: #1a3009;
+    border-color: #1a3009;
+    color: white;
+  }
+  .mobile-auth-section .signup-btn:hover {
+    background-color: #2d5016;
+    color: white;
+    border-color: #2d5016;
   }
 }
 
 /* Small Mobile Devices */
 @media (max-width: 380px) {
   .navbar-container {
-    padding: 0.5rem;
+    padding: 0.3rem 0.2rem;
+    height: 48px;
   }
-
   .navbar-logo h2 {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
-
+  .logo-image {
+    height: 32px;
+    width: 32px;
+  }
   .navbar-auth {
-    gap: 0.35rem;
+    gap: 0.2rem;
   }
-
   .login-btn, .signup-btn {
-    padding: 0.45rem 0.8rem;
-    font-size: 0.8rem;
-    min-width: 70px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    min-width: 55px;
   }
 }
