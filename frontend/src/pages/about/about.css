@@ -224,7 +224,7 @@
   color: white;
   padding: 50px 40px;
   border-radius: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 3px;
   box-shadow: 0 12px 40px rgba(255, 152, 0, 0.3);
   position: relative;
   overflow: hidden;
@@ -428,4 +428,21 @@
   .about-title {
     color: #FFD700;
   }
+}
+
+.about-feedback-section {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1.0rem;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin: 0 auto;
+  margin-bottom: auto;
+}
+
+.about-feedback-section h2 {
+  font-size: 1.5rem;
+  color: #fefffd;
+  margin-bottom: 1rem;
 }
