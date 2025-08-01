@@ -106,6 +106,7 @@
 .sidebar {
   background: white;
   border-radius: 12px;
+  color:white;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: fit-content;
@@ -115,7 +116,7 @@
 
 .sidebar h3 {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: #f7f3f3;
   font-size: 1.3rem;
 }
 
@@ -140,7 +141,7 @@
 }
 
 .category-btn:hover {
-  background: #f0f9ff;
+  background: #1ca058;
   transform: translateX(4px);
 }
 
@@ -155,18 +156,19 @@
 
 .category-name {
   font-weight: 500;
+  color:#e8f5e8;
 }
 
 /* Featured Brands */
 .featured-brands {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #fcf8f8;
 }
 
 .featured-brands h4 {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: #f3f1f1;
 }
 
 .brand-list {
@@ -177,10 +179,10 @@
 
 .brand-item {
   padding: 8px 12px;
-  background: #f8f9fa;
+  background: #f9f9fa;
   border-radius: 6px;
   font-size: 0.9rem;
-  color: #666;
+  color: #393838;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -192,7 +194,7 @@
 
 /* Products Section */
 .products-section {
-  background: white;
+  background: rgb(255, 254, 254);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
