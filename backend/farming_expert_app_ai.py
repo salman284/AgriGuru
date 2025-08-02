@@ -39,6 +39,89 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"])
 
+# --- Crop Health Analysis Endpoint ---
+from werkzeug.utils import secure_filename
+import tempfile
+import numpy as np
+try:
+    import torch
+    import torchvision.transforms as transforms
+    from PIL import Image
+    import requests as py_requests
+    # Use torchvision's EfficientNet or ResNet
+    from torchvision import models
+except ImportError:
+    torch = None
+    transforms = None
+    Image = None
+
+@app.route('/api/crop-image-analysis', methods=['POST'])
+def crop_image_analysis():
+    """Analyze crop/leaf image using PyTorch EfficientNet/ResNet"""
+    if torch is None or transforms is None or Image is None:
+        return jsonify({'success': False, 'error': 'PyTorch or PIL not installed on server.'}), 500
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'error': 'No image file provided.'}), 400
+    file = request.files['image']
+    filename = secure_filename(file.filename)
+    try:
+        # Save to temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp:
+            file.save(temp.name)
+            img_path = temp.name
+        # Load and preprocess image
+        img = Image.open(img_path).convert('RGB')
+        preprocess = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+        input_tensor = preprocess(img)
+        input_batch = input_tensor.unsqueeze(0)
+        # Load EfficientNet or ResNet model (pretrained)
+        model = models.efficientnet_b0(pretrained=True)
+        model.eval()
+        with torch.no_grad():
+            outputs = model(input_batch)
+            probs = torch.nn.functional.softmax(outputs[0], dim=0)
+            confidence, pred_idx = torch.max(probs, 0)
+            confidence = float(confidence.item())
+            pred_idx = int(pred_idx.item())
+        # Get class name from ImageNet
+        # Download ImageNet class labels if not present
+        labels_url = 'https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt'
+        labels_path = os.path.join(os.path.dirname(__file__), 'imagenet_classes.txt')
+        if not os.path.exists(labels_path):
+            r = py_requests.get(labels_url)
+            with open(labels_path, 'w') as f:
+                f.write(r.text)
+        # Read class names and validate
+        try:
+            with open(labels_path, 'r') as f:
+                class_names = [line.strip() for line in f.readlines() if line.strip()]
+            if len(class_names) != 1000:
+                raise ValueError(f"imagenet_classes.txt should have 1000 classes, found {len(class_names)}")
+            if 0 <= pred_idx < len(class_names):
+                pred_class = class_names[pred_idx]
+            else:
+                pred_class = f"Unknown class (index {pred_idx})"
+        except Exception as e:
+            pred_class = f"Class label error: {str(e)}"
+        # Clean up temp file
+        os.remove(img_path)
+        return jsonify({
+            'success': True,
+            'result': {
+                'class': pred_class,
+                'description': pred_class,
+                'confidence': confidence
+            },
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 class GroqAgriBot:
     """AgriBot powered by Groq API - FREE & FAST"""
     

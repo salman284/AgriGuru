@@ -79,15 +79,43 @@ const MarketPriceDashboard = () => {
   ];
 
   // Mock API function (replace with actual API call)
-  // Fetch real-time market prices from local Agmarknet API
+  // Fetch real-time market prices from Agmarknet API
   const fetchMarketPrices = async (state, crop, market) => {
     setLoading(true);
     try {
-      // Use mock data instead of API
-      const records = generateMockMarketData(state, crop);
-      // Generate price history from modal price of first record
-      const historyData = generatePriceHistory(records[0]?.modalPrice || 3000);
-      // Generate prediction from history
+      const apiKey = process.env.REACT_APP_AGMARKNET_API_KEY;
+      const url = `https://api.data.gov.in/resource/variety-wise-daily-market-prices-data-commodity?api-key=${apiKey}&format=json` +
+        (state ? `&filters[state]=${encodeURIComponent(getStateName(state))}` : '') +
+        (crop ? `&filters[commodity]=${encodeURIComponent(getCropName(crop))}` : '') +
+        (market ? `&filters[market]=${encodeURIComponent(market)}` : '');
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('API request failed');
+      const data = await response.json();
+      console.log('Agmarknet API response:', data); // Debug log
+      let records = (data.records || []).map((rec, i) => ({
+        id: i + 1,
+        market: rec.market || market,
+        location: rec.district || rec.state || getStateName(state),
+        minPrice: Number(rec.min_price) || 0,
+        maxPrice: Number(rec.max_price) || 0,
+        modalPrice: Number(rec.modal_price) || 0,
+        priceChange: 0, // Not available in API
+        priceChangePercent: 0,
+        volume: Number(rec.arrival_quantity) || 0,
+        unit: rec.arrival_unit || getCropUnit(crop),
+        lastUpdated: rec.trans_date ? new Date(rec.trans_date) : new Date(),
+        trend: 'stable'
+      }));
+
+      // If no API records, use mock data as fallback
+      if (!records.length) {
+        records = generateMockMarketData(state, crop);
+      }
+
+      // Generate price history and prediction from first record
+      const modalPrice = records[0]?.modalPrice || 3000;
+      const historyData = generatePriceHistory(modalPrice);
       const predictionData = generatePricePrediction(historyData);
 
       setMarketData(records);
@@ -95,7 +123,7 @@ const MarketPriceDashboard = () => {
       setPricePrediction(predictionData);
       setLastUpdated(new Date());
     } catch (error) {
-      console.error('Error generating mock market data:', error);
+      console.error('Error fetching market data:', error);
       setMarketData([]);
       setPriceHistory([]);
       setPricePrediction([]);
@@ -363,48 +391,55 @@ const MarketPriceDashboard = () => {
       </div>
       <div className="market-table-section">
         <h3>Market Prices</h3>
-        <div className="market-grid">
-          {marketData.map(record => (
-            <div key={record.id} className={`market-card ${record.trend}`}>
-              <div className="market-header">
-                <h3>{record.market}</h3>
-                <div className="location">{record.location}</div>
-              </div>
-              <div className="price-info">
-                <div className="main-price">
-                  <span className="price-label">Modal Price</span>
-                  <span className="price-value">{formatPrice(record.modalPrice)}</span>
-                  <span className="price-unit">per {record.unit}</span>
+        {marketData.length === 0 ? (
+          <div style={{textAlign: 'center', color: '#888', margin: '30px 0'}}>
+            No market price data found for the selected filters.<br />
+            Try changing the state, crop, or market and click Refresh.
+          </div>
+        ) : (
+          <div className="market-grid">
+            {marketData.map(record => (
+              <div key={record.id} className={`market-card ${record.trend}`}>
+                <div className="market-header">
+                  <h3>{record.market}</h3>
+                  <div className="location">{record.location}</div>
                 </div>
-                <div className="price-range">
-                  <div className="price-item">
-                    <span className="label">Min</span>
-                    <span className="value">{formatPrice(record.minPrice)}</span>
+                <div className="price-info">
+                  <div className="main-price">
+                    <span className="price-label">Modal Price</span>
+                    <span className="price-value">{formatPrice(record.modalPrice)}</span>
+                    <span className="price-unit">per {record.unit}</span>
                   </div>
-                  <div className="price-item">
-                    <span className="label">Max</span>
-                    <span className="value">{formatPrice(record.maxPrice)}</span>
+                  <div className="price-range">
+                    <div className="price-item">
+                      <span className="label">Min</span>
+                      <span className="value">{formatPrice(record.minPrice)}</span>
+                    </div>
+                    <div className="price-item">
+                      <span className="label">Max</span>
+                      <span className="value">{formatPrice(record.maxPrice)}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="market-stats">
-                <div className="stat">
-                  <span className="label">Volume</span>
-                  <span className="value">{record.volume} {record.unit}</span>
+                <div className="market-stats">
+                  <div className="stat">
+                    <span className="label">Volume</span>
+                    <span className="value">{record.volume} {record.unit}</span>
+                  </div>
+                  <div className={`price-change ${record.trend}`}>
+                    <span className="change-icon">
+                      {record.trend === 'up' ? '▲' : record.trend === 'down' ? '▼' : '▬'}
+                    </span>
+                    {formatChange(record.priceChange, record.priceChangePercent)}
+                  </div>
                 </div>
-                <div className={`price-change ${record.trend}`}>
-                  <span className="change-icon">
-                    {record.trend === 'up' ? '▲' : record.trend === 'down' ? '▼' : '▬'}
-                  </span>
-                  {formatChange(record.priceChange, record.priceChangePercent)}
+                <div className="market-footer">
+                  <span className="updated-time">Last updated: {record.lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
               </div>
-              <div className="market-footer">
-                <span className="updated-time">Last updated: {record.lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
       {lastUpdated && (
         <div className="last-updated">Last updated: {lastUpdated.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}</div>

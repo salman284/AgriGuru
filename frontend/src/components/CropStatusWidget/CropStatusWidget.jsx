@@ -171,7 +171,12 @@ const CropStatusWidget = () => {
             </div>
             <div className="confidence">
               <span className="confidence-label">Confidence:</span>
-              <span className="confidence-value">{(analysis.confidence * 100).toFixed(1)}%</span>
+              <span
+                className="confidence-value"
+                style={analysis.status && analysis.status.toLowerCase().includes('nutrient deficiency') ? { color: "white", textShadow: '0 0 2px #fff', fontWeight: 'bold' } : {}}
+              >
+                {(analysis.confidence * 100).toFixed(1)}%
+              </span>
             </div>
           </div>
 
@@ -194,7 +199,9 @@ const CropStatusWidget = () => {
               <div className="leaf-analysis">
                 <strong>🍃 Leaf Analysis:</strong>
                 <div className="leaf-details">
-                  <span className="leaf-status">
+                  <span
+                    className={`leaf-status${analysis.leafAnalysis.type && analysis.leafAnalysis.type.toLowerCase().includes('spot') ? ' leaf-disease' : ''}`}
+                  >
                     Condition: {analysis.leafAnalysis.type || 'Analyzed'}
                   </span>
                   {analysis.leafAnalysis.color && analysis.leafAnalysis.color !== 'unknown' && (
@@ -218,18 +225,6 @@ const CropStatusWidget = () => {
               </div>
             )}
 
-            {/* Debug: Show leaf analysis even if not detected */}
-            {analysis.leafAnalysis && !analysis.leafAnalysis.detected && (
-              <div className="leaf-analysis-debug">
-                <strong>🔍 Debug - Leaf Analysis (not detected):</strong>
-                <div className="leaf-details">
-                  <span>Type: {analysis.leafAnalysis.type}</span>
-                  <span>Color: {analysis.leafAnalysis.color}</span>
-                  <span>Pattern: {analysis.leafAnalysis.pattern}</span>
-                  <span>Detected: {analysis.leafAnalysis.detected ? 'Yes' : 'No'}</span>
-                </div>
-              </div>
-            )}
 
             <div className="recommendations">
               <h4>💡 Recommendations:</h4>
