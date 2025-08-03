@@ -6,7 +6,6 @@ import './Navbar.css';
 import logo from './logo.png'; 
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'; 
 import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
-import AgrifarmForm from '../../pages/agrifarm/agrifarm'; // Not strictly needed here, but for clarity
 
 const Navbar = () => {
   const { t } = useTranslation('common');
@@ -58,9 +57,7 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/government-schemes" className={`navbar-link ${isActive('/government-schemes') ? 'active' : ''}`}>{t('navbar.government')}</Link>
           </li>
-          <li className="navbar-item">
-            <Link to="/agrifarm" className={`navbar-link ${isActive('/agrifarm') ? 'active' : ''}`}>🌾 AgriFarm Contract</Link>
-          </li>
+          
           <li className="navbar-item">
             <Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>{t('navbar.about')}</Link>
           </li>
