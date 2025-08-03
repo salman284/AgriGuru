@@ -13,6 +13,7 @@ import ContactPage from './pages/contacts/contact.jsx';
 import Ecommerce from './pages/shopping/ecommerce.jsx';
 import MarketPriceDashboard from './pages/market&loan/ml.jsx';
 import Navbar from './components/Navbar/Navbar';
+import AgrifarmForm from './pages/agrifarm/agrifarm'; // <-- Import the form
 import './i18n/i18n'; // Initialize i18n
 
 function App() {
@@ -22,20 +23,21 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/dashboard" element={<Dash />} />
-          <Route path="/market-prices" element={<MarketPriceDashboard />} />
-          <Route path="/marketplace" element={<Ecommerce />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/government-schemes" element={<GovtSchemes />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/otp-login" element={<OTPLogin />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/contacts" element={<ContactPage />} />
-        </Routes>
-      </Router>
-    </div>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/dashboard" element={<Dash />} />
+            <Route path="/market-prices" element={<MarketPriceDashboard />} />
+            <Route path="/marketplace" element={<Ecommerce />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/government-schemes" element={<GovtSchemes />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/otp-login" element={<OTPLogin />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/contacts" element={<ContactPage />} />
+            <Route path="/agrifarm" element={<AgrifarmForm />} /> {/* <-- Add route */}
+          </Routes>
+        </Router>
+      </div>
     </AuthProvider>
   );
 }

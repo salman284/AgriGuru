@@ -6,6 +6,7 @@ import './Navbar.css';
 import logo from './logo.png'; 
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'; 
 import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
+import AgrifarmForm from '../../pages/agrifarm/agrifarm'; // Not strictly needed here, but for clarity
 
 const Navbar = () => {
   const { t } = useTranslation('common');
@@ -58,6 +59,9 @@ const Navbar = () => {
             <Link to="/government-schemes" className={`navbar-link ${isActive('/government-schemes') ? 'active' : ''}`}>{t('navbar.government')}</Link>
           </li>
           <li className="navbar-item">
+            <Link to="/agrifarm" className={`navbar-link ${isActive('/agrifarm') ? 'active' : ''}`}>🌾 AgriFarm Contract</Link>
+          </li>
+          <li className="navbar-item">
             <Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>{t('navbar.about')}</Link>
           </li>
           <li className="navbar-item">
@@ -66,6 +70,7 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`}>🛒 {t('navbar.marketplace')}</Link>
           </li>
+          
         </ul>
 
         <div className="navbar-auth">
@@ -98,6 +103,7 @@ const Navbar = () => {
             <li><Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.about')}</Link></li>
             <li><Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.contact_ado')}</Link></li>
             <li><Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🛒 {t('navbar.marketplace')}</Link></li>
+            <li><Link to="/agrifarm" className={`navbar-link ${isActive('/agrifarm') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🌾 AgriFarm Contract</Link></li>
           </ul>
           {/* Auth section for mobile dropdown */}
           {!loading && !user && (
