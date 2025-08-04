@@ -14,6 +14,18 @@ const Dash = () => {
   const soilRef = useRef(null);
   const cropRef = useRef(null);
   const [cropHighlight, setCropHighlight] = useState(false);
+  
+  // Modal state management
+  const [activeModal, setActiveModal] = useState(null);
+
+  // Handle modal open/close
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
   // Optionally, get user's current location if nothing is selected
   useEffect(() => {
     if (!selectedLocation && window.navigator.geolocation) {
@@ -39,13 +51,10 @@ const Dash = () => {
               href="#weather"
               onClick={e => {
                 e.preventDefault();
-                if (weatherRef && weatherRef.current) {
-                  weatherRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  setWeatherHighlight(true);
-                }
+                openModal('weather');
               }}
             >
-              {t('dashboard.weather')}
+              Weather Forecast
             </a>
           </li>
           <li>
@@ -53,13 +62,10 @@ const Dash = () => {
               href="#crops"
               onClick={e => {
                 e.preventDefault();
-                if (cropRef && cropRef.current) {
-                  cropRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  setCropHighlight(true);
-                }
+                openModal('crops');
               }}
             >
-              {t('dashboard.my_crops')}
+              Crop Analysis
             </a>
           </li>
           <li>
@@ -67,37 +73,22 @@ const Dash = () => {
               href="#soil"
               onClick={e => {
                 e.preventDefault();
-                if (soilRef && soilRef.current) {
-                  soilRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  setSoilHighlight(true);
-                }
+                openModal('soil');
               }}
             >
-              Soil
+              Soil Health
             </a>
           </li>
           <li>
-            <a href="#organic-fertilizers">Organic Fertilizers</a>
-            <div style={{ marginTop: '8px', textAlign: 'center' }}>
-              <a
-                href="/Organic-Fertilizers-Guide.pdf"
-                download
-                style={{
-                  display: 'inline-block',
-                  padding: '6px 16px',
-                  background: '#205ecaff',
-                  color: '#fff',
-                  borderRadius: '6px',
-                  fontWeight: 'bold',
-                  textDecoration: 'none',
-                  fontSize: '0.95rem',
-                  marginTop: '4px',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
-                }}
-              >
-                Download PDF
-              </a>
-            </div>
+            <a 
+              href="#organic-fertilizers"
+              onClick={e => {
+                e.preventDefault();
+                openModal('fertilizers');
+              }}
+            >
+              Organic Fertilizers
+            </a>
           </li>
         </ul>
       </div>
@@ -167,6 +158,68 @@ const Dash = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      {activeModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>
+                {activeModal === 'weather' && '🌤️ Weather Forecast'}
+                {activeModal === 'crops' && '🌾 Crop Analysis'}
+                {activeModal === 'soil' && '🌱 Soil Health'}
+                {activeModal === 'fertilizers' && '🧪 Organic Fertilizers'}
+              </h2>
+              <button className="modal-close" onClick={closeModal}>
+                ✕
+              </button>
+            </div>
+            <div className="modal-body">
+              {activeModal === 'weather' && (
+                <div className="modal-widget">
+                  <WeatherWidget location={selectedLocation} />
+                </div>
+              )}
+              {activeModal === 'crops' && (
+                <div className="modal-widget">
+                  <CropStatusWidget />
+                </div>
+              )}
+              {activeModal === 'soil' && (
+                <div className="modal-widget">
+                  <SoilWidget location={selectedLocation} />
+                </div>
+              )}
+              {activeModal === 'fertilizers' && (
+                <div className="fertilizer-modal-content">
+                  <div className="fertilizer-info">
+                    <h3>🌿 Natural & Sustainable Solutions</h3>
+                    <p>Discover organic fertilizers that improve soil health while protecting the environment:</p>
+                    <ul>
+                      <li><strong>Compost:</strong> Rich in nutrients, improves soil structure and water retention</li>
+                      <li><strong>Vermicompost:</strong> Earthworm-processed organic matter with enhanced nutrients</li>
+                      <li><strong>Green Manure:</strong> Nitrogen-fixing cover crops that enrich soil naturally</li>
+                      <li><strong>Bio-fertilizers:</strong> Beneficial microorganisms that promote plant growth</li>
+                      <li><strong>Organic Liquid Fertilizers:</strong> Fast-acting nutrients for quick absorption</li>
+                    </ul>
+                  </div>
+                  <div className="download-section">
+                    <h3>📄 Complete Guide</h3>
+                    <p>Download our comprehensive organic fertilizers guide with detailed instructions.</p>
+                    <a
+                      href="/Organic-Fertilizers-Guide.pdf"
+                      download
+                      className="download-btn-modal"
+                    >
+                      📥 Download PDF Guide
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

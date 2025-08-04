@@ -14,6 +14,7 @@ import Ecommerce from './pages/shopping/ecommerce.jsx';
 import MarketPriceDashboard from './pages/market&loan/ml.jsx';
 import AgriContractForm from './pages/agrifarm/agrifarm.jsx';
 import ContractAdmin from './pages/agrifarm/ContractAdmin.jsx';
+import KhetiSaath from './pages/khetisaath/KhetiSaath.jsx';
 import Navbar from './components/Navbar/Navbar';
 import './i18n/i18n'; // Initialize i18n
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/marketplace" element={<Ecommerce />} />
             <Route path="/agrifarm" element={<AgriContractForm />} />
             <Route path="/contract-admin" element={<ContractAdmin />} />
+            <Route path="/kheti-saath" element={<KhetiSaath />} />
             <Route path="/about" element={<About />} />
             <Route path="/government-schemes" element={<GovtSchemes />} />
             <Route path="/login" element={<Login />} />
