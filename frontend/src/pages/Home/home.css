@@ -95,6 +95,234 @@
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Clickable feature cards styling */
+.feature-box.clickable {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.feature-box.clickable:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.feature-box.clickable:focus {
+  outline: 3px solid #2d5016;
+  outline-offset: 2px;
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box.clickable:focus:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.feature-box.clickable:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* AI Chat feature specific styling */
+.feature-box.ai-chat-feature.clickable:hover {
+  background: linear-gradient(135deg, rgba(46, 80, 22, 0.1), rgba(74, 144, 226, 0.1));
+  box-shadow: 0 8px 30px rgba(46, 80, 22, 0.3);
+}
+
+.feature-box.ai-chat-feature.clickable::after {
+  content: '🤖 Click to open AI chat';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #2d5016;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-box.ai-chat-feature.clickable:hover::after {
+  opacity: 1;
+}
+
+/* Expert Advice feature specific styling */
+.feature-box.expert-advice-feature.clickable:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(160, 82, 45, 0.1));
+  box-shadow: 0 8px 30px rgba(139, 69, 19, 0.3);
+}
+
+.feature-box.expert-advice-feature.clickable::after {
+  content: '📚 Click to visit AgriGuide';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #8b4513;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-box.expert-advice-feature.clickable:hover::after {
+  opacity: 1;
+}
+
+/* Marketplace feature specific styling */
+.feature-box.marketplace-feature.clickable:hover {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 165, 0, 0.1));
+  box-shadow: 0 8px 30px rgba(255, 140, 0, 0.3);
+}
+
+.feature-box.marketplace-feature.clickable::after {
+  content: '🛒 Click to visit marketplace';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #ff8c00;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-box.marketplace-feature.clickable:hover::after {
+  opacity: 1;
+}
+
+/* Clickable weather feature styling */
+.feature-box.weather-feature.clickable {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.feature-box.weather-feature.clickable:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(116, 185, 255, 0.3);
+  background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(9, 132, 227, 0.1));
+}
+
+.feature-box.weather-feature.clickable:focus {
+  outline: 3px solid #74b9ff;
+  outline-offset: 2px;
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 5px 25px rgba(116, 185, 255, 0.2);
+}
+
+.feature-box.weather-feature.clickable:focus:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.feature-box.weather-feature.clickable::after {
+  content: '👆 Click to view forecast';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #74b9ff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-box.weather-feature.clickable:hover::after {
+  opacity: 1;
+}
+
+/* Weather Modal Styles */
+.weather-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.weather-modal-content {
+  background: white;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.weather-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0;
+}
+
+.weather-modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.weather-modal-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.weather-modal-close:hover {
+  background-color: #f5f5f5;
+  color: #333;
+  transform: rotate(90deg);
+}
+
+.weather-modal-close:focus {
+  outline: 2px solid #74b9ff;
+  outline-offset: 2px;
+  background-color: #f0f8ff;
+}
+
+.weather-modal-body {
+  padding: 20px;
+}
+
+/* Override weather widget styles for modal */
+.weather-modal-body .weather-widget {
+  margin: 0;
+  border-radius: 15px;
+}
+
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 15px;
@@ -185,5 +413,60 @@
   
   .feature-description {
     font-size: 0.9rem;
+  }
+
+  /* Mobile modal styles */
+  .weather-modal-overlay {
+    padding: 10px;
+  }
+
+  .weather-modal-content {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 15px;
+  }
+
+  .weather-modal-header {
+    padding: 15px 15px 0;
+  }
+
+  .weather-modal-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .weather-modal-body {
+    padding: 15px;
+  }
+
+  .weather-modal-close {
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+  }
+
+  /* Adjust feature click hints for mobile */
+  .feature-box.clickable::after {
+    font-size: 0.7rem;
+    bottom: 3px;
+  }
+
+  .feature-box.ai-chat-feature.clickable::after {
+    font-size: 0.7rem;
+    bottom: 3px;
+  }
+
+  .feature-box.expert-advice-feature.clickable::after {
+    font-size: 0.7rem;
+    bottom: 3px;
+  }
+
+  .feature-box.marketplace-feature.clickable::after {
+    font-size: 0.7rem;
+    bottom: 3px;
+  }
+
+  .feature-box.weather-feature.clickable::after {
+    font-size: 0.7rem;
+    bottom: 3px;
   }
 }
