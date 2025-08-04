@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { analyzeSoilHealth, getSoilType, getSoilColor, getSoilHealthEmoji, recommendCropsForSoil } from '../../services/soilService';
+import { analyzeSoilHealth, getSoilType, getSoilColor, getSoilHealthEmoji } from '../../services/soilService';
+import { getCropRecommendationsFromCSV } from '../../services/cropRecommendationService';
 import './SoilWidget.css';
 
 
@@ -9,6 +10,7 @@ const SoilWidget = ({ location: locationProp }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState({ lat: null, lon: null });
+  const [cropRecommendations, setCropRecommendations] = useState([]);
 
   useEffect(() => {
     const fetchSoilData = async () => {
@@ -85,6 +87,25 @@ const SoilWidget = ({ location: locationProp }) => {
     fetchSoilData();
   }, [locationProp]);
 
+  // Fetch crop recommendations from CSV when soil data changes
+  useEffect(() => {
+    const fetchCropRecommendations = async () => {
+      if (soilData && !soilData.error) {
+        try {
+          const recommendations = await getCropRecommendationsFromCSV(soilData);
+          setCropRecommendations(recommendations);
+        } catch (error) {
+          console.error('Error fetching crop recommendations:', error);
+          setCropRecommendations([]);
+        }
+      } else {
+        setCropRecommendations([]);
+      }
+    };
+    
+    fetchCropRecommendations();
+  }, [soilData]);
+
   // Helper: Map city name to coordinates
   function cityToCoords(city) {
     const map = {
@@ -140,32 +161,122 @@ const SoilWidget = ({ location: locationProp }) => {
 async function fetchAgromonitoringSoil(lat, lon) {
   const appid = '712c228fd2c3e40a861d87a748293bf2';
   const url = `http://api.agromonitoring.com/agro/1.0/soil?lat=${lat}&lon=${lon}&appid=${appid}`;
+  
+  // Generate location-based soil variation for better demonstration
+  const generateLocationBasedSoil = (lat, lon) => {
+    // Use lat/lon to create consistent but varying soil data
+    const latFactor = Math.abs(lat % 10) / 10;
+    const lonFactor = Math.abs(lon % 10) / 10;
+    
+    // Different soil types based on location
+    const soilVariations = [
+      // Sandy soil (Gujarat, Rajasthan region)
+      {
+        sand: 65 + Math.floor(latFactor * 20),
+        clay: 15 + Math.floor(lonFactor * 10),
+        silt: 20 + Math.floor((latFactor + lonFactor) * 5),
+        ph: 7.2 + (latFactor - 0.5) * 1.5,
+        nitrogen: 40 + Math.floor(lonFactor * 40),
+        organicCarbon: 0.8 + latFactor * 1.2
+      },
+      // Clay soil (Bengal, Odisha region)
+      {
+        sand: 20 + Math.floor(latFactor * 15),
+        clay: 45 + Math.floor(lonFactor * 20),
+        silt: 35 + Math.floor((latFactor + lonFactor) * 5),
+        ph: 6.0 + (lonFactor - 0.3) * 1.0,
+        nitrogen: 70 + Math.floor(latFactor * 50),
+        organicCarbon: 2.0 + lonFactor * 1.5
+      },
+      // Loamy soil (Punjab, Haryana region)
+      {
+        sand: 40 + Math.floor(latFactor * 20),
+        clay: 25 + Math.floor(lonFactor * 15),
+        silt: 35 + Math.floor((latFactor + lonFactor) * 5),
+        ph: 7.0 + (latFactor - 0.4) * 1.0,
+        nitrogen: 80 + Math.floor(lonFactor * 40),
+        organicCarbon: 2.5 + latFactor * 1.0
+      },
+      // Red soil (South India region)
+      {
+        sand: 50 + Math.floor(latFactor * 25),
+        clay: 30 + Math.floor(lonFactor * 15),
+        silt: 20 + Math.floor((latFactor + lonFactor) * 5),
+        ph: 5.8 + (lonFactor - 0.2) * 1.5,
+        nitrogen: 50 + Math.floor(latFactor * 60),
+        organicCarbon: 1.5 + lonFactor * 1.8
+      }
+    ];
+    
+    // Select soil type based on location
+    const index = Math.floor((lat + lon) * 10) % soilVariations.length;
+    return soilVariations[index];
+  };
+  
   try {
     const response = await fetch(url);
     if (response.status === 401) {
-      return { error: 'API key is not active or not authorized for soil data. Please check your Agromonitoring dashboard.' };
+      // Use location-based soil data when API fails
+      const locationSoil = generateLocationBasedSoil(lat, lon);
+      return {
+        ...locationSoil,
+        location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
+        depth: '0-30cm',
+        isRealTime: false,
+        lastUpdated: new Date().toLocaleString(),
+        error: 'API key is not active. Showing location-based sample data.'
+      };
     }
     if (!response.ok) {
-      return { error: `API error: ${response.status}` };
+      const locationSoil = generateLocationBasedSoil(lat, lon);
+      return {
+        ...locationSoil,
+        location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
+        depth: '0-30cm',
+        isRealTime: false,
+        lastUpdated: new Date().toLocaleString(),
+        error: `API error: ${response.status}. Showing location-based sample data.`
+      };
     }
     const result = await response.json();
-    // Map Agromonitoring response to widget fields, but use fallback only if field is undefined (not if 0)
-    return {
-      sand: typeof result.sand === 'number' ? result.sand : 45,
-      clay: typeof result.clay === 'number' ? result.clay : 25,
-      silt: typeof result.silt === 'number' ? result.silt : 30,
-      ph: typeof result.ph === 'number' ? result.ph : 6.8,
-      nitrogen: typeof result.n === 'number' ? result.n : 85,
-      organicCarbon: typeof result.oc === 'number' ? result.oc : 2.3,
-      moisture: typeof result.moisture === 'number' ? result.moisture : undefined,
-      location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
-      depth: result.depth || '0-30cm',
-      isRealTime: true,
-      lastUpdated: new Date().toLocaleString(),
-      data: result
-    };
+    
+    // Use real API data if available, otherwise location-based data
+    if (result && typeof result === 'object') {
+      return {
+        sand: typeof result.sand === 'number' ? result.sand : generateLocationBasedSoil(lat, lon).sand,
+        clay: typeof result.clay === 'number' ? result.clay : generateLocationBasedSoil(lat, lon).clay,
+        silt: typeof result.silt === 'number' ? result.silt : generateLocationBasedSoil(lat, lon).silt,
+        ph: typeof result.ph === 'number' ? result.ph : generateLocationBasedSoil(lat, lon).ph,
+        nitrogen: typeof result.n === 'number' ? result.n : generateLocationBasedSoil(lat, lon).nitrogen,
+        organicCarbon: typeof result.oc === 'number' ? result.oc : generateLocationBasedSoil(lat, lon).organicCarbon,
+        moisture: typeof result.moisture === 'number' ? result.moisture : undefined,
+        location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
+        depth: result.depth || '0-30cm',
+        isRealTime: true,
+        lastUpdated: new Date().toLocaleString(),
+        data: result
+      };
+    } else {
+      const locationSoil = generateLocationBasedSoil(lat, lon);
+      return {
+        ...locationSoil,
+        location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
+        depth: '0-30cm',
+        isRealTime: false,
+        lastUpdated: new Date().toLocaleString()
+      };
+    }
   } catch (err) {
-    return { error: 'Failed to fetch soil data' };
+    // Generate location-based data on error
+    const locationSoil = generateLocationBasedSoil(lat, lon);
+    return {
+      ...locationSoil,
+      location: `${lat.toFixed(3)}, ${lon.toFixed(3)}`,
+      depth: '0-30cm',
+      isRealTime: false,
+      lastUpdated: new Date().toLocaleString(),
+      error: 'Failed to fetch soil data. Showing location-based sample data.'
+    };
   }
 }
 
@@ -208,8 +319,6 @@ async function fetchAgromonitoringSoil(lat, lon) {
   const soilType = getSoilType(soilData?.sand || 45, soilData?.clay || 25, soilData?.silt || 30);
   const soilColor = getSoilColor(soilData?.organicCarbon || 2.3);
   const healthEmoji = getSoilHealthEmoji(analysis?.overall || 'Good');
-  // Always show crop recommendations based on the latest soil data for the selected or current location
-  const cropRecommendations = soilData ? recommendCropsForSoil(soilData) : [];
 
   return (
     <div className="soil-widget">
@@ -329,11 +438,32 @@ async function fetchAgromonitoringSoil(lat, lon) {
       {Array.isArray(cropRecommendations) && cropRecommendations.length > 0 && (
         <div className="crop-recommendations">
           <h4>🌾 Suitable Crops for {locationProp || 'Your Soil'}</h4>
-          <ul>
-            {cropRecommendations.map((crop, idx) => (
-              <li key={idx}>{crop}</li>
+          <div className="crop-list">
+            {cropRecommendations.slice(0, 6).map((crop, idx) => (
+              <div key={idx} className="crop-item">
+                <div className="crop-header">
+                  <span className="crop-name">{crop.crop_name}</span>
+                  <span className="crop-season">{crop.season}</span>
+                </div>
+                <div className="crop-details">
+                  <small>🌡️ {crop.temperature_range}°C</small>
+                  <small>💧 {crop.water_requirement}mm</small>
+                  <small>⏱️ {crop.growth_duration_days} days</small>
+                  <small>📈 {crop.yield_potential_tons_per_hectare} t/ha</small>
+                </div>
+                {crop.fertilizer_requirements && (
+                  <div className="crop-fertilizer">
+                    <small>🌱 {crop.fertilizer_requirements}</small>
+                  </div>
+                )}
+              </div>
             ))}
-          </ul>
+          </div>
+          {cropRecommendations.length > 6 && (
+            <div className="more-crops">
+              <small>+{cropRecommendations.length - 6} more crops suitable for your soil</small>
+            </div>
+          )}
         </div>
       )}
 

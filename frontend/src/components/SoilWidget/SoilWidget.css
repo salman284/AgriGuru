@@ -324,9 +324,102 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-  text-align: center;
-  gap: 15px;
   z-index: 1;
+}
+
+.crop-recommendations h4 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: white;
+  font-size: 1.1em;
+}
+
+.crop-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.crop-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.crop-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.crop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.crop-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: white;
+}
+
+.crop-season {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  color: white;
+  font-weight: 500;
+}
+
+.crop-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.crop-details small {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.crop-fertilizer {
+  margin-top: 8px;
+}
+
+.crop-fertilizer small {
+  background: rgba(34, 139, 34, 0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8em;
+  color: white;
+  display: block;
+  text-align: center;
+  border: 1px solid rgba(34, 139, 34, 0.5);
+}
+
+.more-crops {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.more-crops small {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
 }
 
 .crop-recommendations ul {
@@ -378,6 +471,26 @@
   
   .widget-header h3 {
     font-size: 1.1em;
+  }
+  
+  .crop-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .crop-details {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  
+  .crop-item {
+    padding: 12px;
+  }
+  
+  .crop-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
