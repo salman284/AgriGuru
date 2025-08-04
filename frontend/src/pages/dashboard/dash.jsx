@@ -5,6 +5,7 @@ import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import SoilWidget from '../../components/SoilWidget/SoilWidget';
 import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget';
 
+
 const Dash = () => {
   const { t } = useTranslation('common');
   const [selectedLocation, setSelectedLocation] = useState("");
