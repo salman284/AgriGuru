@@ -39,6 +39,89 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"])
 
+# --- Crop Health Analysis Endpoint ---
+from werkzeug.utils import secure_filename
+import tempfile
+import numpy as np
+try:
+    import torch
+    import torchvision.transforms as transforms
+    from PIL import Image
+    import requests as py_requests
+    # Use torchvision's EfficientNet or ResNet
+    from torchvision import models
+except ImportError:
+    torch = None
+    transforms = None
+    Image = None
+
+@app.route('/api/crop-image-analysis', methods=['POST'])
+def crop_image_analysis():
+    """Analyze crop/leaf image using PyTorch EfficientNet/ResNet"""
+    if torch is None or transforms is None or Image is None:
+        return jsonify({'success': False, 'error': 'PyTorch or PIL not installed on server.'}), 500
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'error': 'No image file provided.'}), 400
+    file = request.files['image']
+    filename = secure_filename(file.filename)
+    try:
+        # Save to temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp:
+            file.save(temp.name)
+            img_path = temp.name
+        # Load and preprocess image
+        img = Image.open(img_path).convert('RGB')
+        preprocess = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+        input_tensor = preprocess(img)
+        input_batch = input_tensor.unsqueeze(0)
+        # Load EfficientNet or ResNet model (pretrained)
+        model = models.efficientnet_b0(pretrained=True)
+        model.eval()
+        with torch.no_grad():
+            outputs = model(input_batch)
+            probs = torch.nn.functional.softmax(outputs[0], dim=0)
+            confidence, pred_idx = torch.max(probs, 0)
+            confidence = float(confidence.item())
+            pred_idx = int(pred_idx.item())
+        # Get class name from ImageNet
+        # Download ImageNet class labels if not present
+        labels_url = 'https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt'
+        labels_path = os.path.join(os.path.dirname(__file__), 'imagenet_classes.txt')
+        if not os.path.exists(labels_path):
+            r = py_requests.get(labels_url)
+            with open(labels_path, 'w') as f:
+                f.write(r.text)
+        # Read class names and validate
+        try:
+            with open(labels_path, 'r') as f:
+                class_names = [line.strip() for line in f.readlines() if line.strip()]
+            if len(class_names) != 1000:
+                raise ValueError(f"imagenet_classes.txt should have 1000 classes, found {len(class_names)}")
+            if 0 <= pred_idx < len(class_names):
+                pred_class = class_names[pred_idx]
+            else:
+                pred_class = f"Unknown class (index {pred_idx})"
+        except Exception as e:
+            pred_class = f"Class label error: {str(e)}"
+        # Clean up temp file
+        os.remove(img_path)
+        return jsonify({
+            'success': True,
+            'result': {
+                'class': pred_class,
+                'description': pred_class,
+                'confidence': confidence
+            },
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 class GroqAgriBot:
     """AgriBot powered by Groq API - FREE & FAST"""
     
@@ -1176,6 +1259,298 @@ def get_farmer_users():
         {'id': 4, 'name': 'Priya Sharma'}
     ]
     return jsonify({'success': True, 'users': users})
+
+# --- Contract Farming Endpoints ---
+
+# In-memory storage for contracts (in production, use a proper database)
+contract_applications = []
+contract_counter = 1000
+
+@app.route('/api/contract-farming/submit', methods=['POST'])
+def submit_contract_application():
+    """Submit a new contract farming application"""
+    global contract_counter
+    
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = [
+            'fullName', 'fatherName', 'phoneNumber', 'aadharNumber',
+            'village', 'district', 'state', 'pinCode',
+            'landAreaSatak', 'landLocation', 'soilType', 'waterSource',
+            'bankName', 'accountNumber', 'ifscCode',
+            'agreeTerms', 'agreeTraining', 'agreeWages'
+        ]
+        
+        missing_fields = [field for field in required_fields if not data.get(field)]
+        if missing_fields:
+            return jsonify({
+                'success': False,
+                'error': f'Missing required fields: {", ".join(missing_fields)}'
+            }), 400
+        
+        # Validate specific field formats
+        if not data.get('phoneNumber', '').replace(' ', '').isdigit() or len(data.get('phoneNumber', '').replace(' ', '')) != 10:
+            return jsonify({
+                'success': False,
+                'error': 'Phone number must be 10 digits'
+            }), 400
+            
+        if not data.get('aadharNumber', '').replace(' ', '').isdigit() or len(data.get('aadharNumber', '').replace(' ', '')) != 12:
+            return jsonify({
+                'success': False,
+                'error': 'Aadhar number must be 12 digits'
+            }), 400
+            
+        if not data.get('pinCode', '').isdigit() or len(data.get('pinCode', '')) != 6:
+            return jsonify({
+                'success': False,
+                'error': 'PIN code must be 6 digits'
+            }), 400
+        
+        # Calculate contract values
+        land_area = float(data.get('landAreaSatak', 0))
+        yearly_payment = land_area * 500  # ₹500 per satak per year
+        total_contract_value = yearly_payment * 5  # 5 years
+        training_allowance = 5000  # Fixed amount
+        monthly_wages = 3000  # Fixed amount
+        
+        # Create contract application
+        contract_id = f"CF{contract_counter:04d}"
+        contract_counter += 1
+        
+        contract_application = {
+            'contractId': contract_id,
+            'submissionDate': datetime.now().isoformat(),
+            'status': 'pending_verification',
+            'personalInfo': {
+                'fullName': data.get('fullName'),
+                'fatherName': data.get('fatherName'),
+                'phoneNumber': data.get('phoneNumber'),
+                'emailAddress': data.get('emailAddress', ''),
+                'aadharNumber': data.get('aadharNumber')
+            },
+            'address': {
+                'village': data.get('village'),
+                'district': data.get('district'),
+                'state': data.get('state'),
+                'pinCode': data.get('pinCode')
+            },
+            'landDetails': {
+                'landAreaSatak': land_area,
+                'landLocation': data.get('landLocation'),
+                'soilType': data.get('soilType'),
+                'waterSource': data.get('waterSource'),
+                'previousCrop': data.get('previousCrop', '')
+            },
+            'bankingDetails': {
+                'bankName': data.get('bankName'),
+                'accountNumber': data.get('accountNumber'),
+                'ifscCode': data.get('ifscCode').upper()
+            },
+            'contractTerms': {
+                'yearlyPayment': yearly_payment,
+                'totalContractValue': total_contract_value,
+                'trainingAllowance': training_allowance,
+                'monthlyWages': monthly_wages,
+                'contractDuration': 5,
+                'agreeTerms': data.get('agreeTerms'),
+                'agreeTraining': data.get('agreeTraining'),
+                'agreeWages': data.get('agreeWages')
+            }
+        }
+        
+        # Store the application
+        contract_applications.append(contract_application)
+        
+        logger.info(f"✅ New contract application submitted: {contract_id} by {data.get('fullName')}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Contract application submitted successfully!',
+            'contractId': contract_id,
+            'contractDetails': contract_application['contractTerms']
+        }), 201
+        
+    except ValueError as e:
+        return jsonify({
+            'success': False,
+            'error': f'Invalid data format: {str(e)}'
+        }), 400
+    except Exception as e:
+        logger.error(f"❌ Error submitting contract application: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error. Please try again later.'
+        }), 500
+
+@app.route('/api/contract-farming/applications', methods=['GET'])
+def get_contract_applications():
+    """Get list of all contract applications (admin endpoint)"""
+    try:
+        # In production, add authentication and authorization
+        return jsonify({
+            'success': True,
+            'applications': contract_applications,
+            'total': len(contract_applications)
+        })
+    except Exception as e:
+        logger.error(f"❌ Error fetching contract applications: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/contract-farming/application/<contract_id>', methods=['GET'])
+def get_contract_application(contract_id):
+    """Get specific contract application by ID"""
+    try:
+        application = next(
+            (app for app in contract_applications if app['contractId'] == contract_id),
+            None
+        )
+        
+        if not application:
+            return jsonify({
+                'success': False,
+                'error': 'Contract application not found'
+            }), 404
+            
+        return jsonify({
+            'success': True,
+            'application': application
+        })
+    except Exception as e:
+        logger.error(f"❌ Error fetching contract application {contract_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/contract-farming/application/<contract_id>/status', methods=['PUT'])
+def update_contract_status(contract_id):
+    """Update contract application status (admin endpoint)"""
+    try:
+        data = request.get_json()
+        new_status = data.get('status')
+        
+        valid_statuses = ['pending_verification', 'under_review', 'approved', 'rejected', 'active', 'completed']
+        if new_status not in valid_statuses:
+            return jsonify({
+                'success': False,
+                'error': f'Invalid status. Valid options: {", ".join(valid_statuses)}'
+            }), 400
+        
+        application = next(
+            (app for app in contract_applications if app['contractId'] == contract_id),
+            None
+        )
+        
+        if not application:
+            return jsonify({
+                'success': False,
+                'error': 'Contract application not found'
+            }), 404
+        
+        old_status = application['status']
+        application['status'] = new_status
+        application['lastUpdated'] = datetime.now().isoformat()
+        
+        if data.get('remarks'):
+            application['remarks'] = data.get('remarks')
+        
+        logger.info(f"📝 Contract {contract_id} status updated: {old_status} → {new_status}")
+        
+        return jsonify({
+            'success': True,
+            'message': f'Contract status updated to {new_status}',
+            'application': application
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error updating contract status {contract_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/contract-farming/calculate', methods=['POST'])
+def calculate_contract_value():
+    """Calculate contract values based on land area"""
+    try:
+        data = request.get_json()
+        land_area = float(data.get('landAreaSatak', 0))
+        
+        if land_area <= 0:
+            return jsonify({
+                'success': False,
+                'error': 'Land area must be greater than 0'
+            }), 400
+        
+        calculations = {
+            'landAreaSatak': land_area,
+            'ratePerSatak': 500,  # ₹500 per satak per year
+            'yearlyPayment': land_area * 500,
+            'contractDuration': 5,  # years
+            'totalContractValue': land_area * 500 * 5,
+            'trainingAllowance': 5000,  # Fixed amount
+            'monthlyWages': 3000  # Fixed amount
+        }
+        
+        return jsonify({
+            'success': True,
+            'calculations': calculations
+        })
+        
+    except ValueError:
+        return jsonify({
+            'success': False,
+            'error': 'Invalid land area format'
+        }), 400
+    except Exception as e:
+        logger.error(f"❌ Error calculating contract value: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/contract-farming/stats', methods=['GET'])
+def get_contract_stats():
+    """Get contract farming statistics"""
+    try:
+        total_applications = len(contract_applications)
+        status_counts = {}
+        total_land_area = 0
+        total_contract_value = 0
+        
+        for app in contract_applications:
+            status = app['status']
+            status_counts[status] = status_counts.get(status, 0) + 1
+            total_land_area += app['landDetails']['landAreaSatak']
+            total_contract_value += app['contractTerms']['totalContractValue']
+        
+        stats = {
+            'totalApplications': total_applications,
+            'statusBreakdown': status_counts,
+            'totalLandAreaSatak': total_land_area,
+            'totalContractValue': total_contract_value,
+            'averageLandArea': total_land_area / total_applications if total_applications > 0 else 0,
+            'averageContractValue': total_contract_value / total_applications if total_applications > 0 else 0
+        }
+        
+        return jsonify({
+            'success': True,
+            'stats': stats
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error generating contract stats: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""
@@ -1231,6 +1606,10 @@ if __name__ == '__main__':
     print("   🔍 Debug Grok: /api/debug-grok")
     print("   💬 Farmer Messages (GET): /api/chat/messages")
     print("   📤 Send Farmer Message (POST): /api/chat/send")
+    print("   🌾 Contract Farming (POST): /api/contract-farming/submit")
+    print("   📋 Contract Applications (GET): /api/contract-farming/applications")
+    print("   🔢 Contract Calculator (POST): /api/contract-farming/calculate")
+    print("   📊 Contract Stats (GET): /api/contract-farming/stats")
     print("=" * 60)
     print("🚀 AgriBot is ready! Ask farming questions and get expert advice!")
     print("💡 Example: POST to /api/chat with {'message': 'How to grow rice?'}")

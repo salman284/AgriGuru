@@ -16,7 +16,7 @@
   "navbar": {
     "home": "Home",
     "dashboard": "Dashboard",
-    "market_prices": "Market Prices",
+    "market_prices": "Market Prices & Loans",
     "about": "About",
     "contact": "Contact",
     "login": "Login",
@@ -27,7 +27,9 @@
     "language": "Language",
     "marketplace": "Marketplace",
     "contact_ado": "Contact ADO",
-    "government": "Government Schemes"
+    "government": "Government Schemes",
+    "contract_farming": "Contract Farming",
+    "kheti_saath": "AgriGuide"
   },
   "homepage": {
     "hero": {

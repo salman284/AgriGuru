@@ -59,79 +59,56 @@ const PLANT_ID_BASE_URL = 'https://api.plant.id/v3';
 
 // PlantNet API configuration (fallback)
 const PLANTNET_API_KEY = process.env.REACT_APP_PLANTNET_API_KEY || 'your_plantnet_api_key_here';
-const PLANTNET_BASE_URL = 'https://my-api.plantnet.org/v1';
+const PLANTNET_BASE_URL = 'https://my-api.plantnet.org/v2';
 const PLANTNET_PROJECT = process.env.REACT_APP_PLANTNET_PROJECT || 'weurope';
 
 // Set to false to use real Plant.id/PlantNet API
 const MOCK_AI_ANALYSIS = false; // Use real image detection
 
-// Simulated crop diseases and conditions database
-const cropConditions = {
-  healthy: {
-    status: 'Healthy',
-    confidence: 0.92,
-    description: 'Your crops appear to be in excellent condition',
-    recommendations: [
-      'Continue current watering schedule',
-      'Monitor for any changes in leaf color',
-      'Consider light fertilization in 2 weeks'
-    ],
-    severity: 'low',
-    color: '#28a745'
-  },
-  mild_stress: {
-    status: 'Mild Stress',
-    confidence: 0.87,
-    description: 'Crops show signs of mild environmental stress',
-    recommendations: [
-      'Check soil moisture levels',
-      'Ensure adequate irrigation',
-      'Monitor weather conditions',
-      'Consider stress-resistant varieties for next season'
-    ],
-    severity: 'medium',
-    color: '#ffc107'
-  },
-  nutrient_deficiency: {
-    status: 'Nutrient Deficiency',
-    confidence: 0.84,
-    description: 'Signs of nutrient deficiency detected in leaf patterns',
-    recommendations: [
-      'Test soil for NPK levels',
-      'Apply balanced fertilizer',
-      'Consider foliar feeding',
-      'Check pH levels'
-    ],
-    severity: 'medium',
-    color: '#fd7e14'
-  },
-  disease_detected: {
-    status: 'Disease Detected',
-    confidence: 0.91,
-    description: 'Potential disease symptoms identified',
-    recommendations: [
-      'Consult with agricultural extension officer',
-      'Apply appropriate fungicide if confirmed',
-      'Isolate affected plants if possible',
-      'Improve air circulation'
-    ],
-    severity: 'high',
-    color: '#dc3545'
-  },
-  pest_damage: {
-    status: 'Pest Damage',
-    confidence: 0.89,
-    description: 'Evidence of pest activity on crop leaves',
-    recommendations: [
-      'Identify specific pest species',
-      'Apply targeted pest control measures',
-      'Check neighboring plants',
-      'Consider beneficial insects'
-    ],
-    severity: 'high',
-    color: '#dc3545'
+// Backend crop analysis API endpoint
+const BACKEND_CROP_ANALYSIS_URL = process.env.REACT_APP_API_BASE_URL + '/crop-analysis';
+
+// Call backend crop analysis API (PyTorch)
+const callBackendCropAnalysisAPI = async (imageFile) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile, imageFile.name);
+    const response = await fetch(BACKEND_CROP_ANALYSIS_URL, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        // Do not set Content-Type for FormData
+        'Accept': 'application/json',
+      }
+    });
+    console.log('📡 Backend response status:', response.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Backend crop analysis error:', errorText);
+      throw new Error(`Backend crop analysis request failed: ${response.status} - ${errorText}`);
+    }
+    const result = await response.json();
+    console.log('✅ Backend crop analysis success:', result);
+    // Standardize backend response if needed
+    return {
+      ...result,
+      source: 'Backend PyTorch Crop Analysis',
+      imageAnalyzed: true,
+      additionalInfo: {
+        imageSize: `${Math.round(imageFile.size / 1024)}KB`,
+        resolution: 'Backend AI',
+        analysisTime: result.analysisTime || '2.0s',
+        apiUsed: 'Backend',
+      }
+    };
+  } catch (error) {
+    console.error('💥 Backend crop analysis API call failed:', error);
+    throw error;
   }
 };
+
+// Simulated crop diseases and conditions database
+// ...existing code...
 
 // Test Plant.id API connectivity
 export const testPlantIdAPI = async () => {
@@ -206,69 +183,86 @@ export const testPlantNetAPI = async () => {
 export const analyzeCropImage = async (imageFile) => {
   try {
     if (MOCK_AI_ANALYSIS) {
-      // Simulate API delay with consistent timing based on file size
+      // ...existing code for mock analysis...
       const baseDelay = 2000 + (imageFile.size % 2000);
       await new Promise(resolve => setTimeout(resolve, baseDelay));
-      
-      // Use the same sophisticated disease analysis for mock mode
-      console.log('🔬 Running mock disease analysis...');
-      console.log('📁 Image file:', imageFile.name, 'Size:', imageFile.size);
-      
-      const mockPlantName = detectCropType(imageFile.name);
-      console.log('🌱 Detected crop type:', mockPlantName);
-      
-      const isCrop = true; // Assume it's a crop for mock analysis
-      
-      const diseaseAnalysis = analyzeImageForDiseases(imageFile, mockPlantName, isCrop);
-      console.log('🦠 Disease analysis result:', diseaseAnalysis);
-      
-      // Generate consistent confidence and timing based on file characteristics
-      const confidence = generateDeterministicConfidence(imageFile, mockPlantName);
-      const analysisTime = generateDeterministicTiming(imageFile);
-      
-      console.log('📊 Analysis complete - Status:', diseaseAnalysis.status, 'Confidence:', confidence);
-      console.log('🍃 Leaf analysis:', diseaseAnalysis.leafAnalysis);
-      
+      // ...existing code...
+    } else {
+      // Try backend crop analysis first
+      try {
+        const backendResult = await callBackendCropAnalysisAPI(imageFile);
+        // Use backendResult.plantName or cropType if available
+        if (backendResult && (backendResult.plantName || backendResult.cropType)) {
+          return backendResult;
+        }
+        // If backend result does not contain plantName/cropType, continue to Plant.id
+      } catch (backendError) {
+        console.warn('Backend crop analysis failed, trying Plant.id API...', backendError);
+      }
+      try {
+        const plantIdResult = await callPlantIdAPI(imageFile);
+        // Use plantIdResult.plantName or cropType if available
+        if (plantIdResult && (plantIdResult.plantName || plantIdResult.cropType)) {
+          return plantIdResult;
+        }
+        // If Plant.id result does not contain plantName/cropType, continue to PlantNet
+      } catch (plantIdError) {
+        console.warn('Plant.id API failed, trying PlantNet as fallback...', plantIdError);
+      }
+      try {
+        const plantNetResult = await callPlantNetAPI(imageFile);
+        // Use plantNetResult.plantName or cropType if available
+        if (plantNetResult && (plantNetResult.plantName || plantNetResult.cropType)) {
+          return plantNetResult;
+        }
+        // If PlantNet result does not contain plantName/cropType, fallback to filename
+      } catch (plantNetError) {
+        console.error('All APIs failed, falling back to mock disease analysis...', plantNetError);
+      }
+      // All APIs failed or did not return plantName/cropType, fallback to filename-based detection
+      // Try to extract plant name from backend/Plant.id/PlantNet API result if available
+      let plantName = '';
+      // Check if backend/Plant.id/PlantNet API returned a plant name in previous attempts
+      // (This logic assumes previous API results are not available, so fallback to filename)
+      plantName = detectCropType(imageFile.name);
+      if (!plantName || plantName === 'Unknown Crop') {
+        // Use filename (without extension) as fallback plant name
+        if (imageFile && imageFile.name) {
+          plantName = imageFile.name.split('.')[0];
+        } else {
+          plantName = 'Unknown Crop';
+        }
+      }
+      const diseaseAnalysis = analyzeImageForDiseases(imageFile, plantName, true);
       return {
         ...diseaseAnalysis,
-        plantName: mockPlantName,
-        commonNames: [mockPlantName],
-        plantIdentificationConfidence: confidence,
-        cropType: mockPlantName,
+        plantName: plantName,
+        commonNames: [plantName],
+        plantIdentificationConfidence: 0.75,
+        cropType: plantName,
         recommendations: diseaseAnalysis.recommendations && Array.isArray(diseaseAnalysis.recommendations)
           ? diseaseAnalysis.recommendations
           : [
-              'Unable to analyze crop health due to mock analysis error.',
-              'Please check your mock configuration.',
+              'Unable to analyze crop health due to API errors.',
+              'Please check your API key, quota, or network connection.',
               'Monitor plant health manually and consult an expert if needed.'
             ],
         additionalInfo: {
           imageSize: `${Math.round(imageFile.size / 1024)}KB`,
-          resolution: 'High Quality',
-          analysisTime: `${analysisTime}s`,
-          source: 'Mock Disease Analysis',
+          resolution: 'Fallback Analysis',
+          analysisTime: '1.0s',
+          source: 'Fallback Disease Analysis',
+          error: 'All APIs unavailable',
           isCropPlant: true,
-          plantIdentified: true
+          plantIdentified: false
         }
       };
-    } else {
-      // Try Plant.id API first (better for disease detection)
-      console.log('Using Plant.id API for plant and disease identification...');
-      try {
-        return await callPlantIdAPI(imageFile);
-      } catch (error) {
-        console.warn('Plant.id API failed, trying PlantNet as fallback...', error);
-        return await callPlantNetAPI(imageFile);
-      }
     }
   } catch (error) {
     console.error('Error analyzing crop image:', error);
-    
-    // Fallback to mock disease analysis if all APIs fail
-    console.log('All APIs failed, falling back to mock disease analysis...');
+    // ...existing code for fallback...
     const mockPlantName = detectCropType(imageFile.name);
     const diseaseAnalysis = analyzeImageForDiseases(imageFile, mockPlantName, true);
-    
     return {
       ...diseaseAnalysis,
       plantName: mockPlantName,
@@ -892,78 +886,16 @@ const combineAnalysisFactors = (baseFractors, leafAnalysis) => {
 };
 
 // Generate deterministic confidence based on file characteristics
-const generateDeterministicConfidence = (imageFile, plantName) => {
-  const fileName = imageFile.name.toLowerCase();
-  const fileSize = imageFile.size;
-  
-  let baseConfidence = 0.85;
-  
-  // Adjust confidence based on filename hints
-  if (fileName.includes('healthy') || fileName.includes('good')) {
-    baseConfidence = 0.92; // Higher confidence for clearly healthy plants
-  } else if (fileName.includes('disease') || fileName.includes('sick')) {
-    baseConfidence = 0.88; // Good confidence for clear disease cases
-  } else if (fileName.includes(plantName.toLowerCase())) {
-    baseConfidence = 0.90; // Higher confidence when crop type is in filename
-  }
-  
-  // Adjust based on file size (larger files might indicate better quality)
-  if (fileSize > 1024 * 1024) { // > 1MB
-    baseConfidence += 0.03;
-  }
-  
-  // Ensure it stays within reasonable bounds
-  return Math.min(0.98, Math.max(0.75, baseConfidence));
-};
+// ...existing code...
 
 // Generate deterministic timing based on file characteristics
-const generateDeterministicTiming = (imageFile) => {
-  const fileSize = imageFile.size;
-  const fileName = imageFile.name.toLowerCase();
-  
-  let baseTime = 2.5;
-  
-  // Larger files take longer to "process"
-  if (fileSize > 2 * 1024 * 1024) { // > 2MB
-    baseTime = 3.8;
-  } else if (fileSize > 1024 * 1024) { // > 1MB
-    baseTime = 3.2;
-  } else if (fileSize < 100 * 1024) { // < 100KB
-    baseTime = 2.1;
-  }
-  
-  // Complex disease analysis takes longer
-  if (fileName.includes('disease') || fileName.includes('sick')) {
-    baseTime += 0.5;
-  }
-  
-  return baseTime.toFixed(1);
-};
+// ...existing code...
 
 // Generate a seed value from file characteristics for consistent results
-const generateSeedFromFile = (imageFile) => {
-  const fileName = imageFile.name;
-  const fileSize = imageFile.size;
-  const lastModified = imageFile.lastModified || Date.now();
-  
-  // Create a simple hash from file properties
-  let hash = 0;
-  const str = fileName + fileSize.toString() + lastModified.toString();
-  
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32-bit integer
-  }
-  
-  return Math.abs(hash);
-};
+// ...existing code...
 
 // Generate pseudo-random number from seed (deterministic)
-const seededRandom = (seed, offset = 0) => {
-  const x = Math.sin(seed + offset) * 10000;
-  return x - Math.floor(x);
-};
+// ...existing code...
 
 // Generate deterministic recommendations based on detected disease and filename context
 const generateDeterministicRecommendations = (disease, probability, isCrop, fileName) => {
@@ -1154,29 +1086,9 @@ const enhanceDescriptionWithLeafAnalysis = (baseDescription, fileName, disease) 
 };
 
 // Process AI service response to standardized format (fallback)
-const processAIResponse = (aiResponse) => {
-  // Transform AI service response to match our format
-  return {
-    status: aiResponse.prediction || 'Unknown',
-    confidence: aiResponse.confidence || 0.8,
-    description: aiResponse.description || 'Analysis completed',
-    recommendations: aiResponse.recommendations || ['Consult agricultural expert'],
-    severity: aiResponse.severity || 'medium',
-    color: getSeverityColor(aiResponse.severity),
-    timestamp: new Date().toISOString(),
-    imageAnalyzed: true
-  };
-};
+// ...existing code...
 
-// Get color based on severity
-const getSeverityColor = (severity) => {
-  switch (severity) {
-    case 'low': return '#28a745';
-    case 'medium': return '#ffc107';
-    case 'high': return '#dc3545';
-    default: return '#6c757d';
-  }
-};
+// ...existing code...
 
 // Validate image file
 export const validateImageFile = (file) => {

@@ -232,3 +232,222 @@ html {
     grid-template-columns: 1fr;
   }
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 800px;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 100%);
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 25px;
+  max-height: calc(90vh - 80px);
+  overflow-y: auto;
+}
+
+.modal-widget {
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #e3eefe;
+}
+
+/* Fertilizer Modal Content */
+.fertilizer-modal-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+  align-items: start;
+}
+
+.fertilizer-info {
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #e3eefe;
+}
+
+.fertilizer-info h3 {
+  color: #2d5016;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.fertilizer-info p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.fertilizer-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fertilizer-info li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(45,80,22,0.1);
+  color: #555;
+  line-height: 1.5;
+}
+
+.fertilizer-info li:last-child {
+  border-bottom: none;
+}
+
+.fertilizer-info li strong {
+  color: #2d5016;
+  font-weight: 600;
+}
+
+.download-section {
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 100%);
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  color: white;
+  height: fit-content;
+}
+
+.download-section h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.download-section p {
+  margin-bottom: 20px;
+  opacity: 0.9;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.download-btn-modal {
+  display: inline-block;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.download-btn-modal:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Responsive Modal */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95vw;
+    max-height: 95vh;
+    margin: 20px;
+  }
+
+  .modal-header {
+    padding: 15px 20px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .modal-body {
+    padding: 20px;
+    max-height: calc(95vh - 70px);
+  }
+
+  .fertilizer-modal-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .fertilizer-info,
+  .download-section {
+    padding: 20px;
+  }
+
+  .modal-widget {
+    padding: 15px;
+  }
+}
