@@ -29,7 +29,8 @@
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "react-app-rewired": "^2.2.1"
   },
   "engines": {
     "node": ">=14.0.0",
