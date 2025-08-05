@@ -1,190 +1,155 @@
-# AgriGuru AI Backend - Clean & Essential
+# AgriGuru AI Backend
 
-## 🚀 Quick Start Guide
+AgriGuru AI Backend is a clean, production-ready Flask server that powers expert farming advice, crop analytics, weather-based recommendations, market insights, and more for Indian agriculture.
 
-### Essential Files Only
-This backend now contains only the essential files needed for the farming expert AI:
+---
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+```sh
+pip install -r requirements.txt
+```
+
+### 2. Start the Server
+
+- **Windows:**  
+  Double-click `start_server.bat`  
+  or run in PowerShell:  
+  ```sh
+  start_server.ps1
+  ```
+- **Direct Python:**  
+  ```sh
+  python farming_expert_app.py
+  ```
+
+---
+
+## 🧪 Testing the AI
+
+- Start the server.
+- Open `test_ai.html` in your browser.
+- Try pre-defined or custom farming questions.
+- See dynamic, fresh responses every time.
+
+---
+
+## 📂 Project Structure
 
 ```
 backend/
-├── farming_expert_app.py      # Main AI application
+├── farming_expert_app.py      # Main Flask AI application
 ├── start_server.bat           # Windows batch file to start server
 ├── start_server.ps1           # PowerShell script to start server
 ├── check_server.py            # Server status checker
 ├── check_server.bat           # Windows batch file to check server
-├── test_ai.html               # Test interface for AI
+├── test_ai.html               # Simple web interface for AI testing
 ├── requirements.txt           # Python dependencies
 └── README.md                  # This documentation
 ```
 
-### Installation & Setup
+---
 
-**Step 1: Install Dependencies**
-```bash
-pip install -r requirements.txt
-```
+## 🌾 Features
 
-**Step 2: Start the Server**
+- **Dynamic AI Responses:**  
+  - No cached answers; every reply is fresh and personalized.
+  - Context-aware greetings and current date/time.
+  - Professional formatting with emojis and structure.
+  - Seasonal awareness for timely recommendations.
 
-**Option 1: Double-click the batch file**
-```
-start_server.bat
-```
+- **Comprehensive Crop Database:**  
+  - Rice, wheat, cotton, maize, and more.
+  - Planting, fertilizer, pest management, irrigation, and market insights.
 
-**Option 2: Use PowerShell**
-```
-start_server.ps1
-```
+- **Expert Query Processing:**  
+  - Understands planting, fertilizer, pest, timing, seasonal, and general farming queries.
 
-**Option 3: Run directly with Python**
-```
-python farming_expert_app.py
-```
+- **API Endpoints:**  
+  - `/api/expert-advice` — Farming advice (POST)
+  - `/api/analyze-crop` — Crop image analysis (POST)
+  - `/api/weather-advice` — Weather-based advice (POST)
+  - `/api/market-insights` — Market trends (GET)
+  - `/api/seasonal-calendar` — Seasonal activities (GET)
+  - `/` — API status (GET)
 
-### Testing the AI
+---
 
-1. **Start the server** using any method above
-2. **Open `test_ai.html`** in your web browser
-3. **Test the responses** - you'll see they're now dynamic and fresh!
+## 🔒 Technical Details
 
-## 🧪 Testing Dynamic Responses
+- **Essential Dependencies Only:**
+  ```
+  Flask==2.3.3
+  Flask-CORS==4.0.0
+  torch==2.0.1
+  Pillow==10.0.0
+  requests==2.31.0
+  ```
+- **Removed:**  
+  - Old/duplicate files, unused directories, and development scripts for a clean codebase.
 
-The test interface (`test_ai.html`) includes:
+---
 
-- **Quick Tests**: Pre-defined farming questions
-- **Custom Queries**: Ask your own questions
-- **Multiple Response Test**: Verify responses are different each time
+## 📝 Usage Examples
 
-### Test Results You'll See:
-
-```
-✅ SUCCESS: 3 unique responses generated! AI is working dynamically.
-```
-
-## 🌾 What's New in the Enhanced AI
-
-### 1. Dynamic Response Generation
-- Random greetings for each response
-- Current date/time context
-- Varied response templates
-- No more cached responses!
-
-### 2. Comprehensive Crop Database
-- **Rice**: Complete cultivation guide
-- **Wheat**: Detailed growing information
-- **Cotton**: Specialized cotton farming
-- **Maize**: Corn cultivation expertise
-
-### 3. Expert Knowledge Areas
-- **Planting & Cultivation**: Optimal conditions, timing, field preparation
-- **Fertilizer Management**: NPK schedules, organic alternatives
-- **Pest & Disease Control**: Integrated pest management
-- **Irrigation**: Water management strategies
-- **Seasonal Planning**: Kharif/Rabi season activities
-- **Market Insights**: Price trends, value addition
-- **Sustainable Practices**: Organic farming, soil conservation
-
-### 4. Enhanced Query Processing
-The AI now understands and responds to:
-- Planting questions: "How to plant rice?"
-- Fertilizer queries: "What fertilizers for wheat?"
-- Pest control: "Cotton pest management"
-- Timing questions: "When to plant maize?"
-- Seasonal advice: "Kharif season activities"
-- General farming: "Best practices for farming"
-
-## 📊 API Endpoints
-
-The server provides these endpoints:
-
-```
-GET  /                     - API status
-POST /api/expert-advice    - Get farming advice
-POST /api/analyze-crop     - Crop image analysis
-POST /api/weather-advice   - Weather-based advice
-GET  /api/market-insights  - Market trends
-GET  /api/seasonal-calendar - Seasonal activities
-```
-
-## 🔧 Technical Details
-
-### Essential Dependencies Only
-```
-Flask==2.3.3          # Web framework
-Flask-CORS==4.0.0      # Cross-origin support
-torch==2.0.1           # AI model support
-Pillow==10.0.0         # Image processing
-requests==2.31.0       # HTTP requests
-```
-
-### What Was Removed
-- Old/duplicate files: `simple_app.py`, `chat.py`, `generate_secret.py`
-- Unused directories: `routes/`, `models/`, `__pycache__/`
-- Test duplicates: `test_expert.py`, `quick_test.py`, `run_server.py`
-- Development files: `fix_summary.py`, `.env`, `ser`
-
-### Core Features
-1. **Dynamic Response Generation**: Random greetings, current date context
-2. **Comprehensive Knowledge**: Rice, wheat, cotton, maize expertise
-3. **Enhanced Query Processing**: Better keyword matching
-4. **Clean Architecture**: Only essential files remain
-
-## 🚀 Usage Examples
-
-### Test the AI with these queries:
+**Sample Query:**  
 - "How to plant rice in kharif season?"
 - "Best fertilizers for wheat cultivation?"
 - "Cotton pest management strategies"
 - "Seasonal farming calendar for rabi"
 - "Organic farming practices"
-- "Modern agricultural technology"
 
-### Sample Response Format:
+**Sample Response Format:**
 ```
-🌱 **Rice Planting Guide**
+🌱 Rice Planting Guide
 
-Generated on December 17, 2024
+Generated on August 5, 2025
 
-**Optimal Growing Conditions:**
+Optimal Growing Conditions:
 • Temperature: 25°C (range: 20-35°C)
 • Soil pH: 6.5 (range: 5.5-7.0)
 • Soil types: clay, loam, alluvial
 • Rainfall requirement: 800mm during growing season
 
-**Planting Season:** kharif, rabi
-**Harvest Time:** {'kharif': 'October-November', 'rabi': 'March-April'}
+Planting Season: kharif, rabi
+Harvest Time: {'kharif': 'October-November', 'rabi': 'March-April'}
 
-**Kharif Season Specific Tips:**
+Kharif Season Specific Tips:
 • Plant after monsoon onset
 • Ensure good drainage during heavy rains
 ```
 
-## ✅ Verification
+---
 
-To confirm the AI is working correctly:
+## ✅ Success Metrics
 
-1. **Run the server**: Use any start method
-2. **Open test_ai.html**: In your browser
-3. **Test multiple responses**: Click "Test Dynamic Responses"
-4. **Verify uniqueness**: Should see "SUCCESS: 3 unique responses"
+- Dynamic, non-repetitive responses
+- Personalized advice with current date context
+- Comprehensive crop and farming knowledge
+- Professional, readable formatting
+- Accurate query understanding
 
-## 🎯 Success Metrics
+---
 
-- ✅ **No more cached responses**
-- ✅ **Dynamic greeting messages**
-- ✅ **Current date context**
-- ✅ **Comprehensive crop knowledge**
-- ✅ **Better query understanding**
-- ✅ **Professional response formatting**
+## 🌟 User Experience
 
-## 🌟 What Users Will Experience
+Farmers and users receive:
+- Fresh, personalized advice every time
+- Timely, season-aware recommendations
+- Comprehensive information for all farming aspects
+- Professional formatting and structure
+- Multiple response types for the same query
 
-Instead of getting the same boring response, users now get:
-- **Fresh, personalized advice** every time
-- **Current date context** for timely recommendations
-- **Comprehensive information** covering all farming aspects
-- **Professional formatting** with emojis and structure
-- **Seasonal awareness** for appropriate timing
-- **Multiple response types** for the same query
+AgriGuru AI is now a true **farming expert** for Indian agriculture! 🌾🚜
 
-The AI is now a true **farming expert** that provides valuable, dynamic advice for Indian agriculture! 🌾🚜
+---
+
+## 📄 License
+
+MIT
+
+---
+
+**For frontend setup and integration,
