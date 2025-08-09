@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/shriom17/AgriGuru/blob/frontend/public/logo.png" alt="AgriGuru Logo" width="200" height="200">
+  <img src="C:\Users\salma\Desktop\Coding\AgriGuru\frontend\public\logo.png" alt="AgriGuru Logo" width="200" height="200">
   
   # 🌾 AgriGuru
   
