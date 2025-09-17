@@ -151,12 +151,14 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    setUser,
     loading,
     login,
     signup,
     logout,
     updateProfile,
-    checkAuthStatus
+    checkAuthStatus,
+    isAuthenticated: !!user
   };
 
   return (

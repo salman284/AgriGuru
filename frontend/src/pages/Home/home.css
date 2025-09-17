@@ -1,17 +1,18 @@
 .home-container {
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh; /* Changed from height: 100vh to allow content to expand */
+  /* Removed overflow: hidden to allow scrolling */
 }
 
 .homebg {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh; /* Changed from height: 100vh to allow content to expand */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding-top: 10px; /* Add padding for fixed navbar */
+  padding-top: 85px; /* Increased padding for fixed navbar */
+  padding-bottom: 40px; /* Added bottom padding for proper spacing */
 }
 
 .content {
@@ -377,7 +378,8 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .homebg {
-    padding: 100px 20px 20px;
+    padding: 100px 20px 40px 20px; /* Maintained top padding for navbar, added bottom padding */
+    align-items: flex-start; /* Changed from center to flex-start for better mobile layout */
   }
   
   .content {

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AgriGuru WhatsApp Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1b5e20;
+        }
+        button:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+        .error {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+        }
+        .loading {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            color: #1565c0;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .steps {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .steps h3 {
+            margin-top: 0;
+            color: #e65100;
+        }
+        .steps ol {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌱 AgriGuru WhatsApp Test</h1>
+    
+    <div class="steps card">
+        <h3>Before Testing:</h3>
+        <ol>
+            <li>Make sure your Flask server is running</li>
+            <li>Send the message "<strong>join <span id="joinCode">your-join-code</span></strong>" from your WhatsApp to <strong>+14155238886</strong></li>
+            <li>Check that you received a welcome message from Twilio</li>
+        </ol>
+        <p><strong>Note:</strong> Find your specific join code in your Twilio Console under WhatsApp Sandbox settings</p>
+    </div>
+    
+    <div class="card">
+        <h2>Send Test WhatsApp Message</h2>
+        <div class="form-group">
+            <label for="phone">Your WhatsApp Number (with country code):</label>
+            <input type="text" id="phone" placeholder="+91XXXXXXXXXX" />
+            <small>Example: +919876543210 (include the + sign and country code)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="messageType">Message Type:</label>
+            <select id="messageType">
+                <option value="test">Test Message</option>
+                <option value="weather">Weather Alert</option>
+                <option value="market">Market Price Alert</option>
+                <option value="disease">Crop Disease Alert</option>
+            </select>
+        </div>
+        
+        <div id="weatherFields" style="display: none;">
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" placeholder="e.g., Bangalore" />
+            </div>
+            <div class="form-group">
+                <label for="condition">Weather Condition:</label>
+                <input type="text" id="condition" placeholder="e.g., Partly Cloudy" />
+            </div>
+            <div class="form-group">
+                <label for="temperature">Temperature (°C):</label>
+                <input type="number" id="temperature" placeholder="e.g., 28" />
+            </div>
+        </div>
+        
+        <div id="marketFields" style="display: none;">
+            <div class="form-group">
+                <label for="crop">Crop:</label>
+                <input type="text" id="crop" placeholder="e.g., Rice" />
+            </div>
+            <div class="form-group">
+                <label for="price">Price (₹):</label>
+                <input type="number" id="price" placeholder="e.g., 2500" />
+            </div>
+            <div class="form-group">
+                <label for="market">Market:</label>
+                <input type="text" id="market" placeholder="e.g., APMC Bengaluru" />
+            </div>
+        </div>
+        
+        <div id="diseaseFields" style="display: none;">
+            <div class="form-group">
+                <label for="diseaseCrop">Crop:</label>
+                <input type="text" id="diseaseCrop" placeholder="e.g., Tomato" />
+            </div>
+            <div class="form-group">
+                <label for="disease">Disease:</label>
+                <input type="text" id="disease" placeholder="e.g., Early Blight" />
+            </div>
+            <div class="form-group">
+                <label for="action">Recommended Action:</label>
+                <input type="text" id="action" placeholder="e.g., Apply fungicide" />
+            </div>
+        </div>
+        
+        <button onclick="sendMessage()" id="sendButton">Send Message</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Show/hide fields based on message type
+        document.getElementById('messageType').addEventListener('change', function() {
+            const messageType = this.value;
+            document.getElementById('weatherFields').style.display = messageType === 'weather' ? 'block' : 'none';
+            document.getElementById('marketFields').style.display = messageType === 'market' ? 'block' : 'none';
+            document.getElementById('diseaseFields').style.display = messageType === 'disease' ? 'block' : 'none';
+        });
+        
+        async function sendMessage() {
+            const phone = document.getElementById('phone').value.trim();
+            const messageType = document.getElementById('messageType').value;
+            const resultDiv = document.getElementById('result');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Basic validation
+            if (!phone || !phone.startsWith('+')) {
+                resultDiv.className = 'result error';
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<strong>Error:</strong> Please enter a valid phone number starting with + and country code';
+                return;
+            }
+            
+            // Show loading state
+            sendButton.disabled = true;
+            resultDiv.className = 'result loading';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Sending message, please wait...';
+            
+            try {
+                let endpoint = '';
+                let requestData = {};
+                
+                // Prepare data based on message type
+                if (messageType === 'test') {
+                    endpoint = 'http://localhost:5001/api/test-whatsapp';
+                    requestData = { phone_number: phone };
+                } else if (messageType === 'weather') {
+                    const location = document.getElementById('location').value;
+                    const condition = document.getElementById('condition').value;
+                    const temperature = document.getElementById('temperature').value;
+                    
+                    if (!location || !condition || !temperature) {
+                        throw new Error('Please fill in all weather alert fields');
+                    }
+                    
+                    endpoint = 'http://localhost:5001/api/whatsapp/send-alert';
+                    requestData = {
+                        phone_number: phone,
+                        alert_type: 'weather',
+                        alert_data: {
+                            location: location,
+                            condition: condition,
+                            temperature: temperature
+                        }
+                    };
+                } else if (messageType === 'market') {
+                    const crop = document.getElementById('crop').value;
+                    const price = document.getElementById('price').value;
+                    const market = document.getElementById('market').value;
+                    
+                    if (!crop || !price || !market) {
+                        throw new Error('Please fill in all market price alert fields');
+                    }
+                    
+                    endpoint = 'http://localhost:5001/api/whatsapp/send-alert';
+                    requestData = {
+                        phone_number: phone,
+                        alert_type: 'market_prices',
+                        alert_data: {
+                            crop: crop,
+                            price: price,
+                            market: market
+                        }
+                    };
+                } else if (messageType === 'disease') {
+                    const crop = document.getElementById('diseaseCrop').value;
+                    const disease = document.getElementById('disease').value;
+                    const action = document.getElementById('action').value;
+                    
+                    if (!crop || !disease || !action) {
+                        throw new Error('Please fill in all crop disease alert fields');
+                    }
+                    
+                    endpoint = 'http://localhost:5001/api/whatsapp/send-alert';
+                    requestData = {
+                        phone_number: phone,
+                        alert_type: 'crop_diseases',
+                        alert_data: {
+                            crop: crop,
+                            disease: disease,
+                            action: action
+                        }
+                    };
+                }
+                
+                // Since we have a test endpoint, let's use it for simplicity
+                // For any message type, we'll use the test endpoint
+                endpoint = 'http://localhost:5001/api/test-whatsapp';
+                requestData = { phone_number: phone };
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Success!</h3>
+                        <p>Message sent successfully to ${phone}.</p>
+                        <p>Check your WhatsApp for the message.</p>
+                        <h4>Response Details:</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Error</h3>
+                        <p>${data.message || 'Failed to send message'}</p>
+                        <h4>Response Details:</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p>${error.message || 'Failed to communicate with server'}</p>
+                `;
+            } finally {
+                sendButton.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

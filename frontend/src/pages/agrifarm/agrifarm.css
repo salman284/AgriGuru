@@ -2,7 +2,7 @@
 .agri-contract-form {
   min-height: 100vh;
   background: linear-gradient(135deg, #f0efb4 0%, #336314 100%);
-  padding: 2rem 1rem;
+  padding: 85px 1rem 2rem 1rem; /* Added 85px top padding to account for fixed navbar */
 }
 
 .form-container {
@@ -271,7 +271,7 @@
 .contract-preview {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 1rem;
+  padding: 85px 1rem 2rem 1rem; /* Added top padding for fixed navbar */
 }
 
 .preview-container {
@@ -442,7 +442,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .agri-contract-form {
-    padding: 1rem 0.5rem;
+    padding: 85px 0.5rem 1rem 0.5rem; /* Maintained top padding for fixed navbar */
   }
   
   .form-container {
@@ -520,7 +520,7 @@
   }
   
   .contract-preview {
-    padding: 1rem 0.5rem;
+    padding: 85px 0.5rem 1rem 0.5rem; /* Maintained top padding for fixed navbar */
   }
   
   .preview-container {

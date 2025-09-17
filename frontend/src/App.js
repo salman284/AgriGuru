@@ -9,6 +9,8 @@ import GovtSchemes from './pages/govt/govtS.jsx';
 import Login from './pages/login/login.jsx';
 import OTPLogin from './pages/login/OTPLogin.jsx';
 import SignUp from './pages/signup/sign.jsx';
+import Profile from './pages/profile';
+import Settings from './pages/settings/Settings.jsx';
 import ContactPage from './pages/contacts/contact.jsx';
 import Ecommerce from './pages/shopping/ecommerce.jsx';
 import MarketPriceDashboard from './pages/market&loan/ml.jsx';
@@ -38,6 +40,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/otp-login" element={<OTPLogin />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/contacts" element={<ContactPage />} />
            
           </Routes>

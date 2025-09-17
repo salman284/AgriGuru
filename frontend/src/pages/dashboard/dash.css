@@ -201,35 +201,156 @@ html {
 @media (max-width: 768px) {
   .dashboard {
     flex-direction: column;
-    margin-top: 70px;
+    margin-top: 85px; /* Increased for better navbar clearance */
   }
   
+  /* Improved mobile sidebar */
   .sidebar {
     width: 100%;
-    padding: 15px;
+    padding: 12px 15px;
     min-height: auto;
+    background-color: #2d5016 !important;
+  }
+  
+  .sidebar h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
   }
   
   .sidebar ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    justify-content: center;
   }
   
   .sidebar li {
     margin-bottom: 0;
   }
   
+  .sidebar a {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  
+  /* Improved mobile main content */
   .main-content {
-    padding: 20px;
+    padding: 15px;
+  }
+  
+  /* Better mobile header styling */
+  .header {
+    margin-bottom: 20px;
+    text-align: center;
   }
   
   .header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #2d5016;
+    font-weight: 700;
+  }
+  
+  /* Mobile dropdown styling - override inline styles */
+  .header div[style] {
+    margin-top: 12px !important;
+    margin-bottom: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  
+  .header select {
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    border: 2px solid #2d5016 !important;
+    font-size: 0.9rem !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    background-color: white !important;
+    color: #2d5016 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.1) !important;
+  }
+  
+  /* Mobile widgets layout - stack vertically for scrolling */
+  .widgets {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    padding: 0;
+  }
+  
+  .widget {
+    min-height: 90vh;
+    max-height: none;
+    height: auto;
+    flex: none;
+    width: 100%;
+    margin-bottom: 20px;
+    scroll-snap-align: start;
+  }
+  
+  /* Add scroll-snap for smooth section-by-section scrolling */
+  .main-content {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .dashboard {
+    margin-top: 75px;
+  }
+  
+  .sidebar {
+    padding: 10px 12px;
+  }
+  
+  .sidebar h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  .sidebar a {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .main-content {
+    padding: 12px;
+  }
+  
+  .header {
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .header select {
+    padding: 10px 14px !important;
+    font-size: 0.85rem !important;
+    max-width: 280px !important;
+  }
+  
+  .widget {
+    min-height: 85vh;
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-bottom: 15px;
   }
   
   .widgets {
-    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 

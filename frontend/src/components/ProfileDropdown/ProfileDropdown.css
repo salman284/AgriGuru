@@ -1,50 +1,91 @@
 .profile-dropdown {
   position: relative;
   display: inline-block;
+  height: fit-content;
 }
 
 .profile-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #16a34a;
+  gap: 10px;
+  background: linear-gradient(135deg, #2d5016 0%, #16a34a 100%);
   color: white;
-  padding: 8px 12px;
-  border-radius: 9999px;
+  padding: 8px 14px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.2);
+  height: 44px; /* Fixed height for consistency */
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
 .profile-button:hover {
-  background: #15803d;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #1a3009 0%, #15803d 100%);
+  box-shadow: 0 4px 16px rgba(45, 80, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+.profile-button:hover::before {
+  left: 100%;
 }
 
 .profile-button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #16a34a, 0 0 0 4px rgba(22, 163, 74, 0.2);
+  box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.3), 0 4px 16px rgba(45, 80, 22, 0.3);
+}
+
+.profile-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.2);
 }
 
 .profile-avatar {
   width: 32px;
   height: 32px;
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.profile-button:hover .profile-avatar {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .profile-name {
   display: none;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
 
 @media (min-width: 768px) {
@@ -56,11 +97,14 @@
 .profile-arrow {
   width: 16px;
   height: 16px;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
+  opacity: 0.9;
+  flex-shrink: 0;
 }
 
 .profile-arrow.rotated {
   transform: rotate(180deg);
+  opacity: 1;
 }
 
 .dropdown-menu {
@@ -100,16 +144,18 @@
 }
 
 .user-avatar-large {
-  width: 40px;
-  height: 40px;
-  background: #16a34a;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #2d5016 0%, #16a34a 100%);
+  border: 2px solid rgba(45, 80, 22, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: white;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.15);
 }
 
 .user-details {
@@ -190,6 +236,26 @@
 }
 
 /* Mobile responsiveness */
+@media (max-width: 768px) {
+  .profile-button {
+    padding: 6px 12px;
+    gap: 8px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .profile-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .profile-arrow {
+    width: 14px;
+    height: 14px;
+  }
+}
+
 @media (max-width: 640px) {
   .dropdown-menu {
     width: 200px;
@@ -197,12 +263,21 @@
   }
   
   .profile-button {
-    padding: 6px 10px;
+    padding: 5px 10px;
+    gap: 6px;
+    height: 36px;
+    border-radius: 8px;
   }
   
   .profile-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    border-width: 1px;
+  }
+  
+  .profile-arrow {
+    width: 12px;
+    height: 12px;
   }
 }

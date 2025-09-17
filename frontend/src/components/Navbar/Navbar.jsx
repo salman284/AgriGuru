@@ -54,11 +54,12 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/market-prices" className={`navbar-link ${isActive('/market-prices') ? 'active' : ''}`}>{t('navbar.market_prices')}</Link>
           </li>
-          <li className="navbar-item">
-            <Link to="/government-schemes" className={`navbar-link ${isActive('/government-schemes') ? 'active' : ''}`}>{t('navbar.government')}</Link>
-          </li>
+          
           <li className="navbar-item">
             <Link to="/agrifarm" className={`navbar-link ${isActive('/agrifarm') ? 'active' : ''}`}>{t('navbar.contract_farming')}</Link>
+          </li>
+          <li className="navbar-item">
+            <Link to="/government-schemes" className={`navbar-link ${isActive('/government-schemes') ? 'active' : ''}`}>{t('navbar.government')}</Link>
           </li>
           <li className="navbar-item">
             <Link to="/kheti-saath" className={`navbar-link ${isActive('/kheti-saath') ? 'active' : ''}`}>{t('navbar.kheti_saath')}</Link>

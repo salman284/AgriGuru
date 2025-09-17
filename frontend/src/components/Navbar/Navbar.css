@@ -287,17 +287,43 @@
     gap: 0.35rem;
   }
   /* Make LanguageSwitcher button compact in navbar for mobile */
-  .navbar-auth .LanguageSwitcher button,
-  .navbar-auth .LanguageSwitcher select {
-    padding: 0.12rem 0.5rem !important;
-    font-size: 0.75rem !important;
-    max-height: 20px !important;
-    height: 20px !important;
-    border-radius: 6px !important;
+  .navbar-auth .language-switcher .language-selector {
+    padding: 0.3rem 0.6rem !important;
+    font-size: 0.7rem !important;
+    min-width: 120px !important;
+    width: auto !important;
+    height: 30px !important;
+    border-radius: 15px !important;
     box-shadow: none !important;
     margin: 0 !important;
     line-height: 1 !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
   }
+  
+  .navbar-auth .language-switcher .language-text {
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: initial !important;
+  }
+  
+  .navbar-auth .language-switcher .language-icon {
+    font-size: 0.7rem !important;
+  }
+  
+  .navbar-auth .language-switcher .dropdown-arrow {
+    font-size: 0.6rem !important;
+  }
+  
+  /* Hide login and signup buttons from main navbar on mobile */
+  .navbar-auth .auth-section .login-btn,
+  .navbar-auth .auth-section .signup-btn {
+    display: none !important;
+  }
+  
   .login-btn, .signup-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
@@ -422,9 +448,44 @@
   .navbar-auth {
     gap: 0.2rem;
   }
+  
+  /* Hide login and signup buttons from main navbar on small mobile */
+  .navbar-auth .auth-section .login-btn,
+  .navbar-auth .auth-section .signup-btn {
+    display: none !important;
+  }
+  
   .login-btn, .signup-btn {
     padding: 0.3rem 0.6rem;
     font-size: 0.7rem;
     min-width: 55px;
+  }
+  
+  /* Make LanguageSwitcher even more compact on very small screens */
+  .navbar-auth .language-switcher .language-selector {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.65rem !important;
+    min-width: 110px !important;
+    width: auto !important;
+    height: 26px !important;
+    border-radius: 13px !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+  
+  .navbar-auth .language-switcher .language-text {
+    font-size: 0.65rem !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: initial !important;
+  }
+  
+  .navbar-auth .language-switcher .language-icon {
+    font-size: 0.65rem !important;
+  }
+  
+  .navbar-auth .language-switcher .dropdown-arrow {
+    font-size: 0.55rem !important;
   }
 }
