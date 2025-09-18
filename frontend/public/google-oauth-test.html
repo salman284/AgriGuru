@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google OAuth Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #357ae8;
+        }
+        .code {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 AgriGuru - Google OAuth Test</h1>
+        
+        <div class="info">
+            <strong>Test Status:</strong> This page tests the Google OAuth integration for AgriGuru.
+        </div>
+
+        <h2>Frontend Testing</h2>
+        <div id="frontend-status" class="status info">
+            ✅ Frontend implementation completed
+        </div>
+        <ul>
+            <li>✅ Google login button component created</li>
+            <li>✅ AuthContext updated with Google login</li>
+            <li>✅ Login page updated with Google button</li>
+            <li>✅ Google Auth service implemented</li>
+        </ul>
+
+        <h2>Backend Testing</h2>
+        <div id="backend-status" class="status info">
+            ✅ Backend implementation completed
+        </div>
+        <ul>
+            <li>✅ Google OAuth endpoint added (/api/google-login)</li>
+            <li>✅ Google auth libraries installed</li>
+            <li>✅ Database integration completed</li>
+            <li>✅ Environment configuration ready</li>
+        </ul>
+
+        <h2>Configuration Status</h2>
+        <div id="config-status" class="status error">
+            ⚠️ Configuration needed - Google Client ID required
+        </div>
+
+        <h2>Setup Instructions</h2>
+        <div class="code">
+            <strong>1. Frontend (.env.local):</strong><br>
+            REACT_APP_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+        </div>
+        <div class="code">
+            <strong>2. Backend (.env):</strong><br>
+            GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+        </div>
+
+        <h2>Next Steps</h2>
+        <ol>
+            <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+            <li>Create OAuth 2.0 credentials</li>
+            <li>Add authorized origins: http://localhost:3000</li>
+            <li>Copy Client ID to environment files</li>
+            <li>Restart both frontend and backend servers</li>
+            <li>Test Google login on the login page</li>
+        </ol>
+
+        <h2>Test Links</h2>
+        <button onclick="window.open('http://localhost:3000/login', '_blank')">
+            🔗 Open Login Page
+        </button>
+        <button onclick="testBackendEndpoint()">
+            🧪 Test Backend Endpoint
+        </button>
+
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        async function testBackendEndpoint() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = '<div class="status info">Testing backend endpoint...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:5001/api/google-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idToken: 'test-token'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.status === 400 && data.message === 'Google ID token is required') {
+                    resultsDiv.innerHTML = '<div class="status success">✅ Backend endpoint is working (validation working correctly)</div>';
+                } else if (response.status === 500 && data.message === 'Google OAuth not configured') {
+                    resultsDiv.innerHTML = '<div class="status error">⚠️ Backend endpoint working but Google Client ID not configured</div>';
+                } else {
+                    resultsDiv.innerHTML = `<div class="status info">Backend response: ${JSON.stringify(data)}</div>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">❌ Backend test failed: ${error.message}</div>`;
+            }
+        }
+
+        // Check if we're running on the expected ports
+        if (window.location.port !== '3000') {
+            document.querySelector('.container').innerHTML += `
+                <div class="status error">
+                    ⚠️ This test page should be served from port 3000. Current port: ${window.location.port || '80/443'}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

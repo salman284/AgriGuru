@@ -15,6 +15,10 @@ import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from bson.objectid import ObjectId
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 # --- SocketIO imports ---
 from flask_socketio import SocketIO, join_room, leave_room, emit
 # --- Additional imports for WhatsApp agent ---
@@ -559,6 +563,104 @@ def logout():
     """User logout endpoint"""
     session.clear()
     return jsonify({"success": True, "message": "Logged out successfully"}), 200
+
+@app.route('/api/google-login', methods=['POST'])
+def google_login():
+    """Google OAuth login endpoint"""
+    try:
+        from google.oauth2 import id_token
+        from google.auth.transport import requests
+        
+        data = request.get_json()
+        
+        if not data.get('idToken'):
+            return jsonify({"success": False, "message": "Google ID token is required"}), 400
+        
+        # Verify the Google ID token
+        try:
+            # Note: In production, replace with your actual Google client ID
+            CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+            if not CLIENT_ID:
+                return jsonify({"success": False, "message": "Google OAuth not configured"}), 500
+            
+            # Verify the token
+            idinfo = id_token.verify_oauth2_token(
+                data['idToken'], 
+                requests.Request(), 
+                CLIENT_ID
+            )
+            
+            # Extract user information
+            google_id = idinfo['sub']
+            email = idinfo['email']
+            name = idinfo.get('name', '')
+            picture = idinfo.get('picture', '')
+            
+        except ValueError as e:
+            return jsonify({"success": False, "message": "Invalid Google token"}), 401
+        
+        # Check if user exists
+        user = users_collection.find_one({"email": email.lower()})
+        
+        if user:
+            # User exists, update Google ID if not set
+            if not user.get('google_id'):
+                users_collection.update_one(
+                    {"_id": user["_id"]},
+                    {"$set": {"google_id": google_id, "last_login": datetime.utcnow()}}
+                )
+            else:
+                # Just update last login
+                users_collection.update_one(
+                    {"_id": user["_id"]},
+                    {"$set": {"last_login": datetime.utcnow()}}
+                )
+        else:
+            # Create new user
+            user_data = {
+                "email": email.lower(),
+                "full_name": name,
+                "google_id": google_id,
+                "profile_image": picture,
+                "is_active": True,
+                "email_verified": True,  # Google accounts are pre-verified
+                "password_hash": None,  # No password for Google users
+                "created_at": datetime.utcnow(),
+                "last_login": datetime.utcnow(),
+                "profile": {
+                    "farm_location": "",
+                    "farm_size": "",
+                    "crops": [],
+                    "language_preference": "en"
+                }
+            }
+            
+            result = users_collection.insert_one(user_data)
+            user_data["_id"] = result.inserted_id
+            user = user_data
+        
+        # Create session
+        session.permanent = True
+        session['user_id'] = str(user["_id"])
+        session['user_email'] = user["email"]
+        
+        return jsonify({
+            "success": True,
+            "message": "Google login successful",
+            "user": {
+                "id": str(user["_id"]),
+                "email": user["email"],
+                "full_name": user["full_name"],
+                "phone": user.get("phone", ""),
+                "profile_image": user.get("profile_image", ""),
+                "profile": user.get("profile", {})
+            }
+        }), 200
+        
+    except ImportError:
+        return jsonify({"success": False, "message": "Google authentication not available"}), 500
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Google login failed: {str(e)}"}), 500
 
 @app.route('/api/profile', methods=['GET'])
 def get_profile():

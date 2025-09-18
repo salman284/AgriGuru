@@ -10,6 +10,7 @@
     "autoprefixer": "^10.4.21",
     "axios": "^1.10.0",
     "caniuse-lite": "^1.0.30001731",
+    "googleapis": "^160.0.0",
     "i18next": "^23.7.6",
     "lodash": "^4.17.21",
     "postcss-preset-env": "^10.2.4",

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import googleAuthService from '../services/googleAuthService';
 
 const AuthContext = createContext();
 
@@ -149,6 +150,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async () => {
+    try {
+      const result = await googleAuthService.signIn();
+      
+      if (result.success) {
+        // Send Google user data to backend for verification/registration
+        const response = await fetch('http://localhost:5001/api/google-login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            idToken: result.user.idToken,
+            email: result.user.email,
+            name: result.user.name,
+            googleId: result.user.id,
+            imageUrl: result.user.imageUrl
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.user) {
+          setUser(data.user);
+          return { success: true, message: 'Google login successful' };
+        } else {
+          return { success: false, message: data.message || 'Google login failed' };
+        }
+      } else {
+        return { success: false, message: result.error || 'Google authentication failed' };
+      }
+    } catch (error) {
+      console.error('Google login error:', error);
+      return { success: false, message: 'Google login failed. Please try again.' };
+    }
+  };
+
   const value = {
     user,
     setUser,
@@ -158,6 +197,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     checkAuthStatus,
+    loginWithGoogle,
     isAuthenticated: !!user
   };
 

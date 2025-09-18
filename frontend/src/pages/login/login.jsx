@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import GoogleLoginButton from '../../components/GoogleLoginButton';
 import './Login.css';
 import './loginbg.jpg'
 
 const Login = () => {
-  const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -33,6 +32,15 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = (result) => {
+    alert(`✅ Welcome via Google!`);
+    navigate('/dashboard');
+  };
+
+  const handleGoogleError = (errorMessage) => {
+    setError(errorMessage);
   };
 
   return (
@@ -75,6 +83,11 @@ const Login = () => {
         <div className="login-divider">
           <span>OR</span>
         </div>
+        
+        <GoogleLoginButton 
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+        />
         
         <Link to="/otp-login" className="otp-login-btn">
           🔐 Login with OTP
