@@ -1,13 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { useMarketplace } from '../../contexts/MarketplaceContext';
+import { Link } from 'react-router-dom';
+import QuickView from '../../components/QuickView/QuickView';
+import ServiceBenefits from '../../components/ServiceBenefits/ServiceBenefits';
 import './ecommerce.css';
 
 const Ecommerce = () => {
-  const { t } = useTranslation('common');
+  const { 
+    addToCart, 
+    toggleFavorite, 
+    isInCart, 
+    isInFavorites, 
+    cartItemCount, 
+    favoritesCount,
+    formatPrice,
+    getDiscount 
+  } = useMarketplace();
+  
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
-  const [cart, setCart] = useState([]);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   // Sample farming equipment data
   const products = [
@@ -23,6 +36,13 @@ const Ecommerce = () => {
       reviews: 128,
       description: '39 HP, 3 Cylinder, Water Cooled Engine',
       specifications: ['39 HP Engine', '3 Cylinder', 'Water Cooled', '540 RPM PTO'],
+      features: [
+        'Advanced transmission system for smooth operation',
+        'Fuel-efficient engine design',
+        'Comfortable operator cabin with ergonomic controls',
+        'Heavy-duty hydraulic system',
+        'Multi-speed PTO for various implements'
+      ],
       inStock: true,
       brand: 'Mahindra'
     },
@@ -111,6 +131,13 @@ const Ecommerce = () => {
       reviews: 78,
       description: 'High yielding hybrid corn seeds - 10kg pack',
       specifications: ['Hybrid Variety', 'High Yield', 'Disease Resistant', '10kg Pack'],
+      features: [
+        'Superior genetic traits for maximum yield',
+        'Enhanced disease and pest resistance',
+        'Adaptable to various soil conditions',
+        'Consistent germination rate above 90%',
+        'Suitable for both rain-fed and irrigated farming'
+      ],
       inStock: true,
       brand: 'Pioneer'
     },
@@ -125,6 +152,13 @@ const Ecommerce = () => {
       reviews: 102,
       description: 'Premium Basmati rice seeds - 25kg pack',
       specifications: ['Basmati Variety', 'Long Grain', 'Aromatic', '25kg Pack'],
+      features: [
+        'Premium long-grain basmati variety',
+        'Excellent cooking quality with distinct aroma',
+        'High market demand and premium pricing',
+        'Suitable for export quality production',
+        'Resistant to common rice diseases'
+      ],
       inStock: true,
       brand: 'IARI'
     },
@@ -220,36 +254,8 @@ const Ecommerce = () => {
       }
     });
 
-  // Add to cart function
-  const addToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  // Format price in Indian currency
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
-
-  // Calculate discount percentage
-  const getDiscount = (original, current) => {
-    return Math.round(((original - current) / original) * 100);
-  };
-
   return (
+    <>
     <div className="ecommerce-container">
       {/* Header */}
       <div className="ecommerce-header">
@@ -278,17 +284,28 @@ const Ecommerce = () => {
               </select>
             </div>
 
-            {cart.length > 0 && (
-              <div className="cart-indicator">
-                🛒 Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-              </div>
-            )}
+            <div className="cart-favorites-container">
+              <Link to="/cart" className={`cart-indicator ${cartItemCount > 0 ? 'has-items' : ''}`}>
+                <span className="icon">🛒</span>
+                <span>Cart</span>
+                <span className="count">({cartItemCount})</span>
+              </Link>
+              
+              <Link to="/favorites" className={`favorites-indicator ${favoritesCount > 0 ? 'has-items' : ''}`}>
+                <span className="icon">❤️</span>
+                <span>Favorites</span>
+                <span className="count">({favoritesCount})</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="ecommerce-main">
-        {/* Sidebar Categories */}
+      {/* Service Benefits Section */}
+      <ServiceBenefits />
+
+      <div className="ecommerce-main">{
+        /* Sidebar Categories */}
         <div className="sidebar">
           <h3>Categories</h3>
           <div className="category-list">
@@ -338,7 +355,12 @@ const Ecommerce = () => {
                     </div>
                   )}
                   <div className="product-overlay">
-                    <button className="quick-view-btn">Quick View</button>
+                    <button 
+                      className="quick-view-btn"
+                      onClick={() => setQuickViewProduct(product)}
+                    >
+                      Quick View
+                    </button>
                   </div>
                 </div>
 
@@ -376,9 +398,17 @@ const Ecommerce = () => {
                       onClick={() => addToCart(product)}
                       disabled={!product.inStock}
                     >
-                      {product.inStock ? '🛒 Add to Cart' : 'Out of Stock'}
+                      {product.inStock ? (
+                        isInCart(product.id) ? '✅ Added to Cart' : '🛒 Add to Cart'
+                      ) : 'Out of Stock'}
                     </button>
-                    <button className="wishlist-btn">❤</button>
+                    <button 
+                      className={`wishlist-btn ${isInFavorites(product.id) ? 'active' : ''}`}
+                      onClick={() => toggleFavorite(product)}
+                      title={isInFavorites(product.id) ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                      {isInFavorites(product.id) ? '❤️' : '🤍'}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -393,27 +423,16 @@ const Ecommerce = () => {
           )}
         </div>
       </div>
-
-      {/* Floating Benefits */}
-      <div className="benefits-section">
-        <div className="benefit-item">
-          <span className="benefit-icon">🚚</span>
-          <span className="benefit-text">Free Delivery</span>
-        </div>
-        <div className="benefit-item">
-          <span className="benefit-icon">🔄</span>
-          <span className="benefit-text">Easy Returns</span>
-        </div>
-        <div className="benefit-item">
-          <span className="benefit-icon">💳</span>
-          <span className="benefit-text">EMI Available</span>
-        </div>
-        <div className="benefit-item">
-          <span className="benefit-icon">📞</span>
-          <span className="benefit-text">24/7 Support</span>
-        </div>
-      </div>
     </div>
+
+    {/* Quick View Modal */}
+    {quickViewProduct && (
+      <QuickView 
+        product={quickViewProduct} 
+        onClose={() => setQuickViewProduct(null)} 
+      />
+    )}
+  </>
   );
 };
 
