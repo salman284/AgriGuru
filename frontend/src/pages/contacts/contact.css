@@ -1,100 +1,140 @@
 .contact-page {
-  padding: 9rem;
+  padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
   color: #333;
+  margin-top: 80px; /* Account for fixed navbar */
 }
 
 .contact-page h1 {
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 2rem;
-  color: #2d5016;
+  font-size: 2.25rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2d5016 0%, #16a34a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: #777;
+  color: #6b7280;
+  padding: 3rem 1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  margin: 2rem 0;
 }
 
 /* Grid Layout */
 .ado-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 /* Card Styling */
 .ado-card {
-  background-color: #f9f9f9;
-  border: 2px solid #2d5016;
-  border-radius: 10px;
-  padding: 1.2rem;
-  transition: box-shadow 0.3s ease;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .ado-card:hover {
-  box-shadow: 0 4px 15px rgba(45, 80, 22, 0.2);
+  box-shadow: 0 8px 25px rgba(45, 80, 22, 0.15);
+  transform: translateY(-2px);
+  border-color: #2d5016;
 }
 
 /* Header */
 .ado-header {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
 }
 
 .ado-header h2 {
   margin: 0;
-  font-size: 1.4rem;
-  color: #2d5016;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  line-height: 1.3;
 }
 
 .designation {
   display: block;
   font-size: 0.95rem;
-  color: #666;
-  margin-top: 0.2rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-weight: 500;
 }
 
 /* Details */
 .ado-details p {
-  margin: 0.4rem 0;
+  margin: 0.6rem 0;
   font-size: 0.9rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.ado-details p strong {
+  color: #1f2937;
+  font-weight: 600;
 }
 
 /* Contact Buttons */
 .contact-info {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .contact-button {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 20px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 14px;
   transition: all 0.3s ease;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .phone {
-  background-color: #2d5016;
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
   color: white;
-  border: 2px solid #2d5016;
+  border: none;
 }
 
 .phone:hover {
-  background-color: white;
-  color: #2d5016;
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
 }
 
 .email {
-  background-color: #2d5016;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: white;
-  border: 2px solid #2d5016;
+  border: none;
+}
+
+.email:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .email:hover {
@@ -102,18 +142,130 @@
   color: #2d5016;
 }
 
-/* Responsive Typography */
-@media screen and (max-width: 480px) {
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .contact-page {
+    padding: 1rem 0.75rem;
+    margin-top: 70px;
+  }
+
   .contact-page h1 {
-    font-size: 1.6rem;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ado-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .ado-card {
+    padding: 1.25rem;
+    border-radius: 12px;
   }
 
   .ado-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .designation {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .ado-details p {
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+  }
+
+  .contact-info {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
   }
 
   .contact-button {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.8rem;
+    padding: 12px 16px;
+    font-size: 13px;
+    min-width: 100px;
+    border-radius: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-page {
+    padding: 0.75rem 0.5rem;
+    margin-top: 65px;
+  }
+
+  .contact-page h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ado-card {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .ado-header h2 {
+    font-size: 1.125rem;
+  }
+
+  .designation {
+    font-size: 0.825rem;
+  }
+
+  .ado-details p {
+    font-size: 0.8rem;
+    margin: 0.4rem 0;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .contact-button {
+    font-size: 14px;
+    padding: 14px 16px;
+    min-width: auto;
+    width: 100%;
+    border-radius: 8px;
+    min-height: 48px; /* Touch-friendly */
+  }
+
+  .loading {
+    font-size: 1rem;
+    padding: 2rem 1rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .contact-page {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .contact-page h1 {
+    font-size: 1.25rem;
+  }
+
+  .ado-card {
+    padding: 0.875rem;
+  }
+
+  .ado-header h2 {
+    font-size: 1rem;
+  }
+
+  .ado-details p {
+    font-size: 0.75rem;
+  }
+
+  .contact-button {
+    font-size: 13px;
+    padding: 12px 14px;
   }
 }

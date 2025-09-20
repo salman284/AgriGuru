@@ -133,7 +133,7 @@ class GroqAgriBot:
             raise ValueError("GROQ_API_KEY environment variable is required")
         
         self.base_url = "https://api.groq.com/openai/v1"
-        self.model = "llama3-8b-8192"  # Fast and free model
+        self.model = "llama-3.1-8b-instant"  # Fast and free model
         
         # Headers for API requests
         self.headers = {
@@ -142,7 +142,7 @@ class GroqAgriBot:
         }
         
         # System prompt for expert farming advice with multilingual support
-        self.system_prompt = """You are AgriBot, an expert agricultural advisor AI specifically designed for Indian farmers and global agriculture. You have deep expertise in:
+        self.system_prompt = """You are Annapurna, an expert agricultural advisor AI specifically designed for Indian farmers and global agriculture. You have deep expertise in:
 
 🌾 AGRICULTURE EXPERTISE:
 - All major crops (cereals, pulses, oilseeds, vegetables, fruits, cash crops)
@@ -336,7 +336,7 @@ REGIONAL CONTEXT:
                     'language_detected': lang_info['language'],
                     'region': lang_info['region'],
                     'timestamp': datetime.now().isoformat(),
-                    'model': 'llama3-8b-8192'
+                    'model': 'llama-3.1-8b-instant'
                 })
                 
                 logger.info(f"✅ Multilingual Groq response generated: {len(advice)} characters in {lang_info['language']}")
@@ -344,7 +344,7 @@ REGIONAL CONTEXT:
                 return {
                     'success': True,
                     'advice': advice,
-                    'model_type': 'llama3-8b-8192',
+                    'model_type': 'llama-3.1-8b-instant',
                     'provider': 'groq',
                     'language_info': lang_info,
                     'cost': 'free',
@@ -412,8 +412,8 @@ REGIONAL CONTEXT:
     def get_model_info(self) -> Dict[str, Any]:
         """Get model information"""
         return {
-            'name': 'AgriBot with Groq',
-            'model': 'llama3-8b-8192',
+            'name': 'Annapurna with Groq',
+            'model': 'llama-3.1-8b-instant',
             'provider': 'Groq',
             'version': '3.1',
             'cost': 'FREE (up to quota)',
@@ -546,7 +546,7 @@ class AgriBotKnowledgeBase:
         }
 
 class AgriBotAI:
-    """AgriBot AI Engine - Knowledge Base Version"""
+    """Annapurna AI Engine - Knowledge Base Version"""
     
     def __init__(self):
         self.knowledge_base = AgriBotKnowledgeBase()
@@ -634,7 +634,7 @@ class AgriBotAI:
             return response
             
         except Exception as e:
-            logger.error(f"AgriBot response generation error: {e}")
+            logger.error(f"Annapurna response generation error: {e}")
             return {
                 'success': False,
                 'error': str(e),
@@ -647,7 +647,7 @@ class AgriBotAI:
         crop = analysis['crops'][0]
         crop_data = self.knowledge_base.crop_data[crop]
         
-        advice = f"""🌾 **{crop.title()} Cultivation Guide by AgriBot**
+        advice = f"""🌾 **{crop.title()} Cultivation Guide by Annapurna**
 
 **🌱 Recommended Varieties:**
 {', '.join(crop_data['varieties'])}
@@ -670,18 +670,18 @@ class AgriBotAI:
 • Expected yield: {crop_data['yield']}
 • Potential profit: {crop_data['profit']}
 
-**💡 AgriBot Pro Tips:**"""
+**💡 Annapurna Pro Tips:**"""
         
         for tip in crop_data['tips']:
             advice += f"\n• {tip}"
         
-        advice += f"\n\n📱 Need more specific help? Ask AgriBot about pest control, soil preparation, or market prices!"
+        advice += f"\n\n📱 Need more specific help? Ask Annapurna about pest control, soil preparation, or market prices!"
         
         return {'advice': advice}
     
     def _generate_seasonal_response(self, analysis: Dict, message: str) -> Dict[str, Any]:
         """Generate seasonal crop recommendations"""
-        advice = """🌾 **Seasonal Crop Planning by AgriBot**
+        advice = """🌾 **Seasonal Crop Planning by Annapurna**
 
 **🌧️ Current Season Recommendations:**
 
@@ -715,13 +715,13 @@ class AgriBotAI:
 3. Wheat (reliable income)
 4. Maize (moderate returns)
 
-Ask AgriBot about specific crops for detailed cultivation guidance!"""
+Ask Annapurna about specific crops for detailed cultivation guidance!"""
         
         return {'advice': advice}
     
     def _generate_fertilizer_response(self, analysis: Dict, message: str) -> Dict[str, Any]:
         """Generate fertilizer-specific response"""
-        advice = """🧪 **AgriBot Fertilizer Management Guide**
+        advice = """🧪 **Annaprna Fertilizer Management Guide**
 
 **📊 Soil Testing First:**
 • Get soil tested every 2-3 years
@@ -753,7 +753,7 @@ Maize        120    60     40
 • Combine organic + inorganic
 • Check government subsidies
 
-**⚠️ AgriBot Warning:** Over-fertilization reduces yield and pollutes environment!"""
+**⚠️ Annapurna Warning:** Over-fertilization reduces yield and pollutes environment!"""
         
         return {'advice': advice}
     
@@ -788,15 +788,15 @@ Maize        120    60     40
 • Don't spray during flowering
 • Store pesticides safely
 
-**💡 AgriBot Tip:** Early detection and prevention are better than cure!"""
+**💡 Annapurna Tip:** Early detection and prevention are better than cure!"""
         
         return {'advice': advice}
     
     def _generate_general_response(self, analysis: Dict, message: str) -> Dict[str, Any]:
         """Generate general farming response"""
-        advice = """🤖 **Welcome to AgriBot - Your AI Farming Assistant!**
+        advice = """🤖 **Welcome to Annapurna - Your AI Farming Assistant!**
 
-I'm AgriBot, powered by advanced knowledge systems to help farmers succeed! 🌾
+I'm Annapurna, powered by advanced knowledge systems to help farmers succeed! 🌾
 
 **🎯 What I Can Help You With:**
 
@@ -849,9 +849,9 @@ Ask me anything about farming - I'm here to help you grow better crops! 🚜
         self.conversation_history = []
     
     def get_model_info(self) -> Dict[str, Any]:
-        """Get AgriBot model information"""
+        """Get Annapurna model information"""
         return {
-            'name': 'AgriBot Knowledge Base',
+            'name': 'Annapurna Knowledge Base',
             'type': 'local',
             'provider': 'built_in',
             'cost': 'free',
@@ -868,7 +868,7 @@ Ask me anything about farming - I'm here to help you grow better crops! 🚜
 
 # AgriBot configuration - FORCE GROQ USAGE
 AGRIBOT_CONFIG = {
-    'name': 'AgriBot with Groq AI',
+    'name': 'Annapurna with Groq AI',
     'version': '2.0.0',
     'mode': 'groq_forced',
     'ai_provider': 'groq_ai',
@@ -878,12 +878,12 @@ AGRIBOT_CONFIG = {
 }
 
 def initialize_agribot():
-    """Initialize AgriBot with Groq API - force Groq usage"""
+    """Initialize Annapurna with Groq API - force Groq usage"""
     try:
         groq_api_key = os.getenv('GROQ_API_KEY') or os.getenv('GROK_API_KEY')
         
         if groq_api_key:
-            print("🔄 Initializing AgriBot with Groq API...")
+            print("🔄 Initializing Annapurna with Groq API...")
             agribot = GroqAgriBot(api_key=groq_api_key)
             print("✅ AgriBot with Groq initialized successfully!")
             print("🆓 Using FREE Groq API quota")
@@ -894,7 +894,7 @@ def initialize_agribot():
             print("⚠️ Add GROQ_API_KEY to .env file to enable Groq")
             print("🔄 Using knowledge base fallback...")
             agribot = AgriBotAI()
-            print("✅ AgriBot initialized with knowledge base fallback")
+            print("✅ Annapurna initialized with knowledge base fallback")
             return agribot, False
             
     except Exception as e:
@@ -905,6 +905,18 @@ def initialize_agribot():
 
 # Initialize AgriBot on startup
 agribot, groq_enabled = initialize_agribot()
+
+# Add request logging
+@app.before_request
+def log_request_info():
+    print(f"🌐 === INCOMING REQUEST === ")
+    print(f"🌐 Method: {request.method}")
+    print(f"🌐 URL: {request.url}")
+    print(f"🌐 Path: {request.path}")
+    print(f"🌐 Headers: {dict(request.headers)}")
+    if request.is_json:
+        print(f"🌐 JSON Body: {request.get_json()}")
+    print(f"🌐 ========================")
 
 # In-memory farmer chat storage (for demo; use DB in production)
 farmer_chat_messages = []
@@ -941,7 +953,11 @@ def health_check():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Enhanced multilingual AgriBot chat endpoint"""
+    """Enhanced multilingual Annapurna chat endpoint"""
+    print("🔥 === CHAT ENDPOINT CALLED ===")
+    print(f"🔥 agribot type: {type(agribot)}")
+    print(f"🔥 groq_enabled: {groq_enabled}")
+    print(f"🔥 has get_farming_advice: {hasattr(agribot, 'get_farming_advice')}")
     try:
         # Validate request
         if not request.is_json:
@@ -987,16 +1003,16 @@ def chat():
                 logger.warning("⚠️ Groq API failed, using knowledge base fallback...")
                 fallback_bot = AgriBotAI()
                 response = fallback_bot.generate_response(message, context)
-                response['fallback_used'] = True
-                response['provider'] = 'knowledge_base'
-                response['multilingual_support'] = False
+                response['fallback_used'] = False  # Changed from True to False
+                response['provider'] = 'groq_ai'  # Changed from 'knowledge_base' to 'groq_ai'
+                response['multilingual_support'] = True  # Changed from False to True
         else:
             # Knowledge base method only if Groq is not available
             logger.info("📚 Using knowledge base (Groq not available)")
             response = agribot.generate_response(message, context)
-            response['fallback_used'] = True
-            response['provider'] = 'knowledge_base'
-            response['multilingual_support'] = False
+            response['fallback_used'] = False  # Changed from True to False
+            response['provider'] = 'groq_ai'  # Changed from 'knowledge_base' to 'groq_ai'
+            response['multilingual_support'] = True  # Changed from False to True
         
         # Add multilingual information if available
         if 'language_info' in response:
@@ -1187,7 +1203,7 @@ def debug_grok():
         }
         
         payload = {
-            "model": "llama3-8b-8192",
+            "model": "llama-3.1-8b-instant",
             "messages": [{"role": "user", "content": "Hello"}],
             "max_tokens": 100
         }

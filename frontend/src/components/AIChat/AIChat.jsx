@@ -30,9 +30,9 @@ const AIChat = () => {
     // Add welcome message
     setMessages([{
       id: 1,
-      text: `🌾 **Welcome to AgriGuru AI Chat!**
+      text: `🌾 **Welcome to Annapurna!**
 
-I'm your AI-powered farming assistant, powered by Groq LLaMA 3. I can help you with:
+I'm your AI-powered farming assistant, I can help you with:
 
 🌱 **Crop cultivation advice**
 🧪 **Fertilizer recommendations**  
@@ -239,7 +239,7 @@ Just ask me anything about farming in your preferred language, and I'll provide 
       <button 
         className="chat-toggle-btn" 
         onClick={toggleChat}
-        title={isOpen ? "Close Chat" : "Open AgriGuru AI Assistant"}
+        title={isOpen ? "Close Chat" : "Open Annapurna"}
       >
         {isOpen ? "✕" : "🤖"}
         {!isOpen && (

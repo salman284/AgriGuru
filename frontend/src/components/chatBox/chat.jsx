@@ -121,7 +121,7 @@ function ChatBoxInner({ currentUser, users, onLoginRequest }) {
               <span role="img" aria-label="avatar">👨‍🌾</span>
             </div>
             <div className="chat-title">
-              <span>AgriGuru Group Chat</span>
+              <span>KisanMitra Group Chat</span>
               <span className="chat-status online">Collaborative Platform</span>
             </div>
             <button className="close-btn" onClick={handleCloseChat}>×</button>

@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:500
 
 class EnhancedAIService {
   /**
-   * Multilingual AI Chat endpoint using Enhanced AgriBot
+   * Multilingual AI Chat endpoint using Enhanced Annapurna
    * @param {string} message - The chat message
    * @param {Object} context - Additional context (crop, season, location, etc.)
    * @returns {Promise<Object>} - AI chat response with language information
@@ -17,7 +17,8 @@ class EnhancedAIService {
         },
         body: JSON.stringify({
           message: message,
-          context: context
+          context: context,
+          language: context.language || 'en'
         }),
         timeout: 20000 // 20 second timeout for AI processing
       });
@@ -405,17 +406,16 @@ class EnhancedAIService {
    * @returns {string} - Fallback response
    */
   getFallbackChatResponse(message, context = {}) {
-    return `🤖 **AgriGuru AI Assistant** (Offline Mode)\n\n` +
+    return `🤖 **Annapurna - KisanMitra AI Assistant** (Offline Mode)\n\n` +
       `**Your message:** ${message}\n\n` +
-      `I'm currently unable to connect to the enhanced AI backend with Gemma 2.\n\n` +
+      `I'm currently unable to connect to the enhanced AI backend with Groq.\n\n` +
       `**To enable full AI chat features:**\n` +
       `1. Go to the backend folder\n` +
-      `2. Run: python setup_ai_backend.py (first time only)\n` +
-      `3. Run: python farming_expert_app_ai.py\n` +
-      `4. Wait for "Server running on http://localhost:5000"\n` +
-      `5. Then try your question again\n\n` +
+      `2. Run: python farming_expert_app_ai.py\n` +
+      `3. Wait for "Server running on http://localhost:5000"\n` +
+      `4. Then try your question again\n\n` +
       `**Enhanced AI features include:**\n` +
-      `• Conversational farming advice with Gemma 2\n` +
+      `• Conversational farming advice with Groq LLaMA 3\n` +
       `• Context-aware responses\n` +
       `• Personalized recommendations\n` +
       `• Multi-turn conversations\n` +

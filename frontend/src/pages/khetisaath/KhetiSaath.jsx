@@ -462,7 +462,7 @@ const KhetiSaath = () => {
     <div className="kheti-saath-page">
       <div className="page-header">
         <div className="header-content">
-          <h1>🌾AgriGuide</h1>
+          <h1>🌾KisanGuide</h1>
           <p>Your comprehensive guide to farming equipment, tools, fertilizers, and organic alternatives</p>
         </div>
       </div>

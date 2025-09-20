@@ -195,7 +195,7 @@ const VoiceInput = ({ onVoiceInput, onTranscription, disabled = false }) => {
       <div className="voice-header">
         <div className="voice-title">
           <span className="voice-icon">🎤</span>
-          <h3>Voice Input for AgriBot</h3>
+          <h3>Voice Input for Annapurna</h3>
           <span className="voice-badge">
             {currentLang.flag} {currentLang.script}
           </span>

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "AgriGuru - Smart Farming Assistant",
+    "title": "KisanMitra - Smart Farming Assistant",
     "description": "AI-powered farming guidance for Indian farmers",
     "loading": "Loading...",
     "error": "Error occurred",
@@ -29,16 +29,16 @@
     "contact_ado": "Contact ADO",
     "government": "Government Schemes",
     "contract_farming": "Contract Farming",
-    "kheti_saath": "AgriGuide"
+    "kheti_saath": "KisanGuide"
   },
   "homepage": {
     "hero": {
-      "title": "Welcome to AgriGuru",
+      "title": "Welcome to KisanMitra",
       "subtitle": "Get expert farming advice in your language",
-      "description": "AgriGuru provides AI-powered farming guidance, crop recommendations, and weather insights to help Indian farmers increase productivity and income.",
+      "description": "KisanMitra provides AI-powered farming guidance, crop recommendations, and weather insights to help Indian farmers increase productivity and income.",
       "cta_primary": "Get Farming Help",
       "cta_secondary": "Learn More",
-      "features_title": "Why Choose AgriGuru?"
+      "features_title": "Why Choose KisanMitra?"
     },
     "features": {
       "ai_chat": {
@@ -123,7 +123,7 @@
     }
   },
   "ai_chat": {
-    "title": "AgriBot - AI Farming Assistant",
+    "title": "Annapurna - AI Farming Assistant",
     "subtitle": "Ask me anything about farming!",
     "voice_subtitle": "Voice & Text Support • Multilingual",
     "placeholder": "Ask me about farming, crops, weather...",
@@ -131,7 +131,7 @@
     "send": "Send",
     "listening": "Listening...",
     "processing": "Processing...",
-    "welcome_message": "🌾 **Welcome to AgriGuru AI Chat!**\n\nI'm your AI-powered farming assistant, powered by Groq LLaMA 3. I can help you with:\n\n🌱 **Crop cultivation advice**\n🧪 **Fertilizer recommendations**\n🐛 **Pest and disease management**\n🌤️ **Weather-based planning**\n📊 **Market insights**\n📅 **Seasonal farming calendar**\n\n🌐 **Multilingual Support**: I can understand and respond in:\n- हिंदी (Hindi)\n- தமிழ் (Tamil)\n- తెలుగు (Telugu)\n- ਪੰਜਾਬੀ (Punjabi)\n- বাংলা (Bengali)\n- मराठी (Marathi)\n- ગુજરાતી (Gujarati)\n- ಕನ್ನಡ (Kannada)\n- മലയാളം (Malayalam)\n- English\n\nJust ask me anything about farming in your preferred language, and I'll provide detailed, region-specific advice!\n\n*Type your question below to get started...*",
+    "welcome_message": "🌾 **Welcome to Annapurna!**\n\nI'm your AI-powered farming assistant, I can help you with:\n\n🌱 **Crop cultivation advice**\n🧪 **Fertilizer recommendations**\n🐛 **Pest and disease management**\n🌤️ **Weather-based planning**\n📊 **Market insights**\n📅 **Seasonal farming calendar**\n\n🌐 **Multilingual Support**: I can understand and respond in:\n- हिंदी (Hindi)\n- தமிழ் (Tamil)\n- తెలుగు (Telugu)\n- ਪੰਜਾਬੀ (Punjabi)\n- বাংলা (Bengali)\n- मराठी (Marathi)\n- ગુજરાતી (Gujarati)\n- ಕನ್ನಡ (Kannada)\n- മലയാളം (Malayalam)\n- English\n\nJust ask me anything about farming in your preferred language, and I'll provide detailed, region-specific advice!\n\n*Type your question below to get started...*",
     "quick_actions": {
       "crop_selection": "🌱 Crop Selection",
       "soil_health": "🌱 Soil Health", 
@@ -152,7 +152,7 @@
     }
   },
   "voice_input": {
-    "title": "Voice Input for AgriBot",
+    "title": "Voice Input for Annapurna",
     "language_select": "Select Language:",
     "start_recording": "Start Voice Input",
     "stop_recording": "Stop Recording",
@@ -241,18 +241,18 @@
     "pa": "ਪੰਜਾਬੀ (Punjabi)"
   },
   "footer": {
-    "about_agriguru": "About AgriGuru",
-    "about_description": "AgriGuru is an AI-powered platform helping Indian farmers with modern farming techniques, crop guidance, and market insights.",
+    "about_agriguru": "About KisanMitra",
+    "about_description": "KisanMitra is an AI-powered platform helping Indian farmers with modern farming techniques, crop guidance, and market insights.",
     "quick_links": "Quick Links",
     "contact_info": "Contact Information",
     "follow_us": "Follow Us",
-    "copyright": "© 2025 AgriGuru. All rights reserved.",
+    "copyright": "© 2025 KisanMitra. All rights reserved.",
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service"
   },
   "about": {
-    "title": "About AgriGuru",
-    "description": "AgriGuru is your one-stop solution for all agricultural needs. Our platform connects farmers with experts, providing real-time insights, weather updates, and personalized recommendations to enhance farming practices.",
+    "title": "About KisanMitra",
+    "description": "KisanMitra is your one-stop solution for all agricultural needs. Our platform connects farmers with experts, providing real-time insights, weather updates, and personalized recommendations to enhance farming practices.",
     "features_title": "Key Features",
     "features": {
       "accuracy": "95% Accuracy Rate in Crop Predictions",
@@ -371,7 +371,7 @@
     "create_account": "Create Account"
   },
   "ecommerce": {
-    "title": "AgriGuru Marketplace",
+    "title": "KisanMitra Marketplace",
     "subtitle": "Quality farming equipment and supplies",
     "search_placeholder": "Search products...",
     "categories": {
@@ -430,11 +430,11 @@
     "privacy_security": "Privacy & Security",
     "privacy_description": "Control your data sharing and privacy settings.",
     "data_sharing": "Data Sharing",
-    "data_sharing_description": "Allow AgriGuru to use your data to improve recommendations.",
+    "data_sharing_description": "Allow KisanMitra to use your data to improve recommendations.",
     "location_services": "Location Services",
     "location_description": "Enable location access for weather and local market data.",
     "analytics": "Analytics",
-    "analytics_description": "Help improve AgriGuru by sharing anonymous usage data.",
+    "analytics_description": "Help improve KisanMitra by sharing anonymous usage data.",
     "danger_zone": "Danger Zone",
     "danger_description": "These actions cannot be undone. Please proceed with caution.",
     "delete_account": "Delete Account"

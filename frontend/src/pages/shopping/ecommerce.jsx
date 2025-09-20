@@ -254,7 +254,7 @@ const Ecommerce = () => {
       {/* Header */}
       <div className="ecommerce-header">
         <div className="header-content">
-          <h1>🌾 AgriGuru Marketplace</h1>
+          <h1>🌾 KisanMitra Marketplace</h1>
           <p>Your one-stop shop for all farming equipment and supplies</p>
           
           {/* Search and Filters */}

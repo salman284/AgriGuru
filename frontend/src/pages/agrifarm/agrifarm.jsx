@@ -216,9 +216,9 @@ const AgriContractForm = () => {
       <div className="contract-preview">
         <div className="preview-container">
           <div className="preview-header">
-            <h1>🌾 AgriGuru Contract Farming Agreement Preview</h1>
+            <h1>🌾 KisanMitra Contract Farming Agreement Preview</h1>
             <div className="company-logo">
-              <img src="/logo.png" alt="AgriGuru" />
+              <img src="/logo.png" alt="KisanMitra" />
             </div>
           </div>
 
@@ -293,7 +293,7 @@ const AgriContractForm = () => {
             <div className="terms-list">
               <div className="term-item">
                 <h4>🌾 Land Lease Agreement</h4>
-                <p>AgriGuru will lease your {formData.landAreaSatak} satak of land for agricultural purposes for a period of 5 years.</p>
+                <p>KisanMitra will lease your {formData.landAreaSatak} satak of land for agricultural purposes for a period of 5 years.</p>
               </div>
               <div className="term-item">
                 <h4>💰 Payment Structure</h4>
@@ -305,7 +305,7 @@ const AgriContractForm = () => {
               </div>
               <div className="term-item">
                 <h4>💼 Employment Opportunity</h4>
-                <p>You will be employed by AgriGuru with monthly wages of ₹{contractDetails.wagesPerMonth.toLocaleString('en-IN')}.</p>
+                <p>You will be employed by KisanMitra with monthly wages of ₹{contractDetails.wagesPerMonth.toLocaleString('en-IN')}.</p>
               </div>
               <div className="term-item">
                 <h4>🔄 Additional Benefits</h4>
@@ -346,7 +346,7 @@ const AgriContractForm = () => {
     <div className="agri-contract-form">
       <div className="form-container">
         <div className="form-header">
-          <h1>🌾 AgriGuru Contract Farming Application</h1>
+          <h1>🌾 KisanMitra Contract Farming Application</h1>
           <p className="form-subtitle">
             Join our sustainable farming program with guaranteed income, training, and employment
           </p>
@@ -709,7 +709,7 @@ const AgriContractForm = () => {
                   />
                   <span className="checkmark"></span>
                   <span className="checkbox-text">
-                    I agree to lease my land to AgriGuru for 5 years at ₹500 per satak per year
+                    I agree to lease my land to KisanMitra for 5 years at ₹500 per satak per year
                   </span>
                 </label>
                 {errors.agreeTerms && <span className="error-message">{errors.agreeTerms}</span>}
@@ -741,7 +741,7 @@ const AgriContractForm = () => {
                   />
                   <span className="checkmark"></span>
                   <span className="checkbox-text">
-                    I agree to be employed by AgriGuru and receive monthly wages of ₹{contractDetails.wagesPerMonth.toLocaleString('en-IN')}
+                    I agree to be employed by KisanMitra and receive monthly wages of ₹{contractDetails.wagesPerMonth.toLocaleString('en-IN')}
                   </span>
                 </label>
                 {errors.agreeWages && <span className="error-message">{errors.agreeWages}</span>}
