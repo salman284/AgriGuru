@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { MarketplaceProvider } from './contexts/MarketplaceContext';
 import Home from './pages/Home/home';
@@ -25,38 +25,108 @@ import Navbar from './components/Navbar/Navbar';
 import FloatingActions from './components/FloatingActions/FloatingActions';
 import './i18n/i18n'; // Initialize i18n
 
+// Layout component that includes Navbar and FloatingActions
+function Layout() {
+  return (
+    <div className="App">
+      <Navbar />
+      <Outlet />
+      <FloatingActions />
+    </div>
+  );
+}
+
+// Create router using the new v7 API
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />
+      },
+      {
+        path: "/home",
+        element: <Home />
+      },
+      {
+        path: "/dashboard",
+        element: <Dash />
+      },
+      {
+        path: "/market-prices",
+        element: <MarketPriceDashboard />
+      },
+      {
+        path: "/marketplace",
+        element: <Ecommerce />
+      },
+      {
+        path: "/cart",
+        element: <Cart />
+      },
+      {
+        path: "/favorites",
+        element: <Favorites />
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />
+      },
+      {
+        path: "/agrifarm",
+        element: <AgriContractForm />
+      },
+      {
+        path: "/contract-admin",
+        element: <ContractAdmin />
+      },
+      {
+        path: "/kheti-saath",
+        element: <KhetiSaath />
+      },
+      {
+        path: "/about",
+        element: <About />
+      },
+      {
+        path: "/government-schemes",
+        element: <GovtSchemes />
+      },
+      {
+        path: "/login",
+        element: <Login />
+      },
+      {
+        path: "/otp-login",
+        element: <OTPLogin />
+      },
+      {
+        path: "/signup",
+        element: <SignUp />
+      },
+      {
+        path: "/profile",
+        element: <Profile />
+      },
+      {
+        path: "/settings",
+        element: <Settings />
+      },
+      {
+        path: "/contacts",
+        element: <ContactPage />
+      }
+    ]
+  }
+]);
+
 function App() {
   return (
     <AuthProvider>
       <MarketplaceProvider>
-        <div className="App">
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/dashboard" element={<Dash />} />
-              <Route path="/market-prices" element={<MarketPriceDashboard />} />
-              <Route path="/marketplace" element={<Ecommerce />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/agrifarm" element={<AgriContractForm />} />
-              <Route path="/contract-admin" element={<ContractAdmin />} />
-              <Route path="/kheti-saath" element={<KhetiSaath />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/government-schemes" element={<GovtSchemes />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/otp-login" element={<OTPLogin />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/contacts" element={<ContactPage />} />
-             
-            </Routes>
-          </Router>
-          <FloatingActions />
-        </div>
+        <RouterProvider router={router} />
       </MarketplaceProvider>
     </AuthProvider>
   );
