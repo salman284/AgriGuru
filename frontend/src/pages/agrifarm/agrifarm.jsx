@@ -44,6 +44,124 @@ const AgriContractForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [selectedBenefit, setSelectedBenefit] = useState(null);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState('');
+  const [activeSuccessModal, setActiveSuccessModal] = useState(null);
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
+
+  // Benefit details data
+  const benefitDetails = {
+    income: {
+      title: "💰 Guaranteed Income",
+      description: "Secure your financial future with guaranteed annual payments",
+      details: [
+        "₹500 per satak per year - guaranteed payment",
+        "Direct bank transfer every quarter",
+        "No delays or payment issues",
+        "Inflation-adjusted rates after 3 years",
+        "Additional bonuses for quality maintenance",
+        "Full payment even during crop failure"
+      ]
+    },
+    contract: {
+      title: "📅 5 Year Contract Security",
+      description: "Long-term partnership for sustained agricultural growth",
+      details: [
+        "5-year guaranteed contract period",
+        "Legal protection and security",
+        "Auto-renewal option available",
+        "Fair terms and transparent conditions",
+        "No hidden charges or fees",
+        "Early exit clause with notice period"
+      ]
+    },
+    training: {
+      title: "🎓 Free Training Programs",
+      description: "Enhance your skills with comprehensive agricultural training",
+      details: [
+        "Modern farming techniques training",
+        "Organic farming certification course",
+        "Equipment operation training",
+        "Soil management workshops",
+        "₹5,000 training completion bonus",
+        "Ongoing technical support"
+      ]
+    },
+    employment: {
+      title: "💼 Employment Opportunities",
+      description: "Stable employment with competitive benefits",
+      details: [
+        "₹3,000 monthly guaranteed wages",
+        "Work on your own leased land",
+        "Flexible working hours",
+        "Health insurance coverage",
+        "Skill development opportunities",
+        "Performance-based incentives"
+      ]
+    }
+  };
+
+  const handleBenefitClick = (benefitType) => {
+    setSelectedBenefit(benefitType);
+  };
+
+  const closeBenefitModal = () => {
+    setSelectedBenefit(null);
+  };
+
+  // Generate reference number
+  const generateReferenceNumber = () => {
+    const prefix = 'KM';
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `${prefix}${timestamp}${random}`;
+  };
+
+  // Print function
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Reset form function
+  const resetForm = () => {
+    setFormData({
+      fullName: '', fatherName: '', phoneNumber: '', emailAddress: '', aadharNumber: '',
+      village: '', district: '', state: '', pinCode: '',
+      landAreaSatak: '', landLocation: '', soilType: '', waterSource: '', previousCrop: '',
+      bankName: '', accountNumber: '', ifscCode: '',
+      agreeTerms: false, agreeTraining: false, agreeWages: false
+    });
+    setShowPreview(false);
+    setSubmissionSuccess(false);
+    setReferenceNumber('');
+  };
+
+  // Handle success item clicks
+  const handleSuccessItemClick = (itemType) => {
+    setActiveSuccessModal(itemType);
+  };
+
+  const closeSuccessModal = () => {
+    setActiveSuccessModal(null);
+  };
+
+  // Handle document upload
+  const handleDocumentUpload = (event) => {
+    const files = Array.from(event.target.files);
+    const newDocuments = files.map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      uploadDate: new Date().toLocaleDateString()
+    }));
+    setUploadedDocuments(prev => [...prev, ...newDocuments]);
+  };
+
+  // Remove uploaded document
+  const removeDocument = (index) => {
+    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  };
 
   // Calculate contract values when land area changes
   React.useEffect(() => {
@@ -144,8 +262,13 @@ const AgriContractForm = () => {
     setIsSubmitting(true);
 
     try {
+      // Generate reference number
+      const refNumber = generateReferenceNumber();
+      setReferenceNumber(refNumber);
+
       // Prepare data for API
       const submissionData = {
+        referenceNumber: refNumber,
         // Personal Information
         fullName: formData.fullName,
         fatherName: formData.fatherName,
@@ -174,34 +297,33 @@ const AgriContractForm = () => {
         // Agreement Terms
         agreeTerms: formData.agreeTerms,
         agreeTraining: formData.agreeTraining,
-        agreeWages: formData.agreeWages
+        agreeWages: formData.agreeWages,
+        
+        // Contract Details
+        contractDetails: contractDetails,
+        submissionDate: new Date().toISOString()
       };
 
-      // Submit to backend API
-      const response = await fetch('http://localhost:5000/api/contract-farming/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
+      // Simulate API call (replace with actual API endpoint)
+      const response = await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            ok: true,
+            json: () => Promise.resolve({
+              success: true,
+              contractId: refNumber,
+              message: 'Contract application submitted successfully'
+            })
+          });
+        }, 2000);
       });
 
       const result = await response.json();
 
       if (result.success) {
-        alert(`🎉 Contract application submitted successfully!\n\nContract ID: ${result.contractId}\n\nOur team will contact you within 2-3 business days for verification and next steps.`);
-        
-        // Reset form
-        setFormData({
-          fullName: '', fatherName: '', phoneNumber: '', emailAddress: '', aadharNumber: '',
-          village: '', district: '', state: '', pinCode: '',
-          landAreaSatak: '', landLocation: '', soilType: '', waterSource: '', previousCrop: '',
-          bankName: '', accountNumber: '', ifscCode: '',
-          agreeTerms: false, agreeTraining: false, agreeWages: false
-        });
-        setShowPreview(false);
+        setSubmissionSuccess(true);
       } else {
-        alert(`❌ Error: ${result.error}`);
+        alert(`❌ Error: ${result.error || 'Submission failed'}`);
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -210,6 +332,289 @@ const AgriContractForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Success page component
+  if (submissionSuccess) {
+    return (
+      <div className="submission-success">
+        <div className="success-container">
+          <div className="success-header">
+            <div className="success-icon">🎉</div>
+            <h1>Application Submitted Successfully!</h1>
+            <p className="success-message">
+              Thank you for applying to KisanMitra Contract Farming Program
+            </p>
+          </div>
+
+          <div className="reference-section">
+            <div className="reference-card">
+              <h2>📋 Reference Number</h2>
+              <div className="reference-number">
+                {referenceNumber}
+              </div>
+              <p className="reference-note">
+                Please save this reference number for future correspondence
+              </p>
+            </div>
+          </div>
+
+          <div className="success-details">
+            <div className="success-grid">
+              <div className="success-item clickable" onClick={() => handleSuccessItemClick('contact')}>
+                <span className="success-label">📞 Contact Timeline:</span>
+                <span className="success-value">2-3 Business Days</span>
+              </div>
+              <div className="success-item clickable" onClick={() => handleSuccessItemClick('verification')}>
+                <span className="success-label">📋 Verification Process:</span>
+                <span className="success-value">Document & Land Verification</span>
+              </div>
+              <div className="success-item clickable" onClick={() => handleSuccessItemClick('payment')}>
+                <span className="success-label">💰 Payment Start:</span>
+                <span className="success-value">After Contract Signing</span>
+              </div>
+              <div className="success-item clickable" onClick={() => handleSuccessItemClick('training')}>
+                <span className="success-label">🎓 Training Schedule:</span>
+                <span className="success-value">Within 1 Week</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="next-steps">
+            <h3>📋 Next Steps</h3>
+            <div className="steps-list">
+              <div className="step-item">
+                <span className="step-number">1</span>
+                <div className="step-content">
+                  <h4>Document Verification</h4>
+                  <p>Our team will verify all submitted documents and land details</p>
+                </div>
+              </div>
+              <div className="step-item">
+                <span className="step-number">2</span>
+                <div className="step-content">
+                  <h4>Field Visit</h4>
+                  <p>Site inspection and land measurement by our agricultural experts</p>
+                </div>
+              </div>
+              <div className="step-item">
+                <span className="step-number">3</span>
+                <div className="step-content">
+                  <h4>Contract Signing</h4>
+                  <p>Final contract signing and payment schedule discussion</p>
+                </div>
+              </div>
+              <div className="step-item">
+                <span className="step-number">4</span>
+                <div className="step-content">
+                  <h4>Program Start</h4>
+                  <p>Begin farming activities and training programs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="contact-info">
+            <h3>📞 Contact Information</h3>
+            <div className="contact-grid">
+              <div className="contact-item">
+                <span className="contact-icon">📱</span>
+                <div className="contact-details">
+                  <strong>Phone:</strong>
+                  <span>1800-123-4567 (Toll Free)</span>
+                </div>
+              </div>
+              <div className="contact-item">
+                <span className="contact-icon">✉️</span>
+                <div className="contact-details">
+                  <strong>Email:</strong>
+                  <span>contracts@kisanmitra.com</span>
+                </div>
+              </div>
+              <div className="contact-item">
+                <span className="contact-icon">🕒</span>
+                <div className="contact-details">
+                  <strong>Office Hours:</strong>
+                  <span>Mon-Sat: 9 AM - 6 PM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="success-actions">
+            <button 
+              type="button" 
+              className="btn-primary print-btn" 
+              onClick={handlePrint}
+            >
+              🖨️ Print Application
+            </button>
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={resetForm}
+            >
+              📝 Submit New Application
+            </button>
+          </div>
+
+          <div className="success-footer">
+            <p>
+              <strong>Important:</strong> Our team will contact you at {formData.phoneNumber} within 2-3 business days 
+              for document verification and next steps. Please keep your documents ready.
+            </p>
+          </div>
+
+          {/* Interactive Success Modals */}
+          {activeSuccessModal && (
+            <div className="success-modal-overlay" onClick={closeSuccessModal}>
+              <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+                {activeSuccessModal === 'verification' && (
+                  <>
+                    <div className="success-modal-header">
+                      <h3>📋 Document & Land Verification</h3>
+                      <button className="modal-close-btn" onClick={closeSuccessModal}>×</button>
+                    </div>
+                    <div className="success-modal-content">
+                      <p className="modal-description">
+                        Upload your required documents for verification process
+                      </p>
+                      
+                      <div className="document-upload-section">
+                        <h4>Required Documents:</h4>
+                        <div className="upload-area">
+                          <input
+                            type="file"
+                            id="documentUpload"
+                            multiple
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            onChange={handleDocumentUpload}
+                            style={{ display: 'none' }}
+                          />
+                          <label htmlFor="documentUpload" className="upload-button">
+                            📎 Upload Documents
+                          </label>
+                          <p className="upload-note">Accepted: PDF, JPG, PNG (Max 5MB each)</p>
+                        </div>
+                        
+                        {uploadedDocuments.length > 0 && (
+                          <div className="uploaded-documents">
+                            <h5>Uploaded Documents:</h5>
+                            {uploadedDocuments.map((doc, index) => (
+                              <div key={index} className="document-item">
+                                <span className="doc-name">{doc.name}</span>
+                                <span className="doc-date">{doc.uploadDate}</span>
+                                <button onClick={() => removeDocument(index)}>❌</button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        
+                        <div className="required-docs-list">
+                          <ul>
+                            <li>Aadhar Card Copy</li>
+                            <li>Land Documents (Khasra/Registry)</li>
+                            <li>Bank Passbook Copy</li>
+                            <li>Recent Photograph</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activeSuccessModal === 'contact' && (
+                  <>
+                    <div className="success-modal-header">
+                      <h3>📞 Contact Timeline Details</h3>
+                      <button className="modal-close-btn" onClick={closeSuccessModal}>×</button>
+                    </div>
+                    <div className="success-modal-content">
+                      <p className="modal-description">
+                        Our team will contact you within 2-3 business days
+                      </p>
+                      <div className="contact-timeline">
+                        <div className="timeline-item">
+                          <span className="timeline-day">Day 1-2</span>
+                          <span className="timeline-action">Initial verification call</span>
+                        </div>
+                        <div className="timeline-item">
+                          <span className="timeline-day">Day 2-3</span>
+                          <span className="timeline-action">Schedule field visit</span>
+                        </div>
+                        <div className="timeline-item">
+                          <span className="timeline-day">Day 3-5</span>
+                          <span className="timeline-action">Document verification</span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activeSuccessModal === 'payment' && (
+                  <>
+                    <div className="success-modal-header">
+                      <h3>💰 Payment Information</h3>
+                      <button className="modal-close-btn" onClick={closeSuccessModal}>×</button>
+                    </div>
+                    <div className="success-modal-content">
+                      <p className="modal-description">
+                        Payment schedule and banking details
+                      </p>
+                      <div className="payment-info">
+                        <div className="payment-item">
+                          <strong>Payment Method:</strong> Direct Bank Transfer
+                        </div>
+                        <div className="payment-item">
+                          <strong>Frequency:</strong> Quarterly payments
+                        </div>
+                        <div className="payment-item">
+                          <strong>First Payment:</strong> After contract signing
+                        </div>
+                        <div className="payment-item">
+                          <strong>Amount:</strong> ₹{contractDetails.yearlyPayment/4} per quarter
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activeSuccessModal === 'training' && (
+                  <>
+                    <div className="success-modal-header">
+                      <h3>🎓 Training Program Details</h3>
+                      <button className="modal-close-btn" onClick={closeSuccessModal}>×</button>
+                    </div>
+                    <div className="success-modal-content">
+                      <p className="modal-description">
+                        Comprehensive training program schedule
+                      </p>
+                      <div className="training-schedule">
+                        <div className="training-item">
+                          <strong>Week 1:</strong> Modern farming techniques
+                        </div>
+                        <div className="training-item">
+                          <strong>Week 2:</strong> Soil management & fertilizers
+                        </div>
+                        <div className="training-item">
+                          <strong>Week 3:</strong> Equipment operation training
+                        </div>
+                        <div className="training-item">
+                          <strong>Week 4:</strong> Organic farming certification
+                        </div>
+                        <div className="training-allowance">
+                          <strong>Training Allowance: ₹5,000</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (showPreview) {
     return (
@@ -351,21 +756,21 @@ const AgriContractForm = () => {
             Join our sustainable farming program with guaranteed income, training, and employment
           </p>
           <div className="benefits-summary">
-            <div className="benefit-item">
+            <div className="benefit-item clickable" onClick={() => handleBenefitClick('income')}>
               <span className="benefit-icon">💰</span>
-              <span>₹500/Satak/Year</span>
+              <span className="benefit-text">₹500/Satak/Year</span>
             </div>
-            <div className="benefit-item">
+            <div className="benefit-item clickable" onClick={() => handleBenefitClick('contract')}>
               <span className="benefit-icon">📅</span>
-              <span>5 Year Contract</span>
+              <span className="benefit-text">5 Year Contract</span>
             </div>
-            <div className="benefit-item">
+            <div className="benefit-item clickable" onClick={() => handleBenefitClick('training')}>
               <span className="benefit-icon">🎓</span>
-              <span>Free Training</span>
+              <span className="benefit-text">Free Training</span>
             </div>
-            <div className="benefit-item">
+            <div className="benefit-item clickable" onClick={() => handleBenefitClick('employment')}>
               <span className="benefit-icon">💼</span>
-              <span>Employment</span>
+              <span className="benefit-text">Employment</span>
             </div>
           </div>
         </div>
@@ -756,6 +1161,33 @@ const AgriContractForm = () => {
           </div>
         </form>
       </div>
+
+      {/* Benefit Modal */}
+      {selectedBenefit && (
+        <div className="benefit-modal-overlay" onClick={closeBenefitModal}>
+          <div className="benefit-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="benefit-modal-header">
+              <h3>{benefitDetails[selectedBenefit].title}</h3>
+              <button className="modal-close-btn" onClick={closeBenefitModal}>
+                ×
+              </button>
+            </div>
+            <div className="benefit-modal-content">
+              <p className="benefit-modal-description">
+                {benefitDetails[selectedBenefit].description}
+              </p>
+              <ul className="benefit-details-list">
+                {benefitDetails[selectedBenefit].details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="benefit-modal-footer">
+              <p>🌾 Join KisanMitra for a sustainable farming future!</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
