@@ -21,6 +21,7 @@ import MarketPriceDashboard from './pages/market&loan/ml.jsx';
 import AgriContractForm from './pages/agrifarm/agrifarm.jsx';
 import ContractAdmin from './pages/agrifarm/ContractAdmin.jsx';
 import KhetiSaath from './pages/khetisaath/KhetiSaath.jsx';
+import KhetiSaathFavorites from './pages/khetisaath/KhetiSaathFavorites.jsx';
 import Navbar from './components/Navbar/Navbar';
 import FloatingActions from './components/FloatingActions/FloatingActions';
 import './i18n/i18n'; // Initialize i18n
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/kheti-saath",
         element: <KhetiSaath />
+      },
+      {
+        path: "/kheti-saath/favorites",
+        element: <KhetiSaathFavorites />
       },
       {
         path: "/about",

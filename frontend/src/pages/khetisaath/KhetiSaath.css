@@ -1,11 +1,11 @@
 /* Kheti Saath Page Styles */
 .kheti-saath-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #e8f5e8 0%, #b8e6b8 50%, #a8d8a8 100%);
 }
 
 .page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #43A047 0%, #1B5E20 100%) !important;
   color: white;
   padding: 4rem 0 3rem;
   text-align: center;
@@ -17,14 +17,50 @@
   font-weight: 700;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.header-icon {
+  font-size: 3.5rem;
+  display: inline-block;
 }
 
 .header-content p {
   font-size: 1.2rem;
   opacity: 0.9;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   line-height: 1.6;
+}
+
+.header-actions {
+  margin-top: 1.5rem;
+}
+
+.favorites-link {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.favorites-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .container {
@@ -42,9 +78,16 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
+.search-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
 .search-bar {
   position: relative;
-  margin-bottom: 2rem;
+  flex: 1;
 }
 
 .search-input {
@@ -71,6 +114,29 @@
   transform: translateY(-50%);
   font-size: 1.2rem;
   color: #6c757d;
+}
+
+.favorites-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.favorites-btn:hover {
+  background: linear-gradient(135deg, #ee5a24 0%, #c44569 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  color: white;
+  text-decoration: none;
 }
 
 .category-filters {
@@ -131,6 +197,9 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   border: 1px solid #e0e6ed;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .item-card:hover {
@@ -144,6 +213,29 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+}
+
+.favorite-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .item-image {
@@ -164,6 +256,9 @@
 
 .item-content {
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .item-name {
@@ -257,6 +352,7 @@
 
 .item-actions {
   padding: 0 1.5rem 1.5rem;
+  margin-top: auto;
 }
 
 .view-details-btn {
@@ -317,6 +413,16 @@
   
   .search-filter-section {
     padding: 1.5rem;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .favorites-btn {
+    align-self: center;
+    min-width: 200px;
   }
   
   .category-filters {

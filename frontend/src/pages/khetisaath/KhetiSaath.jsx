@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import './KhetiSaath.css';
 
 // Agriculture data moved outside component to prevent re-creation on each render
@@ -411,6 +412,214 @@ const agricultureData = [
     ],
     safetyTips: 'Ensure shells are completely clean, crush to avoid sharp edges.'
   },
+  {
+    id: 21,
+    category: 'Homemade Ingredient',
+    name: 'Coffee Ground Fertilizer',
+    description: 'Nitrogen-rich organic fertilizer from used coffee grounds',
+    image: '☕',
+    usageInstructions: [
+      'Collect used coffee grounds and let them dry',
+      'Mix with compost or soil in 25% ratio',
+      'Sprinkle around acid-loving plants like blueberries',
+      'Add to compost pile for nitrogen boost',
+      'Apply thin layer around plants, not against stems',
+      'Use 2-3 times per growing season'
+    ],
+    safetyTips: 'Don\'t use fresh grounds directly, may inhibit germination. Mix with other materials.'
+  },
+  {
+    id: 22,
+    category: 'Homemade Ingredient',
+    name: 'Rice Water Plant Food',
+    description: 'Starch-rich liquid fertilizer from rice cooking water',
+    image: '🍚',
+    usageInstructions: [
+      'Save water used for washing or boiling rice',
+      'Let it cool to room temperature',
+      'Dilute with equal parts clean water',
+      'Apply to soil around plants, avoid leaves',
+      'Use within 24 hours of preparation',
+      'Apply weekly during growing season'
+    ],
+    safetyTips: 'Use only plain rice water without salt or oil, don\'t let it ferment.'
+  },
+  {
+    id: 23,
+    category: 'Homemade Ingredient',
+    name: 'Cinnamon Fungicide',
+    description: 'Natural antifungal treatment using cinnamon powder',
+    image: '🟤',
+    usageInstructions: [
+      'Dust cinnamon powder directly on affected areas',
+      'Mix with water to create antifungal spray',
+      'Apply to seedling soil to prevent damping-off',
+      'Sprinkle on cut stems after pruning',
+      'Reapply after watering or rain',
+      'Use Ceylon cinnamon for best results'
+    ],
+    safetyTips: 'Test on small area first, avoid excessive application which may harm beneficial microbes.'
+  },
+  {
+    id: 24,
+    category: 'Homemade Ingredient',
+    name: 'Milk Spray Disease Control',
+    description: 'Calcium and protein-rich spray for disease prevention',
+    image: '🥛',
+    usageInstructions: [
+      'Mix 1 part milk with 9 parts water',
+      'Spray on plant leaves in early morning',
+      'Apply weekly as preventive measure',
+      'Focus on plants prone to powdery mildew',
+      'Use fresh milk, avoid spoiled milk',
+      'Rinse leaves if white residue appears'
+    ],
+    safetyTips: 'Use only fresh milk, clean sprayer thoroughly after use to prevent bacterial growth.'
+  },
+  {
+    id: 25,
+    category: 'Homemade Ingredient',
+    name: 'Baking Soda pH Buffer',
+    description: 'Soil pH adjuster and mild fungicide from baking soda',
+    image: '🧪',
+    usageInstructions: [
+      'Dissolve 1 teaspoon in 1 liter of water',
+      'Test soil pH before application',
+      'Apply to slightly acidic soils monthly',
+      'Spray on leaves for fungal disease control',
+      'Water thoroughly after soil application',
+      'Monitor plants for any stress signs'
+    ],
+    safetyTips: 'Don\'t overuse as it can increase soil salinity, test on small area first.'
+  },
+  {
+    id: 26,
+    category: 'Homemade Ingredient',
+    name: 'Compost Tea Booster',
+    description: 'Nutrient-rich liquid fertilizer brewed from compost',
+    image: '🍃',
+    usageInstructions: [
+      'Fill cloth bag with mature compost',
+      'Steep in water container for 24-48 hours',
+      'Stir occasionally during steeping',
+      'Strain and dilute 1:10 with water',
+      'Apply to soil around plants weekly',
+      'Use within 4 hours of preparation'
+    ],
+    safetyTips: 'Use only well-composted materials, apply fresh to avoid anaerobic bacteria.'
+  },
+  {
+    id: 27,
+    category: 'Homemade Ingredient',
+    name: 'Turmeric Root Protector',
+    description: 'Natural antibacterial and antifungal treatment from turmeric',
+    image: '🟡',
+    usageInstructions: [
+      'Mix 1 tablespoon turmeric powder with 1 liter water',
+      'Add few drops of liquid soap for better adherence',
+      'Spray on plant stems and soil surface',
+      'Apply after pruning to prevent infections',
+      'Use weekly during humid weather',
+      'Prepare fresh solution each time'
+    ],
+    safetyTips: 'May stain clothes and surfaces, wear gloves during application.'
+  },
+  {
+    id: 28,
+    category: 'Homemade Ingredient',
+    name: 'Onion Skin Plant Booster',
+    description: 'Potassium and sulfur-rich fertilizer from onion peels',
+    image: '🧅',
+    usageInstructions: [
+      'Collect onion skins and dry them completely',
+      'Boil skins in water for 15-20 minutes',
+      'Cool and strain the liquid',
+      'Dilute 1:3 with water before application',
+      'Apply to soil monthly during growing season',
+      'Use both outer and inner skins'
+    ],
+    safetyTips: 'Store concentrate in refrigerator, use within 1 week of preparation.'
+  },
+  {
+    id: 29,
+    category: 'Homemade Ingredient',
+    name: 'Soap Spray Insecticide',
+    description: 'Gentle insecticide made from natural soap solution',
+    image: '🧼',
+    usageInstructions: [
+      'Mix 2 tablespoons liquid soap per liter of water',
+      'Use only pure soap without additives',
+      'Spray directly on affected pests',
+      'Apply in early morning or evening',
+      'Rinse plants with water after 2 hours',
+      'Repeat every 3-4 days if needed'
+    ],
+    safetyTips: 'Test on small area first, avoid using during hot sunny weather.'
+  },
+  {
+    id: 30,
+    category: 'Homemade Ingredient',
+    name: 'Mustard Seed Pest Deterrent',
+    description: 'Natural pest repellent from ground mustard seeds',
+    image: '🌾',
+    usageInstructions: [
+      'Grind mustard seeds into fine powder',
+      'Sprinkle around plant base in circles',
+      'Mix with soil for soil-borne pest control',
+      'Create spray by mixing powder with water',
+      'Reapply after heavy rain or watering',
+      'Use yellow or brown mustard seeds'
+    ],
+    safetyTips: 'Avoid contact with eyes, may cause skin irritation in sensitive people.'
+  },
+  {
+    id: 31,
+    category: 'Homemade Ingredient',
+    name: 'Wood Ash Potassium Source',
+    description: 'Potassium-rich fertilizer and pH adjuster from wood ash',
+    image: '🪵',
+    usageInstructions: [
+      'Use only ash from untreated hardwood',
+      'Test soil pH before application',
+      'Apply maximum 5-10 pounds per 1000 sq ft annually',
+      'Mix into soil, don\'t leave on surface',
+      'Water thoroughly after application',
+      'Store ash in dry, covered container'
+    ],
+    safetyTips: 'Never use ash from treated wood, excessive use can make soil too alkaline.'
+  },
+  {
+    id: 32,
+    category: 'Homemade Ingredient',
+    name: 'Vinegar Weed Control',
+    description: 'Natural herbicide for spot treatment of weeds',
+    image: '🫗',
+    usageInstructions: [
+      'Use white vinegar with 5% acidity or higher',
+      'Apply directly to weed leaves on sunny day',
+      'Avoid spraying on desired plants',
+      'Add pinch of salt for stronger effect',
+      'Reapply in 2-3 days for persistent weeds',
+      'Best effective on young, small weeds'
+    ],
+    safetyTips: 'Will kill any plant it touches, may lower soil pH temporarily.'
+  },
+  {
+    id: 33,
+    category: 'Homemade Ingredient',
+    name: 'Tea Bag Soil Conditioner',
+    description: 'Organic matter and nutrient source from used tea bags',
+    image: '🍵',
+    usageInstructions: [
+      'Remove staples and tags from used tea bags',
+      'Tear open bags and spread contents in soil',
+      'Mix tea leaves into compost pile',
+      'Use around acid-loving plants',
+      'Apply thin layer, don\'t pile up',
+      'Both green and black tea work well'
+    ],
+    safetyTips: 'Ensure tea bags are plastic-free, avoid flavored or scented teas.'
+  },
 ];
 
 const KhetiSaath = () => {
@@ -418,8 +627,36 @@ const KhetiSaath = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem('khetiSaathFavorites');
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
 
   const categories = ['All', 'Machine', 'Tool', 'Chemical Fertilizer', 'Organic Alternative', 'Homemade Ingredient'];
+
+  // Favorites management functions
+  const addToFavorites = (item) => {
+    if (!favorites.find(fav => fav.id === item.id)) {
+      const newFavorites = [...favorites, item];
+      setFavorites(newFavorites);
+      localStorage.setItem('khetiSaathFavorites', JSON.stringify(newFavorites));
+      
+      // Show success message
+      alert(`✅ ${item.name} added to favorites!`);
+    } else {
+      alert(`ℹ️ ${item.name} is already in your favorites!`);
+    }
+  };
+
+  const removeFromFavorites = (itemId) => {
+    const newFavorites = favorites.filter(fav => fav.id !== itemId);
+    setFavorites(newFavorites);
+    localStorage.setItem('khetiSaathFavorites', JSON.stringify(newFavorites));
+  };
+
+  const isInFavorites = (itemId) => {
+    return favorites.some(fav => fav.id === itemId);
+  };
 
   // Modal control functions
   const openModal = (item) => {
@@ -462,7 +699,7 @@ const KhetiSaath = () => {
     <div className="kheti-saath-page">
       <div className="page-header">
         <div className="header-content">
-          <h1>🌾KisanGuide</h1>
+          <h1><span className="header-icon">🌾</span>KisanGuide</h1>
           <p>Your comprehensive guide to farming equipment, tools, fertilizers, and organic alternatives</p>
         </div>
       </div>
@@ -470,15 +707,20 @@ const KhetiSaath = () => {
       <div className="container">
         {/* Search and Filter Section */}
         <div className="search-filter-section">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search for equipment, tools, fertilizers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-            <span className="search-icon">🔍</span>
+          <div className="search-container">
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search for equipment, tools, fertilizers..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+              />
+              <span className="search-icon">🔍</span>
+            </div>
+            <Link to="/kheti-saath/favorites" className="favorites-btn">
+              ❤️ View My Favorites ({favorites.length})
+            </Link>
           </div>
 
           <div className="category-filters">
@@ -510,6 +752,9 @@ const KhetiSaath = () => {
                 <div className="item-header">
                   <div className="item-image">{item.image}</div>
                   <div className="item-category">{item.category}</div>
+                  {isInFavorites(item.id) && (
+                    <div className="favorite-indicator">❤️</div>
+                  )}
                 </div>
                 
                 <div className="item-content">
@@ -691,7 +936,19 @@ const KhetiSaath = () => {
             </div>
 
             <div className="modal-footer">
-              <button className="modal-action-btn primary">Add to Favorites</button>
+              <button 
+                className={`modal-action-btn ${isInFavorites(selectedItem.id) ? 'secondary' : 'primary'}`}
+                onClick={() => {
+                  if (isInFavorites(selectedItem.id)) {
+                    removeFromFavorites(selectedItem.id);
+                    alert(`❌ ${selectedItem.name} removed from favorites!`);
+                  } else {
+                    addToFavorites(selectedItem);
+                  }
+                }}
+              >
+                {isInFavorites(selectedItem.id) ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
+              </button>
               <button className="modal-action-btn secondary" onClick={closeModal}>Close</button>
             </div>
           </div>
