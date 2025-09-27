@@ -101,7 +101,7 @@ socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "http://
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
-app.config['MONGO_URI'] = 'mongodb+srv://shriompal2435:N2Ry3EfnFDU4FQpg@agrigurudb.lttawpv.mongodb.net/agrigurudb?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agrigurudb')
 
  # Connect to MongoDB with certifi CA bundle for SSL, explicit TLS, and allow invalid certificates (debug only)
 client = MongoClient(app.config['MONGO_URI'], tls=True, tlsCAFile=certifi.where(), tlsAllowInvalidCertificates=True)
