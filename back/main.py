@@ -254,6 +254,10 @@ def is_strong_password(password):
 def hello_world():
     return jsonify({"message": "AgriGuru Backend API", "status": "running"})
 
+@app.route('/healthz')
+def health_check():
+    return 'OK', 200
+
 @app.route('/api/signup', methods=['POST'])
 def signup():
     """User registration endpoint"""
