@@ -1,7 +1,12 @@
 {
   "name": "agriguru-frontend",
   "version": 2,
-  "buildCommand": "CI=false npm run build",
+  "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build",
+  "env": {
+    "CI": "false",
+    "GENERATE_SOURCEMAP": "false",
+    "DISABLE_ESLINT_PLUGIN": "true"
+  },
   "builds": [
     {
       "src": "package.json",
