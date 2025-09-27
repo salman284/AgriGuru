@@ -1,6 +1,12 @@
 {
   "name": "agriguru-frontend",
   "version": 2,
+  "build": {
+    "env": {
+      "CI": "false",
+      "GENERATE_SOURCEMAP": "false"
+    }
+  },
   "builds": [
     {
       "src": "package.json",
