@@ -17,8 +17,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  height: 65px;
+  padding: 0.4rem 1.2rem;
+  height: 45px;
 }
 
 .navbar-logo {
@@ -28,7 +28,7 @@
 
 .navbar-logo h2 {
   color: #2d5016;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
 }
@@ -36,15 +36,15 @@
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
   color: inherit;
   transition: all 0.2s ease;
 }
 
 .logo-image {
-  height: 55px;
-  width: 55px;
+  height: 38px;
+  width: 38px;
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid #2d5016;
@@ -65,7 +65,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 2rem;
+  gap: 1.2rem;
 }
 
 .navbar-item {
@@ -76,9 +76,10 @@
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  padding: 0.5rem 0;
+  padding: 0.3rem 0;
   transition: color 0.3s ease;
   position: relative;
+  font-size: 0.85rem;
 }
 
 .navbar-link:hover {
@@ -104,11 +105,12 @@
 .navbar-link[href="/marketplace"] {
   background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 16px;
   font-weight: 600;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  font-size: 0.8rem;
 }
 
 .navbar-link[href="/marketplace"]:hover {
@@ -124,7 +126,7 @@
 
 .navbar-auth {
   display: flex;
-  gap: 1rem;
+  gap: 0.6rem;
   align-items: center;
 }
 
@@ -179,6 +181,30 @@
   gap: 12px;
 }
 
+/* Desktop Language Switcher Styles */
+.navbar-auth .language-switcher .language-selector {
+  padding: 0.25rem 0.8rem;
+  font-size: 0.75rem;
+  min-width: 100px;
+  height: 26px;
+  border-radius: 13px;
+  font-weight: 500;
+  gap: 4px;
+}
+
+.navbar-auth .language-switcher .language-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.navbar-auth .language-switcher .language-icon {
+  font-size: 0.7rem;
+}
+
+.navbar-auth .language-switcher .dropdown-arrow {
+  font-size: 0.65rem;
+}
+
 /* Active link style */
 .navbar-link.active {
   color: #2d5016;
@@ -190,24 +216,25 @@
 }
 
 .login-btn, .signup-btn {
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-transform: none;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  min-width: 90px;
+  min-width: 70px;
   text-align: center;
   white-space: nowrap;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: 28px;
 }
 
 .login-btn {
@@ -248,7 +275,7 @@
     height: 56px;
   }
   .navbar-logo h2 {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
   }
   .logo-image {
     height: 40px;
