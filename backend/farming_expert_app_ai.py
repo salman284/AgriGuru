@@ -951,6 +951,10 @@ def health_check():
         ]
     })
 
+@app.route('/healthz')
+def simple_health_check():
+    return 'OK', 200
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     """Enhanced multilingual Annapurna chat endpoint"""
