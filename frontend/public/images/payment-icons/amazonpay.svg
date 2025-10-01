@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" rx="12" fill="white"/>
+<circle cx="24" cy="24" r="16" fill="#ff9900"/>
+<path d="M18 18C18 18 20 16 24 16C28 16 30 18 30 18V20H18V18Z" fill="white"/>
+<path d="M18 22H30V26H18V22Z" fill="white"/>
+<path d="M20 28H28V30H20V28Z" fill="white"/>
+<text x="24" y="35" text-anchor="middle" fill="white" font-size="6" font-weight="bold">Amazon</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" rx="12" fill="white"/>
+<circle cx="24" cy="24" r="16" fill="#8e24aa"/>
+<rect x="16" y="20" width="16" height="8" rx="2" fill="white"/>
+<circle cx="22" cy="24" r="2" fill="#8e24aa"/>
+<rect x="26" y="22" width="4" height="4" fill="#8e24aa"/>
+<text x="24" y="35" text-anchor="middle" fill="white" font-size="6" font-weight="bold">WALLET</text>
+</svg>

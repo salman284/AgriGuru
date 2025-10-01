@@ -12,19 +12,49 @@ const IndianPaymentGateway = ({ onClose, onSuccess }) => {
 
   // UPI Payment Options
   const UPI_APPS = [
-    { id: 'googlepay', name: 'Google Pay', icon: '🔵', color: '#4285f4' },
-    { id: 'phonepe', name: 'PhonePe', icon: '🟣', color: '#5f259f' },
-    { id: 'paytm', name: 'Paytm', icon: '🔵', color: '#00baf2' },
-    { id: 'bhim', name: 'BHIM UPI', icon: '🟠', color: '#ff6900' },
-    { id: 'amazonpay', name: 'Amazon Pay', icon: '🟠', color: '#ff9900' }
+    { 
+      id: 'googlepay', 
+      name: 'Google Pay', 
+      logo: '/images/payment-icons/googlepay.svg',
+      color: '#4285f4',
+      deepLink: 'tez://upi/pay'
+    },
+    { 
+      id: 'phonepe', 
+      name: 'PhonePe', 
+      logo: '/images/payment-icons/phonepe.svg',
+      color: '#5f259f',
+      deepLink: 'phonepe://pay'
+    },
+    { 
+      id: 'paytm', 
+      name: 'Paytm', 
+      logo: '/images/payment-icons/paytm.svg',
+      color: '#00baf2',
+      deepLink: 'paytmmp://pay'
+    },
+    { 
+      id: 'bhim', 
+      name: 'BHIM UPI', 
+      logo: '/images/payment-icons/bhim.svg',
+      color: '#ff6900',
+      deepLink: 'bhim://pay'
+    },
+    { 
+      id: 'amazonpay', 
+      name: 'Amazon Pay', 
+      logo: '/images/payment-icons/amazonpay.svg',
+      color: '#ff9900',
+      deepLink: 'upi://pay'
+    }
   ];
 
   // Card/Banking Options
   const OTHER_METHODS = [
-    { id: 'cards', name: 'Credit/Debit Cards', icon: '💳', description: 'Visa, Mastercard, RuPay' },
-    { id: 'netbanking', name: 'Net Banking', icon: '🏦', description: 'All major banks supported' },
-    { id: 'wallet', name: 'Digital Wallets', icon: '👛', description: 'Paytm Wallet, Amazon Pay' },
-    { id: 'cod', name: 'Cash on Delivery', icon: '💵', description: 'Pay when order arrives' }
+    { id: 'cards', name: 'Credit/Debit Cards', icon: '/images/payment-icons/cards.svg', description: 'Visa, Mastercard, RuPay' },
+    { id: 'netbanking', name: 'Net Banking', icon: '/images/payment-icons/netbanking.svg', description: 'All major banks supported' },
+    { id: 'wallet', name: 'Digital Wallets', icon: '/images/payment-icons/wallet.svg', description: 'Paytm Wallet, Amazon Pay' },
+    { id: 'cod', name: 'Cash on Delivery', icon: '/images/payment-icons/cod.svg', description: 'Pay when order arrives' }
   ];
 
   const handleUPIPayment = async (app) => {
@@ -38,45 +68,40 @@ const IndianPaymentGateway = ({ onClose, onSuccess }) => {
       const txnNote = 'AgriGuru Purchase';
       
       // UPI URL format
-      const upiUrl = `upi://pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`;
+      const baseUpiUrl = `upi://pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`;
       
-      // Different app-specific URLs
+      // App-specific deep links
       const appUrls = {
         googlepay: `tez://upi/pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`,
         phonepe: `phonepe://pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`,
         paytm: `paytmmp://pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`,
         bhim: `bhim://pay?pa=${merchantVPA}&pn=AgriGuru&tn=${txnNote}&am=${amount}&cu=INR&tr=${txnId}`,
-        amazonpay: upiUrl
+        amazonpay: baseUpiUrl
       };
-
-      // Try to open the specific app
-      const paymentUrl = appUrls[app] || upiUrl;
       
-      // Create temporary link and click it
+      const paymentUrl = appUrls[app.id] || baseUpiUrl;
+      
+      // Try to open the app
       const link = document.createElement('a');
       link.href = paymentUrl;
       link.click();
       
-      // Simulate payment verification (in real app, verify via server)
+      // Show payment pending message
+      toast.info(`Opening ${app.name}... Complete payment in the app`);
+      
+      // Simulate payment verification (in real implementation, you'd verify via webhook)
       setTimeout(() => {
-        const success = Math.random() > 0.1; // 90% success rate for demo
-        
-        if (success) {
-          setTransactionId(txnId);
-          setPaymentSuccess(true);
-          clearCart();
-          toast.success('Payment successful!');
-          if (onSuccess) onSuccess();
-        } else {
-          toast.error('Payment failed. Please try again.');
-        }
         setIsProcessing(false);
+        setTransactionId(txnId);
+        setPaymentSuccess(true);
+        clearCart();
+        toast.success('Payment successful!');
+        if (onSuccess) onSuccess();
       }, 3000);
       
     } catch (error) {
-      console.error('UPI payment error:', error);
-      toast.error('Failed to initiate payment');
       setIsProcessing(false);
+      toast.error('Payment failed: ' + error.message);
     }
   };
 
@@ -231,12 +256,31 @@ const IndianPaymentGateway = ({ onClose, onSuccess }) => {
                 {UPI_APPS.map(app => (
                   <button
                     key={app.id}
-                    onClick={() => handleUPIPayment(app.id)}
+                    onClick={() => handleUPIPayment(app)}
                     disabled={isProcessing}
                     className="upi-app-btn"
                     style={{ borderLeftColor: app.color }}
                   >
-                    <div className="app-icon">{app.icon}</div>
+                    {app.logo ? (
+                      <img 
+                        src={app.logo} 
+                        alt={app.name}
+                        className="app-icon-img"
+                        style={{ width: '32px', height: '32px', marginBottom: '8px' }}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+                    ) : null}
+                    
+                    <div 
+                      className="app-icon"
+                      style={{ display: app.logo ? 'none' : 'block' }}
+                    >
+                      {app.icon}
+                    </div>
+                    
                     <div className="app-name">{app.name}</div>
                     {isProcessing && <div className="loading">⏳</div>}
                   </button>
@@ -262,7 +306,18 @@ const IndianPaymentGateway = ({ onClose, onSuccess }) => {
                     disabled={isProcessing}
                     className="payment-method-btn"
                   >
-                    <div className="method-icon">{method.icon}</div>
+                    <div className="method-icon">
+                      {method.icon.startsWith('/images/') ? (
+                        <img 
+                          src={method.icon} 
+                          alt={method.name}
+                          className="method-icon-img"
+                          style={{ width: '32px', height: '32px' }}
+                        />
+                      ) : (
+                        method.icon
+                      )}
+                    </div>
                     <div className="method-details">
                       <h4>{method.name}</h4>
                       <p>{method.description}</p>

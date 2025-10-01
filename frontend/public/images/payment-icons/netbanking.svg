@@ -1,0 +1,9 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" rx="12" fill="white"/>
+<rect x="8" y="12" width="32" height="24" rx="4" fill="#2e7d32"/>
+<rect x="10" y="16" width="28" height="3" fill="white"/>
+<text x="24" y="26" text-anchor="middle" fill="white" font-size="8" font-weight="bold">NET BANKING</text>
+<rect x="10" y="30" width="8" height="2" fill="white"/>
+<rect x="20" y="30" width="8" height="2" fill="white"/>
+<rect x="30" y="30" width="6" height="2" fill="white"/>
+</svg>
