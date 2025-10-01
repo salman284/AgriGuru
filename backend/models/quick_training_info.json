@@ -1,0 +1,28 @@
+{
+  "model_type": "Quick CNN",
+  "num_classes": 15,
+  "class_names": [
+    "Pepper__bell___Bacterial_spot",
+    "Pepper__bell___healthy", 
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___healthy",
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites_Two_spotted_spider_mite",
+    "Tomato__Target_Spot",
+    "Tomato__Tomato_mosaic_virus",
+    "Tomato__Tomato_YellowLeaf__Curl_Virus"
+  ],
+  "final_accuracy": 0.50388,
+  "final_loss": 1.5875,
+  "img_size": 96,
+  "batch_size": 64,
+  "epochs_trained": 1,
+  "total_parameters": 3405135,
+  "training_date": "2025-10-01T19:57:05"
+}

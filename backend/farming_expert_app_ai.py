@@ -55,9 +55,95 @@ except ImportError:
     transforms = None
     Image = None
 
+# --- Import Real Disease Detection Service ---
+try:
+    from updated_multi_crop_service import MultiCropDiseaseService
+    disease_service = MultiCropDiseaseService()
+    disease_service_available = True
+    logger.info("✅ Real disease detection service loaded successfully!")
+except ImportError as e:
+    disease_service = None
+    disease_service_available = False
+    logger.warning(f"⚠️ Disease detection service not available: {e}")
+
+@app.route('/api/crop-disease-detection', methods=['POST'])
+def crop_disease_detection():
+    """Real crop disease detection using trained model"""
+    if not disease_service_available:
+        return jsonify({
+            'success': False, 
+            'error': 'Disease detection service not available. Please check if updated_multi_crop_service.py is present.',
+            'fallback': 'Using basic image analysis instead'
+        }), 503
+    
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'error': 'No image file provided.'}), 400
+        
+    file = request.files['image']
+    filename = secure_filename(file.filename)
+    
+    try:
+        # Save uploaded image to temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
+            file.save(temp_file.name)
+            temp_path = temp_file.name
+        
+        # Use real disease detection service
+        logger.info(f"🔬 Analyzing crop image with real trained model: {filename}")
+        result = disease_service.analyze_crop_image(temp_path)
+        logger.info(f"📊 Disease service result: {result}")
+        
+        # Clean up temp file
+        os.remove(temp_path)
+        
+        # Format response
+        response = {
+            'success': True,
+            'disease_analysis': {
+                'predicted_class': result.get('disease_detected', 'Unknown'),
+                'confidence': result.get('confidence', 0.0),
+                'disease_type': result.get('disease_detected', 'Unknown'),
+                'severity': result.get('severity', 'Unknown'),
+                'recommendations': result.get('recommendations', [
+                    'Analysis completed but no specific recommendations available',
+                    'Monitor plant health regularly',
+                    'Consult with agricultural expert if needed'
+                ])
+            },
+            'model_info': {
+                'model_type': 'real_cnn_trained',
+                'classes': result.get('total_classes', 15),
+                'accuracy': result.get('model_accuracy', 'N/A')
+            },
+            'timestamp': datetime.now().isoformat(),
+            'filename': filename
+        }
+        
+        logger.info(f"✅ Disease detection completed: {result.get('predicted_class', 'Unknown')}")
+        return jsonify(response)
+        
+    except Exception as e:
+        logger.error(f"❌ Disease detection error: {e}")
+        # Clean up temp file if it exists
+        if 'temp_path' in locals() and os.path.exists(temp_path):
+            os.remove(temp_path)
+            
+        return jsonify({
+            'success': False,
+            'error': f'Disease detection failed: {str(e)}',
+            'model_type': 'real_cnn_error',
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 @app.route('/api/crop-image-analysis', methods=['POST'])
 def crop_image_analysis():
-    """Analyze crop/leaf image using PyTorch EfficientNet/ResNet"""
+    """Analyze crop/leaf image using PyTorch EfficientNet/ResNet (fallback method)"""
+    # Check if real disease detection is available first
+    if disease_service_available:
+        logger.info("🔄 Redirecting to real disease detection service...")
+        return crop_disease_detection()
+    
+    # Fallback to PyTorch ImageNet classification
     if torch is None or transforms is None or Image is None:
         return jsonify({'success': False, 'error': 'PyTorch or PIL not installed on server.'}), 500
     if 'image' not in request.files:
@@ -117,6 +203,7 @@ def crop_image_analysis():
                 'description': pred_class,
                 'confidence': confidence
             },
+            'model_type': 'imagenet_fallback',
             'timestamp': datetime.now().isoformat()
         })
     except Exception as e:
@@ -1621,6 +1708,8 @@ if __name__ == '__main__':
     print("   🏥 Health Check: /")
     print("   💬 Chat with AgriBot: /api/chat")
     print("   🧑‍🌾 Expert Advice: /api/expert-advice")
+    print("   🔬 Real Disease Detection: /api/crop-disease-detection")
+    print("   🌿 Crop Analysis (Fallback): /api/crop-image-analysis")
     print("   ℹ️ Model Info: /api/model-info")
     print("   📜 Chat History: /api/conversation-history")
     print("   🔍 Debug Grok: /api/debug-grok")
@@ -1631,8 +1720,16 @@ if __name__ == '__main__':
     print("   🔢 Contract Calculator (POST): /api/contract-farming/calculate")
     print("   📊 Contract Stats (GET): /api/contract-farming/stats")
     print("=" * 60)
-    print("🚀 AgriBot is ready! Ask farming questions and get expert advice!")
+    if disease_service_available:
+        print("🎉 REAL DISEASE DETECTION ACTIVE with your trained CNN model!")
+        model_status = disease_service.get_model_status()
+        print(f"📊 Model Classes: {model_status.get('total_classes', 'N/A')}")
+        print(f"� Model Accuracy: {model_status.get('model_accuracy', 'N/A')}")
+    else:
+        print("⚠️ Disease detection service not available - using fallback")
+    print("�🚀 AgriBot is ready! Ask farming questions and get expert advice!")
     print("💡 Example: POST to /api/chat with {'message': 'How to grow rice?'}")
+    print("💡 Disease Detection: POST image to /api/crop-disease-detection")
     print("=" * 60)
     
     try:
