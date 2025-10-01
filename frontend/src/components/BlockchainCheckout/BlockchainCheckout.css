@@ -1,0 +1,549 @@
+/* Blockchain Checkout Modal Styles */
+.blockchain-checkout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+}
+
+.blockchain-checkout-modal {
+  background: white;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.blockchain-checkout-modal.success {
+  max-width: 400px;
+  text-align: center;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.modal-header .close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.modal-header .close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Content */
+.modal-content {
+  padding: 30px;
+}
+
+/* Order Summary */
+.order-summary {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.order-summary h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.order-item .item-details {
+  flex: 1;
+}
+
+.order-item h4 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.order-item p {
+  margin: 2px 0;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.order-item .item-price {
+  font-weight: 600;
+  color: #4caf50 !important;
+}
+
+.total-amount {
+  text-align: right;
+  font-size: 18px;
+  color: #2c3e50;
+  padding-top: 15px;
+  border-top: 2px solid #e9ecef;
+}
+
+/* Payment Methods */
+.payment-methods {
+  margin-bottom: 30px;
+}
+
+.payment-methods h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.method-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.method-option {
+  cursor: pointer;
+  display: block;
+}
+
+.method-option input[type="radio"] {
+  display: none;
+}
+
+.method-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.method-option.selected .method-card {
+  border-color: #4caf50;
+  background: #f8fff9;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+.method-card:hover {
+  border-color: #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+}
+
+.method-icon {
+  font-size: 32px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.method-option.selected .method-icon {
+  background: #e8f5e8;
+}
+
+.method-details h4 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.method-details p {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Crypto Options */
+.crypto-options {
+  margin-bottom: 30px;
+}
+
+.crypto-options h4 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.token-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.token-option {
+  cursor: pointer;
+  display: block;
+}
+
+.token-option input[type="radio"] {
+  display: none;
+}
+
+.token-card {
+  padding: 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.token-option.selected .token-card {
+  border-color: #4caf50;
+  background: #f8fff9;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+.token-card:hover {
+  border-color: #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+}
+
+.token-symbol {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.token-details h5 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.token-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* Wallet Status */
+.wallet-status {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.connect-wallet-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.connect-wallet-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.wallet-connected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.connected-indicator {
+  font-size: 12px;
+}
+
+.wallet-info p {
+  margin: 2px 0;
+  font-size: 13px;
+}
+
+.switch-network-btn {
+  background: #ffc107;
+  color: #212529;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.switch-network-btn:hover {
+  background: #e0a800;
+}
+
+/* Payment Actions */
+.payment-actions {
+  margin-bottom: 25px;
+}
+
+.pay-crypto-btn,
+.pay-traditional-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pay-crypto-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.pay-crypto-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.pay-traditional-btn {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+}
+
+.pay-traditional-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+}
+
+.pay-crypto-btn:disabled,
+.pay-traditional-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Security Info */
+.security-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #4caf50;
+}
+
+.security-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+/* Success Modal */
+.success-content {
+  padding: 40px 30px;
+}
+
+.success-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.success-content h2 {
+  margin: 0 0 15px 0;
+  font-size: 24px;
+  color: #4caf50;
+}
+
+.success-content p {
+  margin: 0 0 25px 0;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.tx-details {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.tx-hash {
+  font-family: monospace;
+  font-size: 12px;
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  word-break: break-all;
+  margin: 10px 0;
+  border: 1px solid #e9ecef;
+}
+
+.view-tx-btn {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.view-tx-btn:hover {
+  background: #45a049;
+}
+
+.success-content .close-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.success-content .close-btn:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .blockchain-checkout-modal {
+    width: 95%;
+    margin: 10px;
+  }
+  
+  .modal-header {
+    padding: 20px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .token-selection {
+    grid-template-columns: 1fr;
+  }
+  
+  .wallet-connected {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .method-card {
+    padding: 15px;
+  }
+  
+  .method-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header h2 {
+    font-size: 20px;
+  }
+  
+  .order-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pay-crypto-btn,
+  .pay-traditional-btn {
+    font-size: 16px;
+    padding: 15px;
+  }
+}

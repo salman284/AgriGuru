@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
+import BlockchainCheckout from '../../components/BlockchainCheckout/BlockchainCheckout';
+import IndianPaymentGateway from '../../components/IndianPaymentGateway/IndianPaymentGateway';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -17,6 +19,8 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const [showBlockchainCheckout, setShowBlockchainCheckout] = useState(false);
+  const [showIndianPaymentGateway, setShowIndianPaymentGateway] = useState(false);
 
   const [formData, setFormData] = useState({
     // Contact Information
@@ -131,9 +135,21 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     if (!validateStep(3)) return;
     
+    // If blockchain payment is selected, show blockchain checkout
+    if (formData.paymentMethod === 'blockchain') {
+      setShowBlockchainCheckout(true);
+      return;
+    }
+    
+    // If Indian payment gateway is selected, show payment gateway
+    if (formData.paymentMethod === 'indian_gateway') {
+      setShowIndianPaymentGateway(true);
+      return;
+    }
+    
     setIsProcessing(true);
     
-    // Simulate order processing
+    // Simulate order processing for COD
     setTimeout(() => {
       const newOrderNumber = 'AG' + Date.now().toString().slice(-8);
       setOrderNumber(newOrderNumber);
@@ -384,15 +400,15 @@ const Checkout = () => {
                     <input
                       type="radio"
                       name="paymentMethod"
-                      value="upi"
-                      checked={formData.paymentMethod === 'upi'}
+                      value="indian_gateway"
+                      checked={formData.paymentMethod === 'indian_gateway'}
                       onChange={handleInputChange}
                     />
                     <div className="payment-card">
-                      <div className="payment-icon">📱</div>
+                      <div className="payment-icon">�</div>
                       <div className="payment-details">
-                        <h4>UPI Payment</h4>
-                        <p>Pay instantly using UPI</p>
+                        <h4>Online Payment</h4>
+                        <p>UPI, Cards, NetBanking, Wallets</p>
                       </div>
                     </div>
                   </label>
@@ -401,15 +417,15 @@ const Checkout = () => {
                     <input
                       type="radio"
                       name="paymentMethod"
-                      value="netbanking"
-                      checked={formData.paymentMethod === 'netbanking'}
+                      value="blockchain"
+                      checked={formData.paymentMethod === 'blockchain'}
                       onChange={handleInputChange}
                     />
                     <div className="payment-card">
-                      <div className="payment-icon">🏦</div>
+                      <div className="payment-icon">🔗</div>
                       <div className="payment-details">
-                        <h4>Net Banking</h4>
-                        <p>Pay using your bank account</p>
+                        <h4>Blockchain Payment</h4>
+                        <p>Pay with cryptocurrency (ETH, MATIC, USDT)</p>
                       </div>
                     </div>
                   </label>
@@ -452,8 +468,8 @@ const Checkout = () => {
                     <h4>Payment Method</h4>
                     <p>
                       {formData.paymentMethod === 'cod' && '💵 Cash on Delivery'}
-                      {formData.paymentMethod === 'upi' && '📱 UPI Payment'}
-                      {formData.paymentMethod === 'netbanking' && '🏦 Net Banking'}
+                      {formData.paymentMethod === 'indian_gateway' && '� Online Payment'}
+                      {formData.paymentMethod === 'blockchain' && '🔗 Blockchain Payment'}
                     </p>
                   </div>
                   
@@ -498,6 +514,18 @@ const Checkout = () => {
             )}
           </div>
         </div>
+
+        {/* Blockchain Checkout Modal */}
+        {showBlockchainCheckout && (
+          <BlockchainCheckout 
+            onClose={() => setShowBlockchainCheckout(false)}
+            onSuccess={() => {
+              setShowBlockchainCheckout(false);
+              setOrderConfirmed(true);
+              setOrderNumber('BC' + Date.now().toString().slice(-8));
+            }}
+          />
+        )}
 
         {/* Order Summary Sidebar */}
         <div className="order-summary">
@@ -544,6 +572,34 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      
+      {/* Payment Gateway Modal */}
+      {showIndianPaymentGateway && (
+        <IndianPaymentGateway
+          onClose={() => setShowIndianPaymentGateway(false)}
+          onSuccess={() => {
+            const newOrderNumber = 'AG' + Date.now().toString().slice(-8);
+            setOrderNumber(newOrderNumber);
+            
+            // Save order to localStorage
+            const order = {
+              orderNumber: newOrderNumber,
+              date: new Date().toISOString(),
+              items: cart,
+              total: cartTotal,
+              customerInfo: formData,
+              status: 'confirmed'
+            };
+            
+            const existingOrders = JSON.parse(localStorage.getItem('agriGuruOrders') || '[]');
+            existingOrders.unshift(order);
+            localStorage.setItem('agriGuruOrders', JSON.stringify(existingOrders));
+            
+            setOrderConfirmed(true);
+            setShowIndianPaymentGateway(false);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import './App.css';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { MarketplaceProvider } from './contexts/MarketplaceContext';
+import { Web3Provider } from './contexts/Web3Context';
 import Home from './pages/Home/home';
 import Dash from './pages/dashboard/dash.jsx';
 import About from './pages/about/About.jsx';
@@ -130,9 +131,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthProvider>
-      <MarketplaceProvider>
-        <RouterProvider router={router} />
-      </MarketplaceProvider>
+      <Web3Provider>
+        <MarketplaceProvider>
+          <RouterProvider router={router} />
+        </MarketplaceProvider>
+      </Web3Provider>
     </AuthProvider>
   );
 }
