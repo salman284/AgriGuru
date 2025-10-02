@@ -65,18 +65,18 @@ const YieldPrediction = ({ location, selectedCrop }) => {
           await yieldPredictionService.fetchKaggleDataset('crop-production-analysis');
           setKaggleDataStatus('loaded');
           
-          // Get comprehensive analytics with current 2025 data
+          // Get comprehensive analytics with 2022-2025 data
           const analytics = yieldPredictionService.getYieldAnalytics(selectedCropLocal, location);
           
-          // Combine historical with current 2025 data for better visualization
-          const combinedHistorical = [...analytics.historical, ...analytics.current];
-          setHistoricalData(combinedHistorical);
+          // Historical data already includes all years 2022-2025
+          setHistoricalData(analytics.historical);
           
           // Set future predictions for 2026-2027
           setFuturePredictions(analytics.future);
           
-          // Set current year data highlight
-          setCurrentYearData(analytics.current[0] || null);
+          // Set current year data highlight (from historical data)
+          const currentYearRecord = analytics.historical.find(record => record.year === 2025);
+          setCurrentYearData(currentYearRecord || null);
           
           // Generate environmental factors for prediction
           const factors = generateEnvironmentalFactors(location);
@@ -194,14 +194,38 @@ const YieldPrediction = ({ location, selectedCrop }) => {
 
           <div className="charts-section">
             <div className="chart-container">
-              <h4>📈 Yield Trends (2022-2025) with Future Predictions</h4>
+              <h4>📈 Average Yield Trends (2022-2025) with Future Predictions (2026-2027)</h4>
               {historicalData.length > 0 ? (
                 (() => {
                   // Combine historical and future data for visualization
-                  const combinedData = [
+                  const allData = [
                     ...historicalData.map(item => ({ ...item, type: 'historical' })),
                     ...futurePredictions.map(item => ({ ...item, type: 'future' }))
-                  ].sort((a, b) => a.year - b.year);
+                  ];
+                  
+                  // Aggregate data by year to avoid duplicates
+                  const yearlyData = {};
+                  allData.forEach(item => {
+                    if (!yearlyData[item.year]) {
+                      yearlyData[item.year] = {
+                        year: item.year,
+                        yields: [],
+                        type: item.type,
+                        states: []
+                      };
+                    }
+                    yearlyData[item.year].yields.push(item.yield);
+                    yearlyData[item.year].states.push(item.state);
+                  });
+                  
+                  // Create combined data with average yields per year
+                  const combinedData = Object.values(yearlyData).map(yearData => ({
+                    year: yearData.year,
+                    yield: (yearData.yields.reduce((sum, y) => sum + y, 0) / yearData.yields.length).toFixed(2),
+                    type: yearData.type,
+                    states: yearData.states.join(', '),
+                    records: yearData.yields.length
+                  })).sort((a, b) => a.year - b.year);
                   
                   return (
                 <ResponsiveContainer width="100%" height={300}>
@@ -210,10 +234,16 @@ const YieldPrediction = ({ location, selectedCrop }) => {
                     <XAxis dataKey="year" />
                     <YAxis />
                     <Tooltip 
-                      formatter={(value, name) => [
-                        `${value} tons/hectare`, 
-                        name === 'yield' ? 'Yield' : name
+                      formatter={(value, name, props) => [
+                        `${value} tons/hectare (avg)`, 
+                        name === 'yield' ? `${props.payload.type === 'future' ? 'Predicted' : 'Actual'} Yield` : name
                       ]}
+                      labelFormatter={(year) => `Year: ${year}`}
+                      contentStyle={{
+                        backgroundColor: '#f8f9fa',
+                        border: '1px solid #dee2e6',
+                        borderRadius: '8px'
+                      }}
                     />
                     <Legend />
                     <Line 
