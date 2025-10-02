@@ -5,6 +5,12 @@ import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import SoilWidget from '../../components/SoilWidget/SoilWidget';
 import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget';
 import YieldPrediction from '../../components/yieldPrediction/yield';
+import PestDetection from '../../components/pestDetection/pestDetection';
+import SmartIrrigation from '../../components/smartIrrigation/smartIrrigation';
+import PestWidget from '../../components/PestWidget/PestWidget';
+import IrrigationWidget from '../../components/IrrigationWidget/IrrigationWidget';
+import FertilizerWidget from '../../components/FertilizerWidget';
+import FertilizerOptimizer from '../fertilizer/fertilizerOptimizer';
 
 
 const Dash = () => {
@@ -95,6 +101,28 @@ const Dash = () => {
             </a>
           </li>
           <li>
+            <a
+              href="#pest"
+              onClick={e => {
+                e.preventDefault();
+                openModal('pest');
+              }}
+            >
+              🐛 Pest Detection
+            </a>
+          </li>
+          <li>
+            <a
+              href="#irrigation"
+              onClick={e => {
+                e.preventDefault();
+                openModal('irrigation');
+              }}
+            >
+              💧 Smart Irrigation
+            </a>
+          </li>
+          <li>
             <a 
               href="#organic-fertilizers"
               onClick={e => {
@@ -147,37 +175,68 @@ const Dash = () => {
           </div>
         </div>
         <div className="widgets">
-          <div
-            ref={weatherRef}
-            id="weather"
-            className={weatherHighlight ? 'widget widget-highlight' : 'widget'}
-            onAnimationEnd={() => setWeatherHighlight(false)}
-          >
-            <WeatherWidget location={selectedLocation} />
+          <div className="widgets-grid">
+            <div
+              ref={weatherRef}
+              id="weather"
+              className={weatherHighlight ? 'widget widget-highlight' : 'widget'}
+              onAnimationEnd={() => setWeatherHighlight(false)}
+              onClick={() => openModal('weather')}
+            >
+              <WeatherWidget location={selectedLocation} />
+            </div>
+            <div
+              ref={soilRef}
+              id="soil"
+              className={soilHighlight ? 'widget widget-highlight' : 'widget'}
+              onAnimationEnd={() => setSoilHighlight(false)}
+              onClick={() => openModal('soil')}
+            >
+              <SoilWidget location={selectedLocation} />
+            </div>
+            <div
+              ref={cropRef}
+              id="crops"
+              className={cropHighlight ? 'widget widget-highlight' : 'widget'}
+              onAnimationEnd={() => setCropHighlight(false)}
+              onClick={() => openModal('crops')}
+            >
+              <CropStatusWidget />
+            </div>
+            <div
+              id="fertilizer"
+              className="widget"
+              onClick={() => openModal('fertilizer')}
+            >
+              <FertilizerWidget />
+            </div>
+            <div
+              id="pest"
+              className="widget"
+              onClick={() => openModal('pest')}
+            >
+              <PestWidget />
+            </div>
+            <div
+              id="irrigation"
+              className="widget"
+              onClick={() => openModal('irrigation')}
+            >
+              <IrrigationWidget />
+            </div>
           </div>
-          <div
-            ref={soilRef}
-            id="soil"
-            className={soilHighlight ? 'widget widget-highlight' : 'widget'}
-            onAnimationEnd={() => setSoilHighlight(false)}
-          >
-            <SoilWidget location={selectedLocation} />
-          </div>
-          <div
-            ref={cropRef}
-            id="crops"
-            className={cropHighlight ? 'widget widget-highlight' : 'widget'}
-            onAnimationEnd={() => setCropHighlight(false)}
-          >
-            <CropStatusWidget />
-          </div>
-          <div
-            ref={yieldRef}
-            id="yield"
-            className={yieldHighlight ? 'widget widget-highlight' : 'widget'}
-            onAnimationEnd={() => setYieldHighlight(false)}
-          >
-            <YieldPrediction location={selectedLocation} />
+          
+          {/* Yield Prediction - Full Width Row */}
+          <div className="yield-section">
+            <div
+              ref={yieldRef}
+              id="yield"
+              className={yieldHighlight ? 'widget widget-yield widget-highlight' : 'widget widget-yield'}
+              onAnimationEnd={() => setYieldHighlight(false)}
+              onClick={() => openModal('yield')}
+            >
+              <YieldPrediction location={selectedLocation} />
+            </div>
           </div>
         </div>
       </div>
@@ -192,6 +251,9 @@ const Dash = () => {
                 {activeModal === 'crops' && '🌾 Crop Analysis'}
                 {activeModal === 'soil' && '🌱 Soil Health'}
                 {activeModal === 'yield' && '📊 Yield Prediction'}
+                {activeModal === 'pest' && '🐛 Pest Detection & Analysis'}
+                {activeModal === 'irrigation' && '💧 Smart Irrigation System'}
+                {activeModal === 'fertilizer' && '🧪 Fertilizer Optimizer'}
                 {activeModal === 'fertilizers' && '🧪 Organic Fertilizers'}
               </h2>
               <button className="modal-close" onClick={closeModal}>
@@ -218,6 +280,19 @@ const Dash = () => {
                 <div className="modal-widget">
                   <YieldPrediction location={selectedLocation} />
                 </div>
+              )}
+              {activeModal === 'pest' && (
+                <div className="modal-widget">
+                  <PestDetection />
+                </div>
+              )}
+              {activeModal === 'irrigation' && (
+                <div className="modal-widget">
+                  <SmartIrrigation />
+                </div>
+              )}
+              {activeModal === 'fertilizer' && (
+                <FertilizerOptimizer onClose={closeModal} />
               )}
               {activeModal === 'fertilizers' && (
                 <div className="fertilizer-modal-content">
