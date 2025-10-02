@@ -96,8 +96,29 @@ const WeatherWidget = ({ location }) => {
   if (loading) {
     return (
       <div className="weather-widget loading">
-        <h3>🌤️ Weather Forecast</h3>
-        <div className="loading-spinner"></div>
+        <div className="loading-header">
+          <h3>🌤️ Weather Forecast</h3>
+          <div className="loading-pulse"></div>
+        </div>
+        <div className="loading-content">
+          <div className="skeleton-card">
+            <div className="skeleton-circle"></div>
+            <div className="skeleton-lines">
+              <div className="skeleton-line long"></div>
+              <div className="skeleton-line short"></div>
+            </div>
+          </div>
+          <div className="skeleton-stats">
+            <div className="skeleton-stat">
+              <div className="skeleton-line medium"></div>
+              <div className="skeleton-line short"></div>
+            </div>
+            <div className="skeleton-stat">
+              <div className="skeleton-line medium"></div>
+              <div className="skeleton-line short"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

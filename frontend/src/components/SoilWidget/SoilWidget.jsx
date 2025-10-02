@@ -282,13 +282,39 @@ async function fetchAgromonitoringSoil(lat, lon) {
 
   if (loading) {
     return (
-      <div className="soil-widget">
-        <div className="widget-header">
+      <div className="soil-widget loading">
+        <div className="loading-header">
           <h3>🌱 Soil Health</h3>
+          <div className="loading-pulse"></div>
         </div>
-        <div className="loading">
-          <div className="spinner"></div>
-          <p>Analyzing soil...</p>
+        <div className="loading-content">
+          <div className="skeleton-soil-card">
+            <div className="skeleton-soil-circle"></div>
+            <div className="skeleton-soil-info">
+              <div className="skeleton-line soil-long"></div>
+              <div className="skeleton-line soil-medium"></div>
+            </div>
+          </div>
+          <div className="skeleton-metrics">
+            <div className="skeleton-metric">
+              <div className="skeleton-line soil-short"></div>
+              <div className="skeleton-line soil-tiny"></div>
+            </div>
+            <div className="skeleton-metric">
+              <div className="skeleton-line soil-short"></div>
+              <div className="skeleton-line soil-tiny"></div>
+            </div>
+            <div className="skeleton-metric">
+              <div className="skeleton-line soil-short"></div>
+              <div className="skeleton-line soil-tiny"></div>
+            </div>
+          </div>
+          <div className="loading-text">
+            <span className="analyzing-text">Analyzing soil composition</span>
+            <div className="loading-dots">
+              <span>.</span><span>.</span><span>.</span>
+            </div>
+          </div>
         </div>
       </div>
     );
