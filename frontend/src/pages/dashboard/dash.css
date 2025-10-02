@@ -25,8 +25,8 @@
 }
 
 .widgets {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
   width: 100%;
   padding: 0 10px;
@@ -103,11 +103,10 @@
   box-shadow: 0 8px 36px 0 rgba(32,94,202,0.13), 0 2px 10px 0 rgba(45,80,22,0.10);
   border: 1.5px solid #e3eefe;
   transition: box-shadow 0.3s, transform 0.3s;
-  min-height: 480px;
-  max-height: 600px;
-  height: 600px;
+  min-height: 420px;
+  max-height: 550px;
+  height: 500px;
   overflow-y: auto;
-  flex: 1 1 0;
   width: 100%;
   box-sizing: border-box;
   display: flex;

@@ -4,6 +4,7 @@ import './dash.css';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import SoilWidget from '../../components/SoilWidget/SoilWidget';
 import CropStatusWidget from '../../components/CropStatusWidget/CropStatusWidget';
+import YieldPrediction from '../../components/yieldPrediction/yield';
 
 
 const Dash = () => {
@@ -14,7 +15,9 @@ const Dash = () => {
   const weatherRef = useRef(null);
   const soilRef = useRef(null);
   const cropRef = useRef(null);
+  const yieldRef = useRef(null);
   const [cropHighlight, setCropHighlight] = useState(false);
+  const [yieldHighlight, setYieldHighlight] = useState(false);
   
   // Modal state management
   const [activeModal, setActiveModal] = useState(null);
@@ -78,6 +81,17 @@ const Dash = () => {
               }}
             >
               Soil Health
+            </a>
+          </li>
+          <li>
+            <a
+              href="#yield"
+              onClick={e => {
+                e.preventDefault();
+                openModal('yield');
+              }}
+            >
+              Yield Prediction
             </a>
           </li>
           <li>
@@ -157,6 +171,14 @@ const Dash = () => {
           >
             <CropStatusWidget />
           </div>
+          <div
+            ref={yieldRef}
+            id="yield"
+            className={yieldHighlight ? 'widget widget-highlight' : 'widget'}
+            onAnimationEnd={() => setYieldHighlight(false)}
+          >
+            <YieldPrediction location={selectedLocation} />
+          </div>
         </div>
       </div>
 
@@ -169,6 +191,7 @@ const Dash = () => {
                 {activeModal === 'weather' && '🌤️ Weather Forecast'}
                 {activeModal === 'crops' && '🌾 Crop Analysis'}
                 {activeModal === 'soil' && '🌱 Soil Health'}
+                {activeModal === 'yield' && '📊 Yield Prediction'}
                 {activeModal === 'fertilizers' && '🧪 Organic Fertilizers'}
               </h2>
               <button className="modal-close" onClick={closeModal}>
@@ -189,6 +212,11 @@ const Dash = () => {
               {activeModal === 'soil' && (
                 <div className="modal-widget">
                   <SoilWidget location={selectedLocation} />
+                </div>
+              )}
+              {activeModal === 'yield' && (
+                <div className="modal-widget">
+                  <YieldPrediction location={selectedLocation} />
                 </div>
               )}
               {activeModal === 'fertilizers' && (
