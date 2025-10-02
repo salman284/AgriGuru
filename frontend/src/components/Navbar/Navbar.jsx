@@ -71,9 +71,7 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`}>{t('navbar.contact_ado')}</Link>
           </li>
-          <li className="navbar-item">
-            <Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`}>🛒 {t('navbar.marketplace')}</Link>
-          </li>
+          
           
         </ul>
 
@@ -107,7 +105,7 @@ const Navbar = () => {
             <li><Link to="/agrifarm" className={`navbar-link ${isActive('/agrifarm') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🌾 {t('navbar.contract_farming')}</Link></li>
             <li><Link to="/kheti-saath" className={`navbar-link ${isActive('/kheti-saath') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🚜 {t('navbar.kheti_saath')}</Link></li>
             <li><Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.about')}</Link></li>
-            <li><Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.contact_ado')}</Link></li>
+            <li><Link to="/find-ado" className={`navbar-link ${isActive('/find-ado') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>👨‍🌾 Find ADO</Link></li>
             <li><Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🛒 {t('navbar.marketplace')}</Link></li>
           </ul>
           {/* Auth section for mobile dropdown */}

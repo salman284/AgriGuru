@@ -13,7 +13,7 @@ import OTPLogin from './pages/login/OTPLogin.jsx';
 import SignUp from './pages/signup/sign.jsx';
 import Profile from './pages/profile';
 import Settings from './pages/settings/Settings.jsx';
-import ContactPage from './pages/contacts/contact.jsx';
+import ADOFinder from './pages/contacts/ADOFinder.jsx';
 import Ecommerce from './pages/shopping/ecommerce.jsx';
 import Cart from './pages/shopping/Cart.jsx';
 import Favorites from './pages/shopping/Favorites.jsx';
@@ -45,84 +45,84 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/",
+        index: true,
         element: <Home />
       },
       {
-        path: "/home",
+        path: "home",
         element: <Home />
       },
       {
-        path: "/dashboard",
+        path: "dashboard",
         element: <Dash />
       },
       {
-        path: "/market-prices",
+        path: "market-prices",
         element: <MarketPriceDashboard />
       },
       {
-        path: "/marketplace",
+        path: "marketplace",
         element: <Ecommerce />
       },
       {
-        path: "/cart",
+        path: "cart",
         element: <Cart />
       },
       {
-        path: "/favorites",
+        path: "favorites",
         element: <Favorites />
       },
       {
-        path: "/checkout",
+        path: "checkout",
         element: <Checkout />
       },
       {
-        path: "/agrifarm",
+        path: "agrifarm",
         element: <AgriContractForm />
       },
       {
-        path: "/contract-admin",
+        path: "contract-admin",
         element: <ContractAdmin />
       },
       {
-        path: "/kheti-saath",
+        path: "kheti-saath",
         element: <KhetiSaath />
       },
       {
-        path: "/kheti-saath/favorites",
+        path: "kheti-saath/favorites",
         element: <KhetiSaathFavorites />
       },
       {
-        path: "/about",
+        path: "about",
         element: <About />
       },
       {
-        path: "/government-schemes",
+        path: "government-schemes",
         element: <GovtSchemes />
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />
       },
       {
-        path: "/otp-login",
+        path: "otp-login",
         element: <OTPLogin />
       },
       {
-        path: "/signup",
+        path: "signup",
         element: <SignUp />
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <Profile />
       },
       {
-        path: "/settings",
+        path: "settings",
         element: <Settings />
       },
       {
-        path: "/contacts",
-        element: <ContactPage />
+        path: "contacts",
+        element: <ADOFinder />
       }
     ]
   }
