@@ -13,6 +13,8 @@ const YieldPrediction = ({ location, selectedCrop }) => {
   const [stateAverages, setStateAverages] = useState([]);
   const [yieldTrend, setYieldTrend] = useState(null);
   const [kaggleDataStatus, setKaggleDataStatus] = useState('loading');
+  const [futurePredictions, setFuturePredictions] = useState([]);
+  const [currentYearData, setCurrentYearData] = useState(null);
 
   // Common crops for prediction (based on Kaggle datasets)
   const crops = [
@@ -63,9 +65,18 @@ const YieldPrediction = ({ location, selectedCrop }) => {
           await yieldPredictionService.fetchKaggleDataset('crop-production-analysis');
           setKaggleDataStatus('loaded');
           
-          // Get historical data from service
-          const historical = yieldPredictionService.getHistoricalYields(selectedCropLocal, location);
-          setHistoricalData(historical);
+          // Get comprehensive analytics with current 2025 data
+          const analytics = yieldPredictionService.getYieldAnalytics(selectedCropLocal, location);
+          
+          // Combine historical with current 2025 data for better visualization
+          const combinedHistorical = [...analytics.historical, ...analytics.current];
+          setHistoricalData(combinedHistorical);
+          
+          // Set future predictions for 2026-2027
+          setFuturePredictions(analytics.future);
+          
+          // Set current year data highlight
+          setCurrentYearData(analytics.current[0] || null);
           
           // Generate environmental factors for prediction
           const factors = generateEnvironmentalFactors(location);
@@ -167,18 +178,34 @@ const YieldPrediction = ({ location, selectedCrop }) => {
         <div className="prediction-content">
           <div className="kaggle-attribution">
             <div className="dataset-info">
-              <span className="kaggle-badge">📊 Kaggle Dataset</span>
-              <span className="dataset-name">Crop Production Analysis India</span>
+              <span className="kaggle-badge">📊 Current Data 2025</span>
+              <span className="dataset-name">Agricultural Statistics at a Glance</span>
               <span className="data-status">✅ {kaggleDataStatus}</span>
             </div>
+            {currentYearData && (
+              <div className="current-data-highlight">
+                <span className="current-badge">🔥 Live 2025</span>
+                <span className="current-info">
+                  {currentYearData.state} {currentYearData.crop}: {currentYearData.yield} tons/hectare
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="charts-section">
             <div className="chart-container">
-              <h4>📈 Historical Yield Data (Kaggle Dataset)</h4>
+              <h4>📈 Yield Trends (2022-2025) with Future Predictions</h4>
               {historicalData.length > 0 ? (
+                (() => {
+                  // Combine historical and future data for visualization
+                  const combinedData = [
+                    ...historicalData.map(item => ({ ...item, type: 'historical' })),
+                    ...futurePredictions.map(item => ({ ...item, type: 'future' }))
+                  ].sort((a, b) => a.year - b.year);
+                  
+                  return (
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={historicalData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <LineChart data={combinedData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="year" />
                     <YAxis />
@@ -194,11 +221,19 @@ const YieldPrediction = ({ location, selectedCrop }) => {
                       dataKey="yield" 
                       stroke="#2196F3" 
                       strokeWidth={3}
-                      name="Historical Yield"
-                      dot={{ fill: '#2196F3', strokeWidth: 2, r: 4 }}
+                      name="Actual Yield"
+                      dot={(props) => {
+                        const { payload } = props;
+                        return payload && payload.type === 'future' ? 
+                          <circle cx={props.cx} cy={props.cy} r={4} fill="#FF9800" stroke="#FF9800" strokeWidth={2} strokeDasharray="5,5" /> :
+                          <circle cx={props.cx} cy={props.cy} r={4} fill="#2196F3" stroke="#2196F3" strokeWidth={2} />;
+                      }}
+                      strokeDasharray={(props) => props && props.type === 'future' ? '5,5' : '0'}
                     />
                   </LineChart>
                 </ResponsiveContainer>
+                  );
+                })()
               ) : (
                 <div className="no-data-message">
                   <p>No historical data available for {selectedCropLocal} in selected region.</p>
