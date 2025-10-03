@@ -65,13 +65,16 @@ const Navbar = () => {
             <Link to="/kheti-saath" className={`navbar-link ${isActive('/kheti-saath') ? 'active' : ''}`}>{t('navbar.kheti_saath')}</Link>
           </li>
           
+          
           <li className="navbar-item">
             <Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>{t('navbar.about')}</Link>
           </li>
           <li className="navbar-item">
             <Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`}>{t('navbar.contact_ado')}</Link>
           </li>
-          
+          <li className="navbar-item">
+            <Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`}>🛒 {t('navbar.marketplace')}</Link>
+          </li>
           
         </ul>
 
