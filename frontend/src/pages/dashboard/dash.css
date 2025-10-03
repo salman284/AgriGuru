@@ -54,7 +54,7 @@
 
 .sidebar {
   width: 250px;
-  background-color: #2d5016 !important;
+  background: linear-gradient(135deg, #2d5016 0%, #1a3009 50%, #0f1a05 100%);
   color: white;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -64,7 +64,7 @@
 }
 
 .sidebar h2 {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   font-size: 1.5rem;
   text-align: center;
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
@@ -226,7 +226,7 @@ html {
     width: 100%;
     padding: 12px 15px;
     min-height: auto;
-    background-color: #2d5016 !important;
+    background: linear-gradient(135deg, #2d5016 0%, #1a3009 50%, #0f1a05 100%) !important;
   }
   
   .sidebar h2 {
