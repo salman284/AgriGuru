@@ -699,7 +699,7 @@ const KhetiSaath = () => {
     <div className="kheti-saath-page">
       <div className="page-header">
         <div className="header-content">
-          <h1><span className="header-icon">🌾</span>KisanGuide</h1>
+          <h1>🌾KisanGuide</h1>
           <p>Your comprehensive guide to farming equipment, tools, fertilizers, and organic alternatives</p>
         </div>
       </div>
@@ -718,9 +718,6 @@ const KhetiSaath = () => {
               />
               <span className="search-icon">🔍</span>
             </div>
-            <Link to="/kheti-saath/favorites" className="favorites-btn">
-              ❤️ View My Favorites ({favorites.length})
-            </Link>
           </div>
 
           <div className="category-filters">

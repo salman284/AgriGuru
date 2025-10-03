@@ -52,9 +52,10 @@ const FertilizerWidget = ({ onClick }) => {
       <div className="fertilizer-widget loading" onClick={onClick}>
         <div className="widget-header">
           <div className="header-content">
-            <Zap className="header-icon" />
-            <h3>Fertilizer Optimizer</h3>
+            
+            <h3>🌿Organic Fertilizer</h3>
           </div>
+          <div className="loading-pulse"></div>
         </div>
         <div className="loading-content">
           <div className="loading-spinner"></div>
@@ -68,8 +69,7 @@ const FertilizerWidget = ({ onClick }) => {
     <div className="fertilizer-widget" onClick={onClick}>
       <div className="widget-header">
         <div className="header-content">
-          <Zap className="header-icon" />
-          <h3>Fertilizer Optimizer</h3>
+          <h3>🌿 Organic Fertilizer</h3>
         </div>
         <div className="status-badge" style={{ backgroundColor: getStatusColor(fertilizerData.status) }}>
           {fertilizerData.status.toUpperCase()}
