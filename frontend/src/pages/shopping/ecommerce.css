@@ -8,30 +8,40 @@
 
 /* Header Styles */
 .ecommerce-header {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
   color: white;
-  padding: 6rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 4rem 0 3rem 0;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  color: white;
+  display: block;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.27);
 }
 
 .ecommerce-header h1 {
-  font-size: 3rem;
-  margin: 0 0 0.5rem 0;
+  font-size: 3.2rem;
+  margin: 0 0 1rem 0;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 .ecommerce-header p {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   text-align: center;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #07051d;
 }
 
 /* Search and Filter Section */
@@ -259,20 +269,22 @@
 
 /* Sidebar Styles */
 .sidebar {
-  background: white;
+  background: linear-gradient(135deg, #265727 0%, #b0c7dd 100%);
   border-radius: 12px;
-  color:white;
+  color: #f2efef;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: fit-content;
   position: sticky;
   top: 20px;
+  border: 1px solid #e9ecef;
 }
 
 .sidebar h3 {
   margin: 0 0 1rem 0;
-  color: #f7f3f3;
+  color: #eaefeb;
   font-size: 1.3rem;
+  font-weight: 600;
 }
 
 .category-list {
@@ -290,18 +302,111 @@
   background: transparent;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   text-align: left;
   width: 100%;
+  border: 2px solid transparent;
 }
 
-.category-btn:hover {
-  background: #1ca058;
+/* All Products - Purple */
+.category-btn[data-category="all"] {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border-color: #9d0cb7;
+}
+
+.category-btn[data-category="all"]:hover {
+  background: linear-gradient(135deg, #95779a 0%, #5c5360 100%);
+  color: white;
   transform: translateX(4px);
 }
 
-.category-btn.active {
-  background: #4CAF50;
+.category-btn[data-category="all"].active {
+  background: linear-gradient(135deg, #d4a6dd 0%, #bd9ecb 100%);
+  color: white;
+}
+
+/* Tractors - Orange */
+.category-btn[data-category="tractors"] {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-color: #ff9800;
+}
+
+.category-btn[data-category="tractors"]:hover {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  transform: translateX(4px);
+}
+
+.category-btn[data-category="tractors"].active {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+}
+
+/* Fertilizers - Blue */
+.category-btn[data-category="fertilizers"] {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #2196f3;
+}
+
+.category-btn[data-category="fertilizers"]:hover {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  color: white;
+  transform: translateX(4px);
+}
+
+.category-btn[data-category="fertilizers"].active {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  color: white;
+}
+
+/* Seeds - Green */
+.category-btn[data-category="seeds"] {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-color: #4caf50;
+}
+
+.category-btn[data-category="seeds"]:hover {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  transform: translateX(4px);
+}
+
+.category-btn[data-category="seeds"].active {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+}
+
+/* Tools - Red */
+.category-btn[data-category="tools"] {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border-color: #f44336;
+}
+
+.category-btn[data-category="tools"]:hover {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+  transform: translateX(4px);
+}
+
+.category-btn[data-category="tools"].active {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+}
+
+/* Irrigation - Cyan */
+.category-btn[data-category="irrigation"] {
+  background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+  border-color: #009688;
+}
+
+.category-btn[data-category="irrigation"]:hover {
+  background: linear-gradient(135deg, #009688 0%, #00695c 100%);
+  color: white;
+  transform: translateX(4px);
+}
+
+.category-btn[data-category="irrigation"].active {
+  background: linear-gradient(135deg, #009688 0%, #00695c 100%);
   color: white;
 }
 
@@ -311,7 +416,7 @@
 
 .category-name {
   font-weight: 500;
-  color:#e8f5e8;
+  color: inherit;
 }
 
 /* Featured Brands */
@@ -689,8 +794,17 @@
     margin-top: 2rem;
   }
   
+  .ecommerce-header {
+    padding: 3rem 0 2rem 0;
+  }
+  
   .ecommerce-header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+  }
+  
+  .ecommerce-header p {
+    font-size: 1.1rem;
+    padding: 0 1rem;
   }
   
   .search-filter-section {

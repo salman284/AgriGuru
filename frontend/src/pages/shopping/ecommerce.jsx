@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
 import { Link } from 'react-router-dom';
 import QuickView from '../../components/QuickView/QuickView';
-import ServiceBenefits from '../../components/ServiceBenefits/ServiceBenefits';
 import './ecommerce.css';
 
 const Ecommerce = () => {
@@ -301,9 +300,6 @@ const Ecommerce = () => {
         </div>
       </div>
 
-      {/* Service Benefits Section */}
-      <ServiceBenefits />
-
       <div className="ecommerce-main">{
         /* Sidebar Categories */}
         <div className="sidebar">
@@ -313,6 +309,7 @@ const Ecommerce = () => {
               <button
                 key={category.id}
                 className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
+                data-category={category.id}
                 onClick={() => setSelectedCategory(category.id)}
               >
                 <span className="category-icon">{category.icon}</span>
