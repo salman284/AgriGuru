@@ -718,6 +718,9 @@ const KhetiSaath = () => {
               />
               <span className="search-icon">🔍</span>
             </div>
+            <Link to="/kheti-saath/favorites" className="favorites-btn">
+              ❤️ Favorites ({favorites.length})
+            </Link>
           </div>
 
           <div className="category-filters">
@@ -782,6 +785,19 @@ const KhetiSaath = () => {
                     onClick={() => openModal(item)}
                   >
                     View Full Details
+                  </button>
+                  <button 
+                    className={`favorite-btn ${isInFavorites(item.id) ? 'favorited' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isInFavorites(item.id)) {
+                        removeFromFavorites(item.id);
+                      } else {
+                        addToFavorites(item);
+                      }
+                    }}
+                  >
+                    {isInFavorites(item.id) ? '❤️ Remove' : '🤍 Add to Favorites'}
                   </button>
                 </div>
               </div>

@@ -52,14 +52,15 @@ const FertilizerWidget = ({ onClick }) => {
       <div className="fertilizer-widget loading" onClick={onClick}>
         <div className="widget-header">
           <div className="header-content">
-            
-            <h3>🌿Organic Fertilizer</h3>
+            <h3>🌿 Organic Fertilizer</h3>
           </div>
           <div className="loading-pulse"></div>
         </div>
-        <div className="loading-content">
-          <div className="loading-spinner"></div>
-          <p>Analyzing soil nutrients...</p>
+        <div className="fertilizer-content">
+          <div className="loading-content">
+            <div className="loading-spinner"></div>
+            <p>Analyzing soil nutrients...</p>
+          </div>
         </div>
       </div>
     );

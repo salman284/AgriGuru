@@ -20,8 +20,6 @@
 }
 
 .fertilizer-widget.loading {
-  justify-content: center;
-  align-items: center;
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
   animation: fertilizerPulse 2s ease-in-out infinite;
 }
@@ -29,6 +27,14 @@
 .fertilizer-widget.loading .widget-header {
   position: relative;
   z-index: 1;
+  margin-bottom: 20px;
+}
+
+.fertilizer-widget.loading .fertilizer-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fertilizer-widget.loading .header-icon {

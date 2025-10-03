@@ -304,31 +304,31 @@ const PestDetection = () => {
 
         <div className="pest-stats">
           <div className="stat-card">
-            <div className="stat-icon">🐛</div>
+            
             <div className="stat-info">
               <h4>15</h4>
-              <p>Pest Types Detected</p>
+              <p>🐛Pest Types Detected</p>
             </div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon">🔍</div>
+            
             <div className="stat-info">
               <h4>94%</h4>
-              <p>Detection Accuracy</p>
+              <p>🔍Detection Accuracy</p>
             </div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon">⚡</div>
+          
             <div className="stat-info">
               <h4>2.3s</h4>
-              <p>Analysis Time</p>
+              <p>⚡Analysis Time</p>
             </div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon">🛡️</div>
+           
             <div className="stat-info">
               <h4>127</h4>
-              <p>Plants Scanned</p>
+              <p>🛡️Plants Scanned</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet, Link } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { MarketplaceProvider } from './contexts/MarketplaceContext';
 import { Web3Provider } from './contexts/Web3Context';
@@ -123,6 +123,21 @@ const router = createBrowserRouter([
       {
         path: "contacts",
         element: <ADOFinder />
+      },
+      {
+        path: "*",
+        element: (
+          <div className="error-page">
+            <div className="error-content">
+              <h1>🌾 Oops! Page Not Found</h1>
+              <p>The page you're looking for doesn't exist or has been moved.</p>
+              <div className="error-actions">
+                <Link to="/" className="btn btn-primary">🏠 Go Home</Link>
+                <Link to="/kheti-saath" className="btn btn-secondary">🌾 Visit KisanGuide</Link>
+              </div>
+            </div>
+          </div>
+        )
       }
     ]
   }

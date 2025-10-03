@@ -395,6 +395,9 @@
 .item-actions {
   padding: 0 1.5rem 1.5rem;
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .view-details-btn {
@@ -412,6 +415,36 @@
 .view-details-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.favorite-btn {
+  width: 100%;
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  color: #6c757d;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.favorite-btn:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  transform: translateY(-1px);
+}
+
+.favorite-btn.favorited {
+  background: #ff6b6b;
+  color: white;
+  border-color: #ff6b6b;
+}
+
+.favorite-btn.favorited:hover {
+  background: #e55353;
+  border-color: #e55353;
 }
 
 /* No Results State */
