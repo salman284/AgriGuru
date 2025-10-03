@@ -288,33 +288,8 @@ async function fetchAgromonitoringSoil(lat, lon) {
           <div className="loading-pulse"></div>
         </div>
         <div className="loading-content">
-          <div className="skeleton-soil-card">
-            <div className="skeleton-soil-circle"></div>
-            <div className="skeleton-soil-info">
-              <div className="skeleton-line soil-long"></div>
-              <div className="skeleton-line soil-medium"></div>
-            </div>
-          </div>
-          <div className="skeleton-metrics">
-            <div className="skeleton-metric">
-              <div className="skeleton-line soil-short"></div>
-              <div className="skeleton-line soil-tiny"></div>
-            </div>
-            <div className="skeleton-metric">
-              <div className="skeleton-line soil-short"></div>
-              <div className="skeleton-line soil-tiny"></div>
-            </div>
-            <div className="skeleton-metric">
-              <div className="skeleton-line soil-short"></div>
-              <div className="skeleton-line soil-tiny"></div>
-            </div>
-          </div>
-          <div className="loading-text">
-            <span className="analyzing-text">Analyzing soil composition</span>
-            <div className="loading-dots">
-              <span>.</span><span>.</span><span>.</span>
-            </div>
-          </div>
+          <div className="loading-spinner"></div>
+          <p>Analyzing soil composition...</p>
         </div>
       </div>
     );
