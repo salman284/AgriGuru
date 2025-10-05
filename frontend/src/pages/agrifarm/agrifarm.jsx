@@ -757,19 +757,19 @@ const AgriContractForm = () => {
           </p>
           <div className="benefits-summary">
             <div className="benefit-item clickable" onClick={() => handleBenefitClick('income')}>
-              <span className="benefit-icon">💰</span>
+              <span className="benefit-icon" title="Money Bag">💰</span>
               <span className="benefit-text">₹500/Satak/Year</span>
             </div>
             <div className="benefit-item clickable" onClick={() => handleBenefitClick('contract')}>
-              <span className="benefit-icon">📅</span>
+              <span className="benefit-icon" title="Calendar">📅</span>
               <span className="benefit-text">5 Year Contract</span>
             </div>
             <div className="benefit-item clickable" onClick={() => handleBenefitClick('training')}>
-              <span className="benefit-icon">🎓</span>
+              <span className="benefit-icon" title="Graduation Cap">🎓</span>
               <span className="benefit-text">Free Training</span>
             </div>
             <div className="benefit-item clickable" onClick={() => handleBenefitClick('employment')}>
-              <span className="benefit-icon">💼</span>
+              <span className="benefit-icon" title="Briefcase">💼</span>
               <span className="benefit-text">Employment</span>
             </div>
           </div>

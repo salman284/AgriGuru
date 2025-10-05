@@ -102,10 +102,48 @@
 }
 
 .benefit-icon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif;
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback for icons that don't render */
+.benefit-icon:empty:before {
+  content: "💡";
+  font-size: 2rem;
+}
+
+.benefit-icon[title="Money Bag"]:empty:before {
+  content: "💰";
+}
+
+.benefit-icon[title="Calendar"]:empty:before {
+  content: "📅";
+}
+
+.benefit-icon[title="Graduation Cap"]:empty:before {
+  content: "🎓";
+}
+
+.benefit-icon[title="Briefcase"]:empty:before {
+  content: "💼";
 }
 
 .benefit-text {
@@ -527,7 +565,9 @@
   }
   
   .benefit-icon {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   
   .contract-form {
