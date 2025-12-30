@@ -103,13 +103,29 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agrigurudb')
 
- # Connect to MongoDB with certifi CA bundle for SSL, explicit TLS, and allow invalid certificates (debug only)
-client = MongoClient(app.config['MONGO_URI'], tls=True, tlsCAFile=certifi.where(), tlsAllowInvalidCertificates=True)
-
-db = client.agrigurudb
-chat_messages_collection = db.chat_messages  # New collection for group chat messages
-users_collection = db.users
-otp_collection = db.otp_codes
+# Connect to MongoDB with optional connection (won't crash if MongoDB is unavailable)
+try:
+    client = MongoClient(
+        app.config['MONGO_URI'], 
+        tls=True, 
+        tlsCAFile=certifi.where(), 
+        tlsAllowInvalidCertificates=True,
+        serverSelectionTimeoutMS=5000  # 5 second timeout
+    )
+    # Test the connection
+    client.server_info()
+    db = client.agrigurudb
+    chat_messages_collection = db.chat_messages
+    users_collection = db.users
+    otp_collection = db.otp_codes
+    print("✅ MongoDB connected successfully")
+except Exception as e:
+    print(f"⚠️ MongoDB connection failed: {e}")
+    print("📝 Running without database - some features will be limited")
+    db = None
+    chat_messages_collection = None
+    users_collection = None
+    otp_collection = None
 
 # Email configuration for OTP
 EMAIL_CONFIG = {
@@ -118,6 +134,21 @@ EMAIL_CONFIG = {
     'email': 'YOUR_GMAIL_HERE@gmail.com',           # ⚠️ REPLACE: Your actual Gmail address
     'password': 'YOUR_16_CHAR_APP_PASSWORD_HERE'    # ⚠️ REPLACE: Your Gmail App Password (16 chars, no spaces)
 }
+
+# Helper function to check database availability
+def require_database(f):
+    """Decorator to check if database is available"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if db is None or users_collection is None:
+            return jsonify({
+                "success": False, 
+                "message": "Database not available. Please configure MongoDB connection.",
+                "error": "DATABASE_UNAVAILABLE"
+            }), 503
+        return f(*args, **kwargs)
+    return decorated_function
 
 # OTP Helper Functions
 def generate_otp():
@@ -320,6 +351,8 @@ def signup():
         return jsonify({"success": False, "message": f"Registration failed: {str(e)}"}), 500
 
 @app.route('/api/send-otp', methods=['POST'])
+@app.route('/api/send-otp', methods=['POST'])
+@require_database
 def send_otp():
     """Send OTP for verification"""
     try:
@@ -366,6 +399,7 @@ def send_otp():
         return jsonify({"success": False, "message": f"OTP send failed: {str(e)}"}), 500
 
 @app.route('/api/verify-otp', methods=['POST'])
+@require_database
 def verify_otp_endpoint():
     """Verify OTP code"""
     try:
@@ -421,6 +455,7 @@ def verify_otp_endpoint():
         return jsonify({"success": False, "message": f"OTP verification failed: {str(e)}"}), 500
 
 @app.route('/api/signup-with-otp', methods=['POST'])
+@require_database
 def signup_with_otp():
     """Complete signup after OTP verification"""
     try:
@@ -566,6 +601,7 @@ def logout():
     return jsonify({"success": True, "message": "Logged out successfully"}), 200
 
 @app.route('/api/google-login', methods=['POST'])
+@require_database
 def google_login():
     """Google OAuth login endpoint"""
     try:
