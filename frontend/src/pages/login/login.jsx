@@ -10,6 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('customer'); // 'farmer' or 'customer'
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,11 +20,18 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const result = await login(email, password);
+      const result = await login(email, password, userType);
       
       if (result.success) {
-        alert(`✅ Welcome back!`);
-        navigate('/dashboard'); // Redirect to dashboard after successful login
+        const welcomeMsg = userType === 'farmer' ? '✅ Welcome back, Farmer!' : '✅ Welcome back!';
+        alert(welcomeMsg);
+        
+        // Redirect based on user type
+        if (userType === 'farmer') {
+          navigate('/dashboard'); // Farmers see dashboard with sell options
+        } else {
+          navigate('/marketplace'); // Customers go to marketplace
+        }
       } else {
         setError(result.message);
       }
@@ -36,7 +44,7 @@ const Login = () => {
 
   const handleGoogleSuccess = (result) => {
     alert(`✅ Welcome via Google!`);
-    navigate('/dashboard');
+    navigate(userType === 'farmer' ? '/dashboard' : '/marketplace');
   };
 
   const handleGoogleError = (errorMessage) => {
@@ -46,7 +54,27 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Login to AgriGuru</h2>
+        
+        {/* User Type Selection */}
+        <div className="user-type-selection">
+          <button
+            type="button"
+            className={`user-type-btn ${userType === 'customer' ? 'active' : ''}`}
+            onClick={() => setUserType('customer')}
+          >
+            <span className="icon">🛒</span>
+            <span>Customer</span>
+          </button>
+          <button
+            type="button"
+            className={`user-type-btn ${userType === 'farmer' ? 'active' : ''}`}
+            onClick={() => setUserType('farmer')}
+          >
+            <span className="icon">🌾</span>
+            <span>Farmer</span>
+          </button>
+        </div>
         
         {error && (
           <div className="error-message">
@@ -77,7 +105,7 @@ const Login = () => {
           />
         </div>
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? 'Logging in...' : `Login as ${userType === 'farmer' ? 'Farmer' : 'Customer'}`}
         </button>
         
         <div className="login-divider">

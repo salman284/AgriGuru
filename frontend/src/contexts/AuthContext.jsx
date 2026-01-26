@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, userType = 'customer') => {
     try {
       const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
@@ -65,13 +65,15 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, userType })
       });
 
       const data = await response.json();
 
       if (data.success && data.user && Object.keys(data.user).length > 0) {
-        setUser(data.user);
+        // Add userType to user object
+        const userWithType = { ...data.user, userType };
+        setUser(userWithType);
         return { success: true, message: data.message };
       } else {
         setUser(null);
@@ -82,7 +84,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (email, password, full_name, phone) => {
+  const signup = async (email, password, full_name, phone, userType = 'customer') => {
     try {
       const response = await fetch('http://localhost:5001/api/signup', {
         method: 'POST',
@@ -90,14 +92,14 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, full_name, phone })
+        body: JSON.stringify({ email, password, full_name, phone, userType })
       });
 
       const data = await response.json();
 
       if (data.success) {
         // Auto-login after successful signup
-        const loginResult = await login(email, password);
+        const loginResult = await login(email, password, userType);
         return loginResult;
       } else {
         return { success: false, message: data.message };

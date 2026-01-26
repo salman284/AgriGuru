@@ -28,6 +28,62 @@
   margin-bottom: 30px;
 }
 
+/* User Type Selection */
+.user-type-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  border: 2px solid rgba(76, 175, 80, 0.3);
+  border-radius: 12px;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.user-type-btn:hover {
+  background: rgba(76, 175, 80, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.user-type-btn.active {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  border-color: #4CAF50;
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  transform: scale(1.05);
+}
+
+.user-type-btn .icon {
+  font-size: 2rem;
+}
+
+.user-type-btn span:nth-child(2) {
+  font-weight: 600;
+}
+
+.user-type-btn small {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.user-type-btn.active small {
+  opacity: 0.95;
+}
+
 .input-group {
   margin-bottom: 20px;
 }
