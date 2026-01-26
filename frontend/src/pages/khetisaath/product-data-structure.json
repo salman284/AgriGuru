@@ -1,0 +1,193 @@
+{
+  "productDataStructure": {
+    "description": "Standard data structure for agricultural products in Kheti Saath",
+    "required_fields": [
+      "id", "category", "name", "description", "image", "usageInstructions", "safetyTips"
+    ],
+    "optional_fields": [
+      "maintenanceTips", "priceRange", "recommendedBrands", "specifications", 
+      "videoUrl", "additionalInfo", "imageUrls", "downloadableResources"
+    ],
+    "template": {
+      "id": "number - unique identifier",
+      "category": "string - one of: Machine, Tool, Chemical Fertilizer, Organic Alternative, Homemade Ingredient",
+      "name": "string - product name",
+      "description": "string - brief product description",
+      "image": "string - emoji or image URL",
+      "usageInstructions": [
+        "array of strings - step by step instructions",
+        "can include as many steps as needed",
+        "will show first 3 on card, all in modal"
+      ],
+      "safetyTips": "string - important safety information",
+      "maintenanceTips": {
+        "daily": ["array of daily maintenance tasks"],
+        "weekly": ["array of weekly maintenance tasks"],
+        "monthly": ["array of monthly maintenance tasks"],
+        "seasonal": ["optional seasonal maintenance tasks"]
+      },
+      "priceRange": "string - price information with currency",
+      "recommendedBrands": ["array of recommended brand names"],
+      "specifications": {
+        "key1": "value1 - technical specifications",
+        "key2": "value2 - can include any relevant specs"
+      },
+      "videoUrl": "string - YouTube embed URL or other video platform",
+      "additionalInfo": [
+        "array of additional tips or information",
+        "displayed as bullet points in modal"
+      ],
+      "imageUrls": [
+        "array of additional image URLs",
+        "for product gallery (future feature)"
+      ],
+      "downloadableResources": [
+        {
+          "name": "Resource name",
+          "url": "Download URL",
+          "type": "PDF/Doc/Image",
+          "description": "Resource description"
+        }
+      ]
+    }
+  },
+  "exampleProducts": [
+    {
+      "id": 21,
+      "category": "Tool",
+      "name": "Digital pH Meter",
+      "description": "Precision instrument for measuring soil and water pH levels",
+      "image": "📏",
+      "usageInstructions": [
+        "Clean the probe with distilled water before use",
+        "Calibrate using pH 4.0 and 7.0 buffer solutions",
+        "Insert probe into soil sample (add water if too dry)",
+        "Wait for reading to stabilize (30-60 seconds)",
+        "Record the pH value and location",
+        "Clean probe after use and store in storage solution"
+      ],
+      "safetyTips": "Handle probe carefully to avoid breakage. Store in protective cap when not in use.",
+      "maintenanceTips": {
+        "daily": [
+          "Rinse probe with distilled water after each use",
+          "Store probe in proper storage solution"
+        ],
+        "weekly": [
+          "Check battery level and replace if needed",
+          "Clean meter body with soft, dry cloth"
+        ],
+        "monthly": [
+          "Calibrate using fresh buffer solutions",
+          "Check probe for any signs of damage"
+        ]
+      },
+      "priceRange": "₹1,500-8,000 (depending on accuracy and features)",
+      "recommendedBrands": ["Hanna Instruments", "Apera", "Bluelab", "Oakton"],
+      "specifications": {
+        "pH Range": "0-14 pH",
+        "Accuracy": "±0.01-0.1 pH",
+        "Temperature Range": "0-50°C",
+        "Battery Life": "500+ hours"
+      },
+      "videoUrl": "https://www.youtube.com/embed/ph-meter-usage",
+      "additionalInfo": [
+        "Regular calibration ensures accurate readings",
+        "Soil pH affects nutrient availability to plants",
+        "Most crops prefer pH between 6.0-7.0",
+        "Digital meters are more accurate than test strips"
+      ]
+    },
+    {
+      "id": 22,
+      "category": "Organic Alternative",
+      "name": "Liquid Seaweed Fertilizer",
+      "description": "Natural liquid fertilizer made from processed seaweed",
+      "image": "🌊",
+      "usageInstructions": [
+        "Dilute 15-30ml per liter of water",
+        "Apply during early morning or evening",
+        "Spray on leaves for foliar feeding",
+        "Can also be applied to soil around plants",
+        "Use every 2-3 weeks during growing season",
+        "Reduce concentration for seedlings (10ml/liter)"
+      ],
+      "safetyTips": "Store in cool, dark place. Avoid contact with eyes. Non-toxic but may have strong odor.",
+      "maintenanceTips": {
+        "daily": [
+          "Shake bottle before use",
+          "Clean sprayer after application"
+        ],
+        "weekly": [
+          "Check for any precipitate or separation",
+          "Store in temperature-stable location"
+        ],
+        "monthly": [
+          "Check expiry date and product condition",
+          "Monitor plant response and adjust concentration"
+        ]
+      },
+      "priceRange": "₹200-800 per liter",
+      "recommendedBrands": ["Neptune's Harvest", "Maxicrop", "Organic Ocean", "Seasol"],
+      "specifications": {
+        "NPK Ratio": "Varies, typically 2-3-1",
+        "Organic Matter": "85-95%",
+        "pH": "6.5-8.5",
+        "Shelf Life": "2-3 years unopened"
+      },
+      "additionalInfo": [
+        "Rich in micronutrients and growth hormones",
+        "Improves plant stress tolerance",
+        "Enhances soil microbial activity",
+        "Suitable for organic farming certification"
+      ]
+    }
+  ],
+  "categoryGuidelines": {
+    "Machine": {
+      "focus": "Large equipment requiring fuel/power",
+      "typical_price_range": "₹50,000+",
+      "key_sections": ["operation", "maintenance", "safety", "specifications"]
+    },
+    "Tool": {
+      "focus": "Hand tools or small equipment",
+      "typical_price_range": "₹500-50,000",
+      "key_sections": ["usage", "maintenance", "accuracy", "battery_life"]
+    },
+    "Chemical Fertilizer": {
+      "focus": "Synthetic nutrients and soil amendments",
+      "typical_price_range": "₹20-200 per kg",
+      "key_sections": ["application_rate", "timing", "storage", "safety"]
+    },
+    "Organic Alternative": {
+      "focus": "Natural and sustainable options",
+      "typical_price_range": "₹10-500 per kg",
+      "key_sections": ["preparation", "application", "benefits", "composting"]
+    },
+    "Homemade Ingredient": {
+      "focus": "DIY solutions from household items",
+      "typical_price_range": "₹5-100",
+      "key_sections": ["preparation", "application", "storage", "effectiveness"]
+    }
+  },
+  "implementation_notes": {
+    "adding_new_products": [
+      "Add new items to the agricultureData array in KhetiSaath.jsx",
+      "Ensure all required fields are included",
+      "Use incremental ID numbers",
+      "Test modal functionality with new data"
+    ],
+    "customization_options": [
+      "Categories can be modified in the categories array",
+      "Modal sections can be conditionally shown based on data availability",
+      "CSS classes can be customized for different product types",
+      "Search functionality automatically includes new fields"
+    ],
+    "future_enhancements": [
+      "Image gallery support",
+      "Downloadable resources section",
+      "User ratings and reviews",
+      "Favorites/bookmark functionality",
+      "Print-friendly version of product details"
+    ]
+  }
+}

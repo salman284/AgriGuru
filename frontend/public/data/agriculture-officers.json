@@ -1,0 +1,971 @@
+{
+  "agricultureOfficers": [
+    {
+      "id": "ADO001",
+      "name": "Smt. R.V.V.Swarna Vijaya",
+      "designation": "Assistant Director of Agriculture",
+      "specialization": ["Farm Mechanization", "Agricultural Engineering", "Crop Management"],
+      "location": {
+        "state": "Andhra Pradesh",
+        "district": "Guntur",
+        "tehsil": "Guntur",
+        "pincode": "522001"
+      },
+      "serviceArea": {
+        "districts": ["Guntur", "Prakasam", "Krishna"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-8978381854",
+        "email": "andhrafm@gmail.com",
+        "whatsapp": "+91-8978381854",
+        "office": "0863-2214641"
+      },
+      "experience": "15+ years",
+      "languages": ["Telugu", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Agrl Engineering Wing, Deputy Director of Agriculture (Farm Mechanization), O/o Commissioner of Agriculture, AP, Guntur.",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO002",
+      "name": "Mr. Shiv Kumar Ram",
+      "designation": "Agriculture Development Officer",
+      "specialization": ["Hill Agriculture", "Organic Farming", "Horticulture"],
+      "location": {
+        "state": "Arunachal Pradesh",
+        "district": "Itanagar",
+        "tehsil": "Itanagar",
+        "pincode": "791111"
+      },
+      "serviceArea": {
+        "districts": ["Itanagar", "Naharlagun", "Banderdewa"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-9436057007",
+        "email": "contact.arunachal@gov.in",
+        "whatsapp": "+91-9436057007"
+      },
+      "experience": "10+ years",
+      "languages": ["Hindi", "English", "Local dialects"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Arunachal Pradesh",
+      "rating": 4.5
+    },
+    {
+      "id": "ADO003",
+      "name": "Mr. Sirajul Haque Barbhuyan",
+      "designation": "State Nodal Officer, SMAM",
+      "specialization": ["Sub Mission on Agricultural Mechanization", "Farm Equipment", "Technology Transfer"],
+      "location": {
+        "state": "Assam",
+        "district": "Kamrup Metropolitan",
+        "tehsil": "Guwahati",
+        "pincode": "781022"
+      },
+      "serviceArea": {
+        "districts": ["Kamrup Metropolitan", "Kamrup Rural", "Nalbari"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-9435380992",
+        "email": "sirajulbarbuyan@gmail.com",
+        "whatsapp": "+91-9435380992"
+      },
+      "experience": "18+ years",
+      "languages": ["Assamese", "English", "Hindi", "Bengali"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, Assam, Khanapara, Guwahati-781022",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO004",
+      "name": "Mr. Alok Kumar Singh",
+      "designation": "Joint Director",
+      "specialization": ["Agricultural Mechanization", "Crop Production", "Extension Services"],
+      "location": {
+        "state": "Bihar",
+        "district": "Patna",
+        "tehsil": "Patna",
+        "pincode": "800015"
+      },
+      "serviceArea": {
+        "districts": ["Patna", "Nalanda", "Jehanabad"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9431818807",
+        "email": "statenodalmec18@gmail.com",
+        "whatsapp": "+91-9431818807",
+        "office": "9431818911"
+      },
+      "experience": "20+ years",
+      "languages": ["Hindi", "English", "Bhojpuri"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, New Secretariat, Vikas Bhawan, Baily Bhawan, Patna-15",
+      "rating": 4.6
+    },
+    {
+      "id": "ADO005",
+      "name": "Mr. G.K. Pidiha",
+      "designation": "Additional Director of Agriculture",
+      "specialization": ["Agricultural Development", "Farm Technology", "Rural Development"],
+      "location": {
+        "state": "Chhattisgarh",
+        "district": "Raipur",
+        "tehsil": "Raipur",
+        "pincode": "492002"
+      },
+      "serviceArea": {
+        "districts": ["Raipur", "Durg", "Bilaspur"],
+        "radius": "120km"
+      },
+      "contact": {
+        "phone": "+91-9827151776",
+        "email": "diagricg.cg@nic.in",
+        "whatsapp": "+91-9827151776",
+        "office": "0771-2512348"
+      },
+      "experience": "22+ years",
+      "languages": ["Hindi", "English", "Chhattisgarhi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:30 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, CG, Krishi Bhavan, Sector-19 Nava Raipur, Atal Nagar-492002",
+      "rating": 4.4
+    },
+    {
+      "id": "ADO006",
+      "name": "Mr. Nitin R. Makude",
+      "designation": "Zonal Agriculture Officer",
+      "specialization": ["Coastal Agriculture", "Horticulture", "Fisheries Integration"],
+      "location": {
+        "state": "Daman and Diu",
+        "district": "Daman",
+        "tehsil": "Daman",
+        "pincode": "396220"
+      },
+      "serviceArea": {
+        "districts": ["Daman", "Diu"],
+        "radius": "50km"
+      },
+      "contact": {
+        "phone": "+91-9876543210",
+        "email": "agriculture.daman@gov.in",
+        "whatsapp": "+91-9876543210",
+        "office": "0260-2230856"
+      },
+      "experience": "12+ years",
+      "languages": ["Gujarati", "Hindi", "English"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Fort area, Moti Daman - 396220",
+      "rating": 4.3
+    },
+    {
+      "id": "ADO007",
+      "name": "Mr. Nelson Prasanna Kumar",
+      "designation": "Director Agriculture",
+      "specialization": ["Spice Cultivation", "Cashew Farming", "Sustainable Agriculture"],
+      "location": {
+        "state": "Goa",
+        "district": "North Goa",
+        "tehsil": "Panaji",
+        "pincode": "403001"
+      },
+      "serviceArea": {
+        "districts": ["North Goa", "South Goa"],
+        "radius": "80km"
+      },
+      "contact": {
+        "phone": "+91-9850453359",
+        "email": "Dir-agri.goa@nic.in",
+        "whatsapp": "+91-9850453359",
+        "office": "0132-2465443"
+      },
+      "experience": "25+ years",
+      "languages": ["Konkani", "English", "Hindi", "Marathi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, Goa",
+      "rating": 4.9
+    },
+    {
+      "id": "ADO008",
+      "name": "Mr. Y I Shihora",
+      "designation": "Joint Director Agriculture",
+      "specialization": ["Cotton Farming", "Irrigation Management", "Agricultural Engineering"],
+      "location": {
+        "state": "Gujarat",
+        "district": "Gandhinagar",
+        "tehsil": "Gandhinagar",
+        "pincode": "382010"
+      },
+      "serviceArea": {
+        "districts": ["Gandhinagar", "Ahmedabad", "Mehsana"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-8128685681",
+        "email": "lwegovt@gmail.com",
+        "whatsapp": "+91-8128685681",
+        "office": "079-23256060"
+      },
+      "experience": "20+ years",
+      "languages": ["Gujarati", "Hindi", "English"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Krishi Bhavan, Sector -10A, Gandhinagar - 382010",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO009",
+      "name": "Mr. J.S. Nain",
+      "designation": "Additional Director",
+      "specialization": ["Wheat Cultivation", "Rice Farming", "Farm Mechanization"],
+      "location": {
+        "state": "Haryana",
+        "district": "Panchkula",
+        "tehsil": "Panchkula",
+        "pincode": "134116"
+      },
+      "serviceArea": {
+        "districts": ["Panchkula", "Chandigarh", "Ambala"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9416135999",
+        "email": "jdaehry@gmail.com",
+        "whatsapp": "+91-9416135999"
+      },
+      "experience": "18+ years",
+      "languages": ["Hindi", "English", "Punjabi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Krishi Bhawan, Sector 21, Panchkula - 134116",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO010",
+      "name": "Mr. Desh Raj Thakur",
+      "designation": "Joint Director Agriculture",
+      "specialization": ["Hill Agriculture", "Apple Cultivation", "Organic Farming"],
+      "location": {
+        "state": "Himachal Pradesh",
+        "district": "Shimla",
+        "tehsil": "Shimla",
+        "pincode": "171001"
+      },
+      "serviceArea": {
+        "districts": ["Shimla", "Solan", "Mandi"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-9418077407",
+        "email": "krishibhawan-hp@gov.in",
+        "whatsapp": "+91-9418077407"
+      },
+      "experience": "22+ years",
+      "languages": ["Hindi", "English", "Pahadi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, Himachal Pradesh",
+      "rating": 4.6
+    },
+    {
+      "id": "ADO011",
+      "name": "Mr. K.K. Sharma",
+      "designation": "Director (Jammu)",
+      "specialization": ["Saffron Cultivation", "Apple Farming", "Valley Agriculture"],
+      "location": {
+        "state": "Jammu and Kashmir",
+        "district": "Jammu",
+        "tehsil": "Jammu",
+        "pincode": "180002"
+      },
+      "serviceArea": {
+        "districts": ["Jammu", "Kathua", "Samba"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-9419119384",
+        "email": "diragrijammu-jk@jk.gov.in",
+        "whatsapp": "+91-9419119384",
+        "office": "0191-2505201"
+      },
+      "experience": "24+ years",
+      "languages": ["Hindi", "English", "Urdu", "Dogri"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Krishi Bhavan Gol Pulli Talab Tillo Jammu - 180002",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO012",
+      "name": "Mr. Ashok Smrat",
+      "designation": "Director, Soil Conservation",
+      "specialization": ["Soil Conservation", "Watershed Management", "Land Development"],
+      "location": {
+        "state": "Jharkhand",
+        "district": "Ranchi",
+        "tehsil": "Ranchi",
+        "pincode": "834008"
+      },
+      "serviceArea": {
+        "districts": ["Ranchi", "Dhanbad", "Jamshedpur"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-8102213741",
+        "email": "dirsoilconservation@gmail.com",
+        "whatsapp": "+91-8102213741"
+      },
+      "experience": "19+ years",
+      "languages": ["Hindi", "English", "Santali"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Second floor Krishi Bhawan, Kanke Road, Ranchi - 834008",
+      "rating": 4.5
+    },
+    {
+      "id": "ADO013",
+      "name": "Mr. Shankar Murthy CMV",
+      "designation": "Deputy Director Agriculture",
+      "specialization": ["Farm Mechanization", "Technology Transfer", "Coffee Cultivation"],
+      "location": {
+        "state": "Karnataka",
+        "district": "Bangalore Urban",
+        "tehsil": "Bangalore",
+        "pincode": "560001"
+      },
+      "serviceArea": {
+        "districts": ["Bangalore Urban", "Bangalore Rural", "Tumkur"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-8277929855",
+        "email": "agrift2012@gmail.com",
+        "whatsapp": "+91-8277929855"
+      },
+      "experience": "16+ years",
+      "languages": ["Kannada", "English", "Tamil", "Telugu"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Deputy Director of Agriculture FM & MI O/O commissionerate of Agriculture Dept of Agriculture No.1 Seshadri Road Bengaluru - 560001",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO014",
+      "name": "Mr. Sumesh Kumar T",
+      "designation": "Assistant Executive Engineer (AGRI)",
+      "specialization": ["Agricultural Engineering", "Spice Cultivation", "Coconut Development"],
+      "location": {
+        "state": "Kerala",
+        "district": "Alappuzha",
+        "tehsil": "Alappuzha",
+        "pincode": "688003"
+      },
+      "serviceArea": {
+        "districts": ["Alappuzha", "Kottayam", "Ernakulam"],
+        "radius": "80km"
+      },
+      "contact": {
+        "phone": "+91-9447344143",
+        "email": "smamkerala@gmail.com",
+        "whatsapp": "+91-9447344143",
+        "office": "0471-2306748"
+      },
+      "experience": "14+ years",
+      "languages": ["Malayalam", "English", "Tamil"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Office of the Executive Engineer (Agri), Southern Region, Alappuzha - 688003",
+      "rating": 4.6
+    },
+    {
+      "id": "ADO015",
+      "name": "Mr. Irfanul Hoque",
+      "designation": "ACS",
+      "specialization": ["Island Agriculture", "Coconut Farming", "Marine Agriculture"],
+      "location": {
+        "state": "Lakshadweep",
+        "district": "Kavaratti",
+        "tehsil": "Kavaratti",
+        "pincode": "682559"
+      },
+      "serviceArea": {
+        "districts": ["Kavaratti", "Minicoy", "Agatti"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-8753883283",
+        "email": "nur.nodal@yahoo.com",
+        "whatsapp": "+91-8753883283"
+      },
+      "experience": "11+ years",
+      "languages": ["Malayalam", "English", "Arabic"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Post Office Minicopy(Sub Office) Lakshdweep - 682559",
+      "rating": 4.4
+    },
+    {
+      "id": "ADO016",
+      "name": "Mr. Rajeev Chaudhry",
+      "designation": "Director (Agricultural Engineering)",
+      "specialization": ["Agricultural Engineering", "Farm Mechanization", "Soybean Cultivation"],
+      "location": {
+        "state": "Madhya Pradesh",
+        "district": "Bhopal",
+        "tehsil": "Bhopal",
+        "pincode": "462023"
+      },
+      "serviceArea": {
+        "districts": ["Bhopal", "Indore", "Jabalpur"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-8719962442",
+        "email": "dagebho@mp.gov.in",
+        "whatsapp": "+91-8719962442",
+        "office": "0755-2583313"
+      },
+      "experience": "21+ years",
+      "languages": ["Hindi", "English"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "office_address": "Directorate of Agril.Engg., B Block Office Complex, Gautam Nagar, Bhopal - 462023",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO017",
+      "name": "Mr. Tejas Chavan",
+      "designation": "Deputy Director Agriculture (DDA)",
+      "specialization": ["Sugarcane Cultivation", "Grape Farming", "Agricultural Inputs"],
+      "location": {
+        "state": "Maharashtra",
+        "district": "Pune",
+        "tehsil": "Pune",
+        "pincode": "411001"
+      },
+      "serviceArea": {
+        "districts": ["Pune", "Satara", "Sangli"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-7498320325",
+        "email": "ddainputs5@gmail.com",
+        "whatsapp": "+91-7498320325",
+        "office": "020-26122143"
+      },
+      "experience": "17+ years",
+      "languages": ["Marathi", "Hindi", "English"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Commissionerate of Agriculture, Maharashtra State, Pune - 411001",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO018",
+      "name": "Mr. Lalthan Puii",
+      "designation": "DDA",
+      "specialization": ["Hill Agriculture", "Terrace Farming", "Organic Cultivation"],
+      "location": {
+        "state": "Manipur",
+        "district": "Imphal West",
+        "tehsil": "Imphal",
+        "pincode": "795001"
+      },
+      "serviceArea": {
+        "districts": ["Imphal West", "Imphal East", "Thoubal"],
+        "radius": "80km"
+      },
+      "contact": {
+        "phone": "+91-9612055396",
+        "email": "puiimcs@gmail.com",
+        "whatsapp": "+91-9612055396"
+      },
+      "experience": "13+ years",
+      "languages": ["Manipuri", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Sajenthong",
+      "rating": 4.5
+    },
+    {
+      "id": "ADO019",
+      "name": "Mr. Potish Suting",
+      "designation": "SE cum Joint Director of Agriculture (Mechanical)",
+      "specialization": ["Agricultural Mechanization", "Hill Agriculture", "Technology Transfer"],
+      "location": {
+        "state": "Meghalaya",
+        "district": "East Khasi Hills",
+        "tehsil": "Shillong",
+        "pincode": "793003"
+      },
+      "serviceArea": {
+        "districts": ["East Khasi Hills", "West Khasi Hills", "Ri Bhoi"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9436106434",
+        "email": "jda.mechanical@gmail.com",
+        "whatsapp": "+91-9436106434",
+        "office": "0364-2504514"
+      },
+      "experience": "18+ years",
+      "languages": ["Khasi", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Cleve Colony, Meghalaya, Shillong - 793003",
+      "rating": 4.6
+    },
+    {
+      "id": "ADO020",
+      "name": "Mr. Lalchhanliana",
+      "designation": "EE",
+      "specialization": ["Hill Agriculture", "Jhum Cultivation", "Sustainable Farming"],
+      "location": {
+        "state": "Mizoram",
+        "district": "Aizawl",
+        "tehsil": "Aizawl",
+        "pincode": "796001"
+      },
+      "serviceArea": {
+        "districts": ["Aizawl", "Lunglei", "Champhai"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-9436141120",
+        "email": "agrimizoram@gmail.com",
+        "whatsapp": "+91-9436141120"
+      },
+      "experience": "15+ years",
+      "languages": ["Mizo", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Mizoram",
+      "rating": 4.4
+    },
+    {
+      "id": "ADO021",
+      "name": "Mr. Alet Hangsing",
+      "designation": "Director of Agriculture",
+      "specialization": ["Hill Agriculture", "Terraced Farming", "Traditional Crops"],
+      "location": {
+        "state": "Nagaland",
+        "district": "Kohima",
+        "tehsil": "Kohima",
+        "pincode": "797001"
+      },
+      "serviceArea": {
+        "districts": ["Kohima", "Dimapur", "Mokokchung"],
+        "radius": "120km"
+      },
+      "contact": {
+        "phone": "+91-9436015201",
+        "email": "agrilan@rediffmail.com",
+        "whatsapp": "+91-9436015201",
+        "office": "0370-2243116"
+      },
+      "experience": "22+ years",
+      "languages": ["English", "Hindi", "Naga dialects"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Nagaland",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO022",
+      "name": "Er. Mukti Kanta Mohapatra",
+      "designation": "Joint Director of Agriculture (Engineering)",
+      "specialization": ["Agricultural Engineering", "Rice Cultivation", "Irrigation Systems"],
+      "location": {
+        "state": "Odisha",
+        "district": "Khordha",
+        "tehsil": "Bhubaneswar",
+        "pincode": "751001"
+      },
+      "serviceArea": {
+        "districts": ["Khordha", "Cuttack", "Puri"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-9437914893",
+        "email": "ceagri.dafpo@gmail.com",
+        "whatsapp": "+91-9437914893",
+        "office": "0674-2390468"
+      },
+      "experience": "20+ years",
+      "languages": ["Odia", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Chief Engineer (Agril.), Bhubaneswar - 751001",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO023",
+      "name": "Mr. Thiru.D.Somalingam",
+      "designation": "Deputy Director of Agriculture",
+      "specialization": ["Agricultural Engineering", "Farm Mechanization", "Technology Transfer"],
+      "location": {
+        "state": "Puducherry",
+        "district": "Puducherry",
+        "tehsil": "Puducherry",
+        "pincode": "605001"
+      },
+      "serviceArea": {
+        "districts": ["Puducherry", "Karaikal", "Yanam"],
+        "radius": "50km"
+      },
+      "contact": {
+        "phone": "+91-9443084663",
+        "email": "agri.puducherry@gov.in",
+        "whatsapp": "+91-9443084663",
+        "office": "0413-2337121"
+      },
+      "experience": "16+ years",
+      "languages": ["Tamil", "English", "Telugu"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Government Agricultural Engineering workshop, New Light House Road, Vambakeerapalaym",
+      "rating": 4.5
+    },
+    {
+      "id": "ADO024",
+      "name": "Jagdish Singh",
+      "designation": "Joint Director Agriculture (Engineering)",
+      "specialization": ["Agricultural Engineering", "Wheat Cultivation", "Farm Mechanization"],
+      "location": {
+        "state": "Punjab",
+        "district": "S.A.S Nagar (Mohali)",
+        "tehsil": "Mohali",
+        "pincode": "160055"
+      },
+      "serviceArea": {
+        "districts": ["S.A.S Nagar", "Ludhiana", "Patiala"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9876543210",
+        "email": "jdaengg.pb@gmail.com",
+        "whatsapp": "+91-9876543210",
+        "office": "0172-2970605"
+      },
+      "experience": "19+ years",
+      "languages": ["Punjabi", "Hindi", "English"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Kheti Bhawan S.A.S Nagar Mohali - 160055",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO025",
+      "name": "Mr. R K Sharma",
+      "designation": "Deputy Director of Agriculture",
+      "specialization": ["Desert Agriculture", "Water Conservation", "Crop Improvement"],
+      "location": {
+        "state": "Rajasthan",
+        "district": "Jaipur",
+        "tehsil": "Jaipur",
+        "pincode": "302001"
+      },
+      "serviceArea": {
+        "districts": ["Jaipur", "Ajmer", "Alwar"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-9785000900",
+        "email": "ddagr_imp@rediffmail.com",
+        "whatsapp": "+91-9785000900",
+        "office": "9694000786"
+      },
+      "experience": "21+ years",
+      "languages": ["Hindi", "English", "Rajasthani"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Rajasthan",
+      "rating": 4.6
+    },
+    {
+      "id": "ADO026",
+      "name": "Mr. Jeewan Kumar Chettri",
+      "designation": "Additional Chief Engineer",
+      "specialization": ["Hill Agriculture", "Cardamom Cultivation", "Organic Farming"],
+      "location": {
+        "state": "Sikkim",
+        "district": "East Sikkim",
+        "tehsil": "Gangtok",
+        "pincode": "737102"
+      },
+      "serviceArea": {
+        "districts": ["East Sikkim", "West Sikkim", "South Sikkim"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9434015139",
+        "email": "jeewanchettri@rediffmail.com",
+        "whatsapp": "+91-9434015139",
+        "office": "9593052875"
+      },
+      "experience": "23+ years",
+      "languages": ["Nepali", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Krishi Bhawan, Tadong, East Sikkim - 737102",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO027",
+      "name": "Tmt R.Hilda Kanmani",
+      "designation": "Assistant Executive Engineer",
+      "specialization": ["Agricultural Engineering", "Rice Cultivation", "Sugarcane Farming"],
+      "location": {
+        "state": "Tamil Nadu",
+        "district": "Chennai",
+        "tehsil": "Chennai",
+        "pincode": "600035"
+      },
+      "serviceArea": {
+        "districts": ["Chennai", "Kanchipuram", "Tiruvallur"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9865830380",
+        "email": "aedceam@gmail.com",
+        "whatsapp": "+91-9865830380",
+        "office": "044-29515322"
+      },
+      "experience": "14+ years",
+      "languages": ["Tamil", "English", "Telugu"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Chief Engineer(AE), Agriculture Engineering Department, No.487, Anna Salai, Nandanam, Chennai - 600035",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO028",
+      "name": "Mrs. T.Sujatha",
+      "designation": "Joint Director of Agriculture",
+      "specialization": ["Farm Mechanization", "Rice Cultivation", "Cotton Farming"],
+      "location": {
+        "state": "Telangana",
+        "district": "Hyderabad",
+        "tehsil": "Hyderabad",
+        "pincode": "500001"
+      },
+      "serviceArea": {
+        "districts": ["Hyderabad", "Rangareddy", "Medchal"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-7288894804",
+        "email": "tgfmcell@gmail.com",
+        "whatsapp": "+91-7288894804"
+      },
+      "experience": "17+ years",
+      "languages": ["Telugu", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Commissioner of Agriculture, Telangana State Basheerbagh, Hyderabad - 500001",
+      "rating": 4.8
+    },
+    {
+      "id": "ADO029",
+      "name": "Mr. Subir Bhowmik",
+      "designation": "EE",
+      "specialization": ["Hill Agriculture", "Traditional Farming", "Bamboo Cultivation"],
+      "location": {
+        "state": "Tripura",
+        "district": "West Tripura",
+        "tehsil": "Agartala",
+        "pincode": "799001"
+      },
+      "serviceArea": {
+        "districts": ["West Tripura", "South Tripura", "North Tripura"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9862113064",
+        "email": "subir.bhmk@gmail.com",
+        "whatsapp": "+91-9862113064"
+      },
+      "experience": "16+ years",
+      "languages": ["Bengali", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Tripura",
+      "rating": 4.5
+    },
+    {
+      "id": "ADO030",
+      "name": "Mr. Narender Kumar",
+      "designation": "Director (Agriculture)",
+      "specialization": ["Wheat Cultivation", "Sugarcane Farming", "Agricultural Development"],
+      "location": {
+        "state": "Uttar Pradesh",
+        "district": "Lucknow",
+        "tehsil": "Lucknow",
+        "pincode": "226001"
+      },
+      "serviceArea": {
+        "districts": ["Lucknow", "Unnao", "Hardoi"],
+        "radius": "150km"
+      },
+      "contact": {
+        "phone": "+91-8449755000",
+        "email": "jdaengg2013@gmail.com",
+        "whatsapp": "+91-8449755000",
+        "office": "0522-2204223"
+      },
+      "experience": "25+ years",
+      "languages": ["Hindi", "English", "Urdu"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "office_address": "Directorate of Agriculture, Madan Mohan Malviya Marg, Lucknow",
+      "rating": 4.9
+    },
+    {
+      "id": "ADO031",
+      "name": "Sri A K Upadhyay",
+      "designation": "Additional Director of Agriculture",
+      "specialization": ["Hill Agriculture", "Basmati Rice", "Organic Farming"],
+      "location": {
+        "state": "Uttarakhand",
+        "district": "Dehradun",
+        "tehsil": "Dehradun",
+        "pincode": "248007"
+      },
+      "serviceArea": {
+        "districts": ["Dehradun", "Haridwar", "Nainital"],
+        "radius": "200km"
+      },
+      "contact": {
+        "phone": "+91-8630521346",
+        "email": "dir.agri.uttarakhand@gmail.com",
+        "whatsapp": "+91-8630521346",
+        "office": "0135-2972421"
+      },
+      "experience": "24+ years",
+      "languages": ["Hindi", "English", "Garhwali"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, Nanda Ki Chowki, Prem Nagar, Dehradun - 248007",
+      "rating": 4.7
+    },
+    {
+      "id": "ADO032",
+      "name": "Mr. Saradindu Paul",
+      "designation": "Deputy Director of Agriculture",
+      "specialization": ["Rice Cultivation", "Fish Farming", "Integrated Farming"],
+      "location": {
+        "state": "West Bengal",
+        "district": "Kolkata",
+        "tehsil": "Kolkata",
+        "pincode": "700001"
+      },
+      "serviceArea": {
+        "districts": ["Kolkata", "North 24 Parganas", "South 24 Parganas"],
+        "radius": "100km"
+      },
+      "contact": {
+        "phone": "+91-9433224337",
+        "email": "wb.diragri@gmail.com",
+        "whatsapp": "+91-9433224337",
+        "office": "033-22625796"
+      },
+      "experience": "19+ years",
+      "languages": ["Bengali", "English", "Hindi"],
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "hours": "9:00 AM - 5:30 PM"
+      },
+      "office_address": "Directorate of Agriculture, Jessop Building, 1st Floor, 63 N.S. Road, Kolkata - 700001",
+      "rating": 4.8
+    }
+  ],
+  "states": [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+    "Daman and Diu", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", 
+    "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep",
+    "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", 
+    "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", 
+    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ],
+  "specializations": [
+    "Farm Mechanization", "Agricultural Engineering", "Crop Management", 
+    "Hill Agriculture", "Organic Farming", "Horticulture", "Sub Mission on Agricultural Mechanization", 
+    "Farm Equipment", "Technology Transfer", "Agricultural Mechanization", "Crop Production", 
+    "Extension Services", "Agricultural Development", "Farm Technology", "Rural Development", 
+    "Coastal Agriculture", "Fisheries Integration", "Spice Cultivation", "Cashew Farming", 
+    "Sustainable Agriculture", "Cotton Farming", "Irrigation Management", "Wheat Cultivation", 
+    "Rice Farming", "Apple Cultivation", "Soil Conservation", "Plant Protection", 
+    "Integrated Pest Management", "Water Conservation", "Dairy Farming", "Aquaculture"
+  ]
+}

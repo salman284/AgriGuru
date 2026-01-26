@@ -1,0 +1,442 @@
+{
+  "app": {
+    "title": "KisanMitra - Smart Farming Assistant",
+    "description": "AI-powered farming guidance for Indian farmers",
+    "loading": "Loading...",
+    "error": "Error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next"
+  },
+  "navbar": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "market_prices": "Market Prices & Loans",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "marketplace": "Marketplace",
+    "contact_ado": "Contact ADO",
+    "government": "Government Schemes",
+    "contract_farming": "Contract Farming",
+    "kheti_saath": "KisanGuide"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Welcome to KisanMitra",
+      "subtitle": "Get expert farming advice in your language",
+      "description": "KisanMitra provides AI-powered farming guidance, crop recommendations, and weather insights to help Indian farmers increase productivity and income.",
+      "cta_primary": "Get Farming Help",
+      "cta_secondary": "Learn More",
+      "features_title": "Why Choose KisanMitra?"
+    },
+    "features": {
+      "ai_chat": {
+        "title": "AI-Powered Chat",
+        "description": "Get instant farming advice from our AI assistant in your preferred language"
+      },
+      "voice_support": {
+        "title": "Voice Support", 
+        "description": "Speak in Hindi, Tamil, Telugu, or your regional language for hands-free farming guidance"
+      },
+      "weather_integration": {
+        "title": "Weather Insights",
+        "description": "Real-time weather data and forecasts to plan your farming activities"
+      },
+      "crop_recommendations": {
+        "title": "Crop Recommendations",
+        "description": "Get personalized crop suggestions based on your location, soil, and season"
+      },
+      "market_prices": {
+        "title": "Market Prices",
+        "description": "Stay updated with latest crop prices and market trends"
+      },
+      "expert_advice": {
+        "title": "Expert Advice",
+        "description": "Access knowledge from agricultural experts and research institutions"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Farmer Dashboard",
+    "welcome": "Welcome To Your Dashboard",
+    "overview": "Overview",
+    "my_crops": "My Crops",
+    "weather": "Weather",
+    "tasks": "Today's Tasks",
+    "insights": "Insights",
+    "recent_chats": "Recent Conversations",
+    "quick_actions": "Quick Actions",
+    "view_all": "View All",
+    "add_crop": "Add Crop",
+    "view_weather": "View Weather",
+    "chat_ai": "Chat with AI"
+  },
+  "profile": {
+    "title": "My Profile",
+    "basicInfo": "Basic Information",
+    "farmDetails": "Farm Details",
+    "farmHealth": "Farm Health",
+    "whatsappAlerts": "WhatsApp Alerts",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "farmLocation": "Farm Location",
+    "farmSize": "Farm Size (in acres)",
+    "farmSizeHint": "e.g., 5 acres",
+    "crops": "My Crops",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "notLoggedIn": "Not Logged In",
+    "pleaseLogin": "Please login to view your profile",
+    "health": {
+      "overview": "Farm Health Overview",
+      "overall_status": "Overall Health Status",
+      "excellent": "Excellent",
+      "good": "Good", 
+      "fair": "Fair",
+      "poor": "Poor",
+      "soil_ph": "Soil pH Level",
+      "soil_ph_placeholder": "e.g., 6.5",
+      "soil_health_score": "Soil Health Score (%)",
+      "soil_score_placeholder": "0-100",
+      "irrigation_system": "Irrigation System",
+      "select_irrigation": "Select Irrigation Type",
+      "drip_irrigation": "Drip Irrigation",
+      "sprinkler": "Sprinkler System",
+      "flood_irrigation": "Flood Irrigation",
+      "manual_irrigation": "Manual Irrigation",
+      "fertilizer_usage": "Fertilizer Usage & Schedule",
+      "fertilizer_placeholder": "Describe your fertilizer usage, types, and application schedule...",
+      "last_pest_inspection": "Last Pest Inspection Date",
+      "common_pest_issues": "Common Pest Issues",
+      "recent_diseases": "Recent Crop Diseases"
+    }
+  },
+  "ai_chat": {
+    "title": "Annapurna - AI Farming Assistant",
+    "subtitle": "Ask me anything about farming!",
+    "voice_subtitle": "Voice & Text Support • Multilingual",
+    "placeholder": "Ask me about farming, crops, weather...",
+    "voice_placeholder": "Type or use voice input above...",
+    "send": "Send",
+    "listening": "Listening...",
+    "processing": "Processing...",
+    "welcome_message": "🌾 **Welcome to Annapurna!**\n\nI'm your AI-powered farming assistant, I can help you with:\n\n🌱 **Crop cultivation advice**\n🧪 **Fertilizer recommendations**\n🐛 **Pest and disease management**\n🌤️ **Weather-based planning**\n📊 **Market insights**\n📅 **Seasonal farming calendar**\n\n🌐 **Multilingual Support**: I can understand and respond in:\n- हिंदी (Hindi)\n- தமிழ் (Tamil)\n- తెలుగు (Telugu)\n- ਪੰਜਾਬੀ (Punjabi)\n- বাংলা (Bengali)\n- मराठी (Marathi)\n- ગુજરાતી (Gujarati)\n- ಕನ್ನಡ (Kannada)\n- മലയാളം (Malayalam)\n- English\n\nJust ask me anything about farming in your preferred language, and I'll provide detailed, region-specific advice!\n\n*Type your question below to get started...*",
+    "quick_actions": {
+      "crop_selection": "🌱 Crop Selection",
+      "soil_health": "🌱 Soil Health", 
+      "pest_control": "🐛 Pest Control",
+      "fertilizer": "🧪 Fertilizer",
+      "irrigation": "💧 Irrigation",
+      "weather": "🌤️ Weather"
+    },
+    "voice": {
+      "enable": "Enable Voice",
+      "disable": "Disable Voice",
+      "start_recording": "Start Voice Input",
+      "stop_recording": "Stop Recording",
+      "voice_input": "Voice Input",
+      "language_detected": "Language detected",
+      "confidence": "Confidence",
+      "accuracy": "Accuracy"
+    }
+  },
+  "voice_input": {
+    "title": "Voice Input for Annapurna",
+    "language_select": "Select Language:",
+    "start_recording": "Start Voice Input",
+    "stop_recording": "Stop Recording",
+    "clear": "Clear",
+    "listening": "Listening... Speak now!",
+    "transcript": "Voice Transcript:",
+    "not_supported": "Voice Input Not Supported",
+    "not_supported_message": "Your browser doesn't support voice recognition.",
+    "browser_suggestion": "Please use Chrome, Edge, or Safari for voice input.",
+    "tips": {
+      "title": "Tips for better recognition:",
+      "speak_clearly": "Speak clearly and at normal pace",
+      "use_farming_terms": "Use farming terms in your selected language", 
+      "minimize_noise": "Minimize background noise",
+      "hold_close": "Hold device close to your mouth",
+      "pause_sentences": "Pause between sentences"
+    },
+    "examples": {
+      "title": "Try saying:",
+      "rice_cultivation": "How to grow rice in monsoon?",
+      "pest_control": "Cotton pest control methods",
+      "fertilizer": "Best fertilizer for wheat",
+      "irrigation": "Drip irrigation setup cost"
+    }
+  },
+  "crops": {
+    "title": "Crop Information",
+    "rice": "Rice",
+    "wheat": "Wheat", 
+    "cotton": "Cotton",
+    "sugarcane": "Sugarcane",
+    "maize": "Maize",
+    "tomato": "Tomato",
+    "potato": "Potato",
+    "onion": "Onion",
+    "soybean": "Soybean",
+    "groundnut": "Groundnut",
+    "seasons": {
+      "kharif": "Kharif (Monsoon)",
+      "rabi": "Rabi (Winter)",
+      "zaid": "Zaid (Summer)"
+    }
+  },
+  "weather": {
+    "title": "Weather Information",
+    "current": "Current Weather",
+    "forecast": "Forecast",
+    "temperature": "Temperature",
+    "humidity": "Humidity", 
+    "rainfall": "Rainfall",
+    "wind_speed": "Wind Speed",
+    "pressure": "Pressure",
+    "conditions": {
+      "sunny": "Sunny",
+      "cloudy": "Cloudy",
+      "rainy": "Rainy",
+      "stormy": "Stormy"
+    }
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "location": "Location",
+    "farm_size": "Farm Size (acres)",
+    "crops_grown": "Crops Grown",
+    "experience": "Farming Experience",
+    "language_preference": "Preferred Language",
+    "required_field": "This field is required",
+    "invalid_email": "Please enter a valid email",
+    "invalid_phone": "Please enter a valid phone number",
+    "password_mismatch": "Passwords do not match"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी (Hindi)",
+    "ta": "தமிழ் (Tamil)",
+    "te": "తెలుగు (Telugu)",
+    "bn": "বাংলা (Bengali)",
+    "mr": "मराठी (Marathi)", 
+    "gu": "ગુજરાતી (Gujarati)",
+    "kn": "ಕನ್ನಡ (Kannada)",
+    "ml": "മലയാളം (Malayalam)",
+    "pa": "ਪੰਜਾਬੀ (Punjabi)"
+  },
+  "footer": {
+    "about_agriguru": "About KisanMitra",
+    "about_description": "KisanMitra is an AI-powered platform helping Indian farmers with modern farming techniques, crop guidance, and market insights.",
+    "quick_links": "Quick Links",
+    "contact_info": "Contact Information",
+    "follow_us": "Follow Us",
+    "copyright": "© 2025 KisanMitra. All rights reserved.",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service"
+  },
+  "about": {
+    "title": "About KisanMitra",
+    "description": "KisanMitra is your one-stop solution for all agricultural needs. Our platform connects farmers with experts, providing real-time insights, weather updates, and personalized recommendations to enhance farming practices.",
+    "features_title": "Key Features",
+    "features": {
+      "accuracy": "95% Accuracy Rate in Crop Predictions",
+      "weather_support": "24/7 Weather Support",
+      "expert_guidance": "Expert Guidance for Farmers",
+      "community": "Community Support and Resources"
+    },
+    "services_title": "Our Services",
+    "services": {
+      "crop_analysis": "Crop Analysis and Recommendations",
+      "weather_forecasting": "Weather Forecasting and Alerts",
+      "soil_monitoring": "Soil Health Monitoring",
+      "pest_management": "Pest and Disease Management"
+    },
+    "mission": "Our Mission",
+    "mission_text": "To empower farmers with technology-driven solutions for sustainable and profitable agriculture."
+  },
+  "contact": {
+    "title": "Contact Agricultural Development Officers",
+    "subtitle": "Connect with local ADOs for expert guidance",
+    "loading": "Finding nearby ADOs...",
+    "no_ados": "No ADOs found in your area",
+    "call": "Call",
+    "email": "Email",
+    "location": "Office Location",
+    "specialization": "Specialization",
+    "district": "District"
+  },
+  "government": {
+    "title": "Government Agricultural Schemes",
+    "subtitle": "Explore various government initiatives to support farmers",
+    "eligibility": "Eligibility",
+    "benefits": "Benefits",
+    "apply_now": "Apply Now",
+    "learn_more": "Learn More",
+    "help_title": "Need Help?",
+    "help_description": "Contact your local agricultural office or call our toll-free number:",
+    "toll_free": "1800-180-1551",
+    "schemes": {
+      "pm_kisan": {
+        "title": "PM-KISAN",
+        "description": "Direct income support of ₹6,000 per year to eligible farmer families",
+        "eligibility": "All landholding farmer families with cultivable landholding",
+        "benefits": {
+          "financial_support": "Financial support",
+          "installments": "Three equal installments",
+          "direct_transfer": "Direct bank transfer"
+        }
+      },
+      "fasal_bima": {
+        "title": "Pradhan Mantri Fasal Bima Yojana",
+        "description": "Comprehensive crop insurance scheme to protect farmers against crop failure",
+        "eligibility": "All farmers growing notified crops in notified areas",
+        "benefits": {
+          "crop_protection": "Crop loss protection",
+          "low_premium": "Low premium rates",
+          "quick_settlement": "Quick claim settlement"
+        }
+      },
+      "kisan_credit": {
+        "title": "Kisan Credit Card",
+        "description": "Provides farmers with timely access to credit",
+        "eligibility": "All farmers, sharecroppers, and agricultural laborers",
+        "benefits": {
+          "easy_credit": "Easy credit access",
+          "flexible_repayment": "Flexible repayment",
+          "lower_rates": "Lower interest rates"
+        }
+      },
+      "soil_health": {
+        "title": "Soil Health Card Scheme",
+        "description": "Provides information on soil health and recommended fertilizers",
+        "eligibility": "All farmers across India",
+        "benefits": {
+          "free_testing": "Free soil testing",
+          "fertilizer_recommendations": "Fertilizer recommendations",
+          "improved_yield": "Improved crop yield"
+        }
+      },
+      "pm_sinchai": {
+        "title": "PM Krishi Sinchai Yojana",
+        "description": "Enhances water efficiency through 'Per Drop More Crop' and precision irrigation technologies",
+        "eligibility": "Farmers seeking improved irrigation and water conservation",
+        "benefits": {
+          "micro_irrigation": "Micro-irrigation systems",
+          "water_conservation": "Water conservation infrastructure",
+          "water_efficiency": "Enhanced water use efficiency",
+          "sustainable_practices": "Sustainable agriculture practices"
+        }
+      },
+      "enam": {
+        "title": "National Agricultural Market (eNAM)",
+        "description": "Online trading platform for agricultural commodities to get better price discovery",
+        "eligibility": "Farmers, traders, and buyers registered on eNAM platform",
+        "benefits": {
+          "market_access": "Direct market access",
+          "price_discovery": "Better price discovery",
+          "transparent_auction": "Transparent auction process",
+          "reduced_fees": "Reduced market fees"
+        }
+      }
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "username": "Username",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "full_name": "Full Name",
+    "phone": "Phone Number",
+    "location": "Location",
+    "submit": "Submit",
+    "already_account": "Already have an account?",
+    "no_account": "Don't have an account?",
+    "create_account": "Create Account"
+  },
+  "ecommerce": {
+    "title": "KisanMitra Marketplace",
+    "subtitle": "Quality farming equipment and supplies",
+    "search_placeholder": "Search products...",
+    "categories": {
+      "all": "All Categories",
+      "tractors": "Tractors",
+      "tools": "Tools",
+      "fertilizers": "Fertilizers",
+      "seeds": "Seeds",
+      "irrigation": "Irrigation"
+    },
+    "sort_by": "Sort By",
+    "price": "Price",
+    "rating": "Rating",
+    "add_to_cart": "Add to Cart",
+    "buy_now": "Buy Now",
+    "cart": "Cart",
+    "total": "Total",
+    "checkout": "Checkout"
+  },
+  "messages": {
+    "success": {
+      "data_saved": "Data saved successfully",
+      "profile_updated": "Profile updated successfully",
+      "message_sent": "Message sent successfully"
+    },
+    "error": {
+      "network_error": "Network error. Please check your connection.",
+      "server_error": "Server error. Please try again later.",
+      "validation_error": "Please correct the errors and try again."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and app preferences",
+    "notifications": "Notifications",
+    "preferences": "Preferences", 
+    "privacy": "Privacy & Security",
+    "please_login": "Please Log In",
+    "login_required": "You need to log in to access settings.",
+    "go_to_login": "Go to Login",
+    "whatsapp_alerts": "WhatsApp Alerts",
+    "whatsapp_description": "Configure WhatsApp notifications for weather alerts, crop updates, and market prices.",
+    "app_preferences": "App Preferences",
+    "preferences_description": "Customize your app experience with language, theme, and unit preferences.",
+    "language": "Language",
+    "language_description": "Choose your preferred language for the app interface.",
+    "theme": "Theme",
+    "theme_description": "Select light, dark, or auto theme based on your device settings.",
+    "light_theme": "Light",
+    "dark_theme": "Dark", 
+    "auto_theme": "Auto",
+    "units": "Units",
+    "units_description": "Choose measurement units for weather, farm size, and other data.",
+    "metric": "Metric (°C, kg, hectares)",
+    "imperial": "Imperial (°F, pounds, acres)",
+    "privacy_security": "Privacy & Security",
+    "privacy_description": "Control your data sharing and privacy settings.",
+    "data_sharing": "Data Sharing",
+    "data_sharing_description": "Allow KisanMitra to use your data to improve recommendations.",
+    "location_services": "Location Services",
+    "location_description": "Enable location access for weather and local market data.",
+    "analytics": "Analytics",
+    "analytics_description": "Help improve KisanMitra by sharing anonymous usage data.",
+    "danger_zone": "Danger Zone",
+    "danger_description": "These actions cannot be undone. Please proceed with caution.",
+    "delete_account": "Delete Account"
+  }
+}

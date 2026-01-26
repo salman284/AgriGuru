@@ -1,0 +1,185 @@
+/* Service Floating Actions Styles */
+.service-floating-actions {
+  position: fixed;
+  right: 20px;
+  bottom: 200px; /* Position above the marketplace floating actions */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999; /* Lower z-index than marketplace actions */
+  animation: slideInRight 0.3s ease-out;
+}
+
+.service-btn {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.service-btn:hover {
+  transform: translateX(-5px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.service-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #f0f0f0;
+}
+
+.service-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Individual button styles */
+.delivery-btn {
+  border-left: 4px solid #4CAF50;
+}
+
+.delivery-btn:hover {
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+}
+
+.delivery-btn .service-icon {
+  background: #e8f5e8;
+  color: #4CAF50;
+}
+
+.returns-btn {
+  border-left: 4px solid #2196F3;
+}
+
+.returns-btn:hover {
+  background: linear-gradient(135deg, #f8fbff 0%, #e3f2fd 100%);
+}
+
+.returns-btn .service-icon {
+  background: #e3f2fd;
+  color: #2196F3;
+}
+
+.emi-btn {
+  border-left: 4px solid #FF9800;
+}
+
+.emi-btn:hover {
+  background: linear-gradient(135deg, #fffbf0 0%, #ffe0b3 100%);
+}
+
+.emi-btn .service-icon {
+  background: #ffe0b3;
+  color: #FF9800;
+}
+
+.support-btn {
+  border-left: 4px solid #E91E63;
+}
+
+.support-btn:hover {
+  background: linear-gradient(135deg, #fef7f9 0%, #fce4ec 100%);
+}
+
+.support-btn .service-icon {
+  background: #fce4ec;
+  color: #E91E63;
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .service-floating-actions {
+    right: 10px;
+    bottom: 180px; /* Adjust for mobile */
+    gap: 8px;
+  }
+  
+  .service-btn {
+    min-width: 120px;
+    padding: 10px 12px;
+  }
+  
+  .service-text {
+    font-size: 12px;
+  }
+  
+  .service-icon {
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-floating-actions {
+    right: 5px;
+    bottom: 160px; /* Further adjust for small screens */
+    gap: 6px;
+  }
+  
+  .service-btn {
+    min-width: 100px;
+    padding: 8px 10px;
+  }
+  
+  .service-text {
+    font-size: 11px;
+  }
+}
+
+/* Accessibility */
+.service-btn:focus {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-btn {
+    transition: none;
+  }
+  
+  .service-floating-actions {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .service-btn {
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+  }
+  
+  .service-icon {
+    background: #000;
+    color: #fff;
+  }
+}

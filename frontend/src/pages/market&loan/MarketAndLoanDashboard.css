@@ -1,0 +1,138 @@
+/* Enhanced Loan Dashboard Styles */
+.loan-header h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.loan-header p {
+  color: #555;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.loan-header {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.loan-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 20px;
+}
+
+.loan-card {
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(44,62,80,0.10);
+  padding: 28px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-left: 6px solid #2196F3;
+}
+.loan-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(33,203,243,0.18);
+}
+.loan-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  width: 100%;
+  justify-content: flex-start;
+}
+.loan-icon {
+  font-size: 2.2rem;
+  margin-right: 16px;
+  background: linear-gradient(135deg, #2196F3, #21CBF3);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(33,203,243,0.15);
+}
+.loan-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+.loan-details {
+  width: 100%;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.loan-detail {
+  font-size: 1rem;
+  color: #1976D2;
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(33,203,243,0.07);
+}
+.loan-link {
+  background: linear-gradient(135deg, #2196F3, #21CBF3);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(33,203,243,0.10);
+  transition: background 0.3s, transform 0.3s;
+  display: inline-block;
+}
+.loan-link:hover {
+  background: linear-gradient(135deg, #1976D2, #2196F3);
+  transform: translateY(-2px) scale(1.05);
+}
+.loan-disclaimer {
+  margin-top: 30px;
+  text-align: center;
+}
+.loan-disclaimer p {
+  color: #888;
+  font-size: 0.98rem;
+}
+/* Combined Market and Loan Dashboard Styles */
+
+.market-and-loan-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .market-and-loan-dashboard {
+    padding: 10px;
+  }
+
+  .loan-list {
+    grid-template-columns: 1fr;
+  }
+}

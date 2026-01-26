@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" rx="12" fill="white"/>
+<circle cx="24" cy="24" r="16" fill="#00baf2"/>
+<path d="M18 18H30V22H18V18Z" fill="white"/>
+<path d="M18 24H26V28H18V24Z" fill="white"/>
+<circle cx="28" cy="26" r="2" fill="white"/>
+<text x="24" y="35" text-anchor="middle" fill="white" font-size="6" font-weight="bold">Paytm</text>
+</svg>

@@ -1,0 +1,283 @@
+.whatsapp-settings {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.whatsapp-settings h2 {
+  color: #2e7d32;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.number-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.number-input-container input {
+  flex-grow: 1;
+}
+
+.input-with-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-with-button input {
+  flex-grow: 1;
+}
+
+.change-number-button {
+  background-color: #757575;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.change-number-button:hover {
+  background-color: #616161;
+}
+
+.help-text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0;
+  margin-right: 10px;
+  min-width: 150px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+.alert-description {
+  font-size: 13px;
+  color: #666;
+  margin-left: 28px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 8px;
+}
+
+.alert-preferences {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f0f7ed;
+  border-radius: 4px;
+}
+
+.alert-preferences h3 {
+  color: #2e7d32;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.alert-preferences h4 {
+  color: #2e7d32;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.preferences-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #d7e7d8;
+}
+
+.preferences-section:last-child {
+  border-bottom: none;
+}
+
+.save-button, .verify-button, .resend-button, .test-alert-button {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover, .verify-button:hover, .test-alert-button:hover {
+  background-color: #1b5e20;
+}
+
+.save-button:disabled, .verify-button:disabled, .test-alert-button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+.resend-button {
+  background-color: #757575;
+  margin-left: 10px;
+}
+
+.resend-button:hover {
+  background-color: #616161;
+}
+
+.test-alert-button {
+  background-color: #ff9800;
+  margin-bottom: 10px;
+}
+
+.test-alert-button:hover {
+  background-color: #ef6c00;
+}
+
+.test-alert-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.verification-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+  border: 1px dashed #81c784;
+}
+
+.verification-code-section {
+  text-align: center;
+}
+
+.verification-code-section input {
+  width: 120px;
+  font-size: 24px;
+  padding: 10px;
+  text-align: center;
+  letter-spacing: 0.5em;
+  margin: 10px 0;
+}
+
+.verified-text {
+  color: #4caf50;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.verification-note {
+  color: #e57373;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success-note {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.success-message {
+  padding: 10px;
+  background-color: #dff0d8;
+  border: 1px solid #d6e9c6;
+  color: #3c763d;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  padding: 10px;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  color: #a94442;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.whatsapp-info {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+}
+
+.whatsapp-info h3 {
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+.whatsapp-info ul {
+  padding-left: 20px;
+}
+
+.whatsapp-info li {
+  margin-bottom: 8px;
+}
+
+.privacy-note {
+  font-style: italic;
+  color: #555;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.note {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  font-size: 14px;
+}
