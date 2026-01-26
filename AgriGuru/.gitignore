@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+AgriGuru/node_modules
+venv
+=======
 # Python Virtual Environments
 venv/
 ENV/
@@ -66,3 +70,4 @@ venv.bak/
 # Vercel
 .vercel
 backend/.env
+>>>>>>> 93a902d6102892b6762798991b2ebd7c52400ae9
