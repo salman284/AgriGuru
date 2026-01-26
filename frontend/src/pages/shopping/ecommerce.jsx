@@ -23,6 +23,78 @@ const Ecommerce = () => {
 
   // Sample farming equipment data
   const products = [
+    // Farmer Fresh Products
+    {
+      id: 101,
+      name: 'Fresh Organic Tomatoes',
+      category: 'farmer-products',
+      price: 40,
+      originalPrice: 50,
+      image: `${process.env.PUBLIC_URL}/images/products/tomatoes.jpg`,
+      rating: 4.8,
+      reviews: 45,
+      description: 'Farm fresh organic tomatoes - 1kg',
+      specifications: ['Organic', 'Pesticide-Free', 'Fresh Harvest', 'Direct from Farm'],
+      features: [
+        'Harvested this morning',
+        'No chemical pesticides used',
+        'Grown with organic fertilizers',
+        'Direct from local farmers'
+      ],
+      inStock: true,
+      brand: 'Ramesh Farm',
+      farmerProduct: true,
+      location: 'Pune, Maharashtra'
+    },
+    {
+      id: 102,
+      name: 'Fresh Spinach Bundle',
+      category: 'farmer-products',
+      price: 20,
+      originalPrice: 25,
+      image: `${process.env.PUBLIC_URL}/images/products/spinach.jpg`,
+      rating: 4.7,
+      reviews: 32,
+      description: 'Fresh green spinach - 500g bundle',
+      specifications: ['Fresh', 'Pesticide-Free', 'Green & Healthy', 'Locally Grown'],
+      inStock: true,
+      brand: 'Sunita Farm',
+      farmerProduct: true,
+      location: 'Nashik, Maharashtra'
+    },
+    {
+      id: 103,
+      name: 'Organic Basmati Rice',
+      category: 'farmer-products',
+      price: 120,
+      originalPrice: 150,
+      image: `${process.env.PUBLIC_URL}/images/products/rice-bag.jpg`,
+      rating: 4.9,
+      reviews: 67,
+      description: 'Premium organic basmati rice - 5kg',
+      specifications: ['Organic Certified', 'Long Grain', 'Aromatic', 'Traditional Variety'],
+      inStock: true,
+      brand: 'Punjab Farms Co-op',
+      farmerProduct: true,
+      location: 'Amritsar, Punjab'
+    },
+    {
+      id: 104,
+      name: 'Farm Fresh Eggs (30 pcs)',
+      category: 'farmer-products',
+      price: 180,
+      originalPrice: 210,
+      image: `${process.env.PUBLIC_URL}/images/products/eggs.jpg`,
+      rating: 4.8,
+      reviews: 89,
+      description: 'Free-range chicken eggs - 30 pieces',
+      specifications: ['Free-Range', 'Omega-3 Rich', 'Fresh', 'Antibiotic-Free'],
+      inStock: true,
+      brand: 'Poultry Valley Farm',
+      farmerProduct: true,
+      location: 'Hyderabad, Telangana'
+    },
+    
     // Tractors
     {
       id: 1,
@@ -225,6 +297,7 @@ const Ecommerce = () => {
 
   const categories = [
     { id: 'all', name: 'All Products', icon: '🏪' },
+    { id: 'farmer-products', name: 'Fresh From Farmers', icon: '🌾' },
     { id: 'tractors', name: 'Tractors', icon: '🚜' },
     { id: 'fertilizers', name: 'Fertilizers', icon: '🧪' },
     { id: 'seeds', name: 'Seeds', icon: '🌱' },
@@ -261,6 +334,19 @@ const Ecommerce = () => {
         <div className="header-content">
           <h1>🌾 KisanMitra Marketplace</h1>
           <p>Your one-stop shop for all farming equipment and supplies</p>
+          
+          {/* Sell Products Banner */}
+          <div className="sell-banner">
+            <div className="sell-banner-content">
+              <div className="sell-banner-text">
+                <h3>🌾 Are you a Farmer?</h3>
+                <p>Sell your fresh produce directly to buyers and get the best prices!</p>
+              </div>
+              <Link to="/sell-products" className="sell-products-btn">
+                <span>📦</span> Sell Your Products
+              </Link>
+            </div>
+          </div>
           
           {/* Search and Filters */}
           <div className="search-filter-section">
@@ -346,6 +432,11 @@ const Ecommerce = () => {
               <div key={product.id} className="product-card">
                 <div className="product-image">
                   <img src={product.image} alt={product.name} />
+                  {product.farmerProduct && (
+                    <div className="farmer-badge">
+                      🌾 Direct from Farmer
+                    </div>
+                  )}
                   {getDiscount(product.originalPrice, product.price) > 0 && (
                     <div className="discount-badge">
                       {getDiscount(product.originalPrice, product.price)}% OFF
@@ -363,6 +454,9 @@ const Ecommerce = () => {
 
                 <div className="product-info">
                   <div className="product-brand">{product.brand}</div>
+                  {product.location && (
+                    <div className="product-location">📍 {product.location}</div>
+                  )}
                   <h3 className="product-name">{product.name}</h3>
                   <p className="product-description">{product.description}</p>
 

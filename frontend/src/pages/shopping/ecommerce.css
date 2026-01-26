@@ -44,6 +44,75 @@
   color: #07051d;
 }
 
+/* Sell Products Banner */
+.sell-banner {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  margin: 2rem auto 1.5rem;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  max-width: 900px;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 35px rgba(255, 107, 53, 0.5);
+  }
+}
+
+.sell-banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.sell-banner-text h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sell-banner-text p {
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 400;
+}
+
+.sell-products-btn {
+  background: white;
+  color: #FF6B35;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.sell-products-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: #FFF8F5;
+}
+
+.sell-products-btn span {
+  font-size: 1.3rem;
+}
+
 /* Search and Filter Section */
 .search-filter-section {
   display: flex;
@@ -325,6 +394,27 @@
   color: white;
 }
 
+/* Farmer Products - Fresh Green with Special Styling */
+.category-btn[data-category="farmer-products"] {
+  background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+  border: 2px solid #4CAF50;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.category-btn[data-category="farmer-products"]:hover {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  transform: translateX(4px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.category-btn[data-category="farmer-products"].active {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
 /* Tractors - Orange */
 .category-btn[data-category="tractors"] {
   background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
@@ -530,6 +620,37 @@
   font-weight: bold;
 }
 
+.farmer-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: fadeInBounce 0.5s ease-out;
+}
+
+@keyframes fadeInBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.8);
+  }
+  60% {
+    transform: translateY(2px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .product-overlay {
   position: absolute;
   top: 0;
@@ -575,6 +696,15 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
+}
+
+.product-location {
+  color: #666;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .product-name {
@@ -737,6 +867,31 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .sell-banner {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .sell-banner-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .sell-banner-text h3 {
+    font-size: 1.3rem;
+  }
+
+  .sell-banner-text p {
+    font-size: 0.95rem;
+  }
+
+  .sell-products-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+
   .ecommerce-main {
     grid-template-columns: 1fr;
     gap: 1rem;

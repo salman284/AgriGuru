@@ -18,6 +18,7 @@ import Ecommerce from './pages/shopping/ecommerce.jsx';
 import Cart from './pages/shopping/Cart.jsx';
 import Favorites from './pages/shopping/Favorites.jsx';
 import Checkout from './pages/shopping/Checkout.jsx';
+import SellProducts from './pages/shopping/SellProducts.jsx';
 import MarketPriceDashboard from './pages/market&loan/ml.jsx';
 import AgriContractForm from './pages/agrifarm/agrifarm.jsx';
 import ContractAdmin from './pages/agrifarm/ContractAdmin.jsx';
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <Checkout />
+      },
+      {
+        path: "sell-products",
+        element: <SellProducts />
       },
       {
         path: "agrifarm",
