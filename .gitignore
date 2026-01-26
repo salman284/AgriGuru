@@ -71,3 +71,4 @@ venv.bak/
 .vercel
 backend/.env
 >>>>>>> 93a902d6102892b6762798991b2ebd7c52400ae9
+node_modules
