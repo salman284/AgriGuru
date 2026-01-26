@@ -242,14 +242,15 @@
 }
 
 .analysis-results {
-  background: rgba(229, 224, 224, 0.1);
+  background: linear-gradient(135deg, rgba(255, 87, 34, 0.3) 0%, rgba(244, 67, 54, 0.25) 50%, rgba(211, 47, 47, 0.3) 100%);
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 152, 0, 0.5);
   position: relative;
   z-index: 1;
+  box-shadow: 0 4px 20px rgba(255, 87, 34, 0.3);
 }
 
 .result-header {
@@ -263,9 +264,10 @@
   padding: 8px 16px;
   border-radius: 20px;
   font-weight: bold;
-  font-size: 0.9em;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 1em;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .confidence {
@@ -277,15 +279,17 @@
 }
 
 .confidence-label {
-  font-size: 0.8em;
-  opacity: 0.8;
-  color: #e6e3de;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .confidence-value {
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: bold;
-  color:#e6e3de;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .confidence-value.nutrient-deficiency {
@@ -299,27 +303,37 @@
 }
 
 .description {
-  font-size: 1em;
+  font-size: 1.05em;
   margin-bottom: 15px;
-  line-height: 1.4;
-  opacity: 0.95;
+  line-height: 1.5;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .crop-info {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 235, 59, 0.2) 0%, rgba(255, 193, 7, 0.15) 100%);
   padding: 10px 15px;
   border-radius: 8px;
   margin-bottom: 15px;
-  font-size: 0.9em;
+  font-size: 1em;
+  border: 1px solid rgba(255, 235, 59, 0.3);
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .leaf-analysis {
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(90deg, rgba(255, 152, 0, 0.25) 0%, rgba(255, 193, 7, 0.2) 100%);
   padding: 12px 15px;
   border-radius: 8px;
   margin-bottom: 15px;
-  font-size: 0.9em;
-  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  font-size: 1em;
+  border-left: 4px solid rgba(255, 193, 7, 0.7);
+  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .leaf-details {
@@ -330,11 +344,14 @@
 }
 
 .leaf-status, .leaf-color, .leaf-pattern {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 10px;
   border-radius: 4px;
-  font-size: 0.8em;
+  font-size: 0.9em;
   text-transform: capitalize;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .leaf-disease {
@@ -371,27 +388,29 @@
 
 .leaf-analysis-debug .leaf-details span {
   background: rgba(255, 152, 0, 0.3);
-  color: white;
+  color: rgb(13, 10, 10);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.85em;
 }
 
 .recommendations {
-  background: rgba(255, 0, 0, 0.5) !important; /* Red background for debugging */
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.4) 0%, rgba(255, 152, 0, 0.4) 100%) !important;
   padding: 15px !important;
   border-radius: 10px !important;
   margin-top: 15px !important;
-  border: 2px solid rgba(255, 255, 0, 0.8) !important; /* Yellow border for debugging */
+  border: 2px solid rgba(255, 235, 59, 0.6) !important;
   backdrop-filter: blur(10px) !important;
   min-height: 60px !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4) !important;
 }
 
 .recommendations h4 {
   margin: 0 0 10px 0;
-  font-size: 1em;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.1em;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .recommendations ul {
@@ -400,11 +419,12 @@
 }
 
 .recommendations li {
-  font-size: 0.9em;
+  font-size: 1em;
   margin-bottom: 8px;
-  line-height: 1.5;
-  opacity: 0.95;
-  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
   list-style-type: disc;
 }
 
