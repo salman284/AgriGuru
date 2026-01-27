@@ -43,17 +43,22 @@ CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://loc
 from werkzeug.utils import secure_filename
 import tempfile
 import numpy as np
+
+# Optional torch imports for advanced crop analysis (not required for core functionality)
 try:
-    import torch
-    import torchvision.transforms as transforms
-    from PIL import Image
+    import torch  # type: ignore
+    import torchvision.transforms as transforms  # type: ignore
+    from PIL import Image  # type: ignore
     import requests as py_requests
     # Use torchvision's EfficientNet or ResNet
-    from torchvision import models
+    from torchvision import models  # type: ignore
+    TORCH_AVAILABLE = True
 except ImportError:
     torch = None
     transforms = None
     Image = None
+    TORCH_AVAILABLE = False
+    logger.info("⚠️ PyTorch not installed - advanced image analysis disabled")
 
 # --- Import Real Disease Detection Service ---
 try:
