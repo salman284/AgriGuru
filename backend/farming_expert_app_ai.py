@@ -1658,6 +1658,267 @@ def get_contract_stats():
             'error': 'Internal server error'
         }), 500
 
+# --- Product Management Endpoints (Marketplace) ---
+
+# In-memory storage for products (in production, use MongoDB)
+farmer_products = []
+product_counter = 1000
+
+@app.route('/api/products', methods=['POST'])
+def create_product():
+    """Create a new farmer product listing"""
+    global product_counter
+    
+    try:
+        # Get form data
+        data = request.form.to_dict()
+        
+        # Validate required fields
+        required_fields = [
+            'productName', 'category', 'description', 'price',
+            'quantity', 'unit', 'location', 'phoneNumber', 'farmerId'
+        ]
+        
+        missing_fields = [field for field in required_fields if not data.get(field)]
+        if missing_fields:
+            return jsonify({
+                'success': False,
+                'error': f'Missing required fields: {", ".join(missing_fields)}'
+            }), 400
+        
+        # Handle file upload
+        image_path = None
+        if 'productImage' in request.files:
+            file = request.files['productImage']
+            if file.filename:
+                filename = secure_filename(file.filename)
+                # Create uploads directory if it doesn't exist
+                upload_dir = os.path.join(os.path.dirname(__file__), 'uploads', 'products')
+                os.makedirs(upload_dir, exist_ok=True)
+                
+                # Save file
+                image_path = os.path.join(upload_dir, f"{product_counter}_{filename}")
+                file.save(image_path)
+                logger.info(f"📷 Product image saved: {image_path}")
+        
+        # Create product
+        product_id = f"PRD{product_counter:04d}"
+        product_counter += 1
+        
+        product = {
+            'id': product_id,
+            'productName': data.get('productName'),
+            'category': data.get('category'),
+            'description': data.get('description'),
+            'price': float(data.get('price')),
+            'quantity': float(data.get('quantity')),
+            'unit': data.get('unit'),
+            'location': data.get('location'),
+            'phoneNumber': data.get('phoneNumber'),
+            'farmerId': data.get('farmerId'),
+            'farmerName': data.get('farmerName', 'Unknown Farmer'),
+            'productImage': image_path if image_path else None,
+            'organicCertified': data.get('organicCertified', 'false').lower() == 'true',
+            'deliveryAvailable': data.get('deliveryAvailable', 'false').lower() == 'true',
+            'harvestDate': data.get('harvestDate'),
+            'status': 'active',
+            'createdAt': datetime.now().isoformat(),
+            'views': 0,
+            'inquiries': 0
+        }
+        
+        # Store the product
+        farmer_products.append(product)
+        
+        logger.info(f"✅ New product listed: {product_id} - {data.get('productName')} by {data.get('farmerName')}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Product listed successfully!',
+            'productId': product_id,
+            'product': product
+        }), 201
+        
+    except ValueError as e:
+        return jsonify({
+            'success': False,
+            'error': f'Invalid data format: {str(e)}'
+        }), 400
+    except Exception as e:
+        logger.error(f"❌ Error creating product: {str(e)}")
+        traceback.print_exc()
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error. Please try again later.'
+        }), 500
+
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    """Get all products with optional filters"""
+    try:
+        # Get query parameters
+        category = request.args.get('category')
+        farmer_id = request.args.get('farmerId')
+        search = request.args.get('search', '').lower()
+        status = request.args.get('status', 'active')
+        
+        # Filter products
+        filtered_products = farmer_products
+        
+        if category and category != 'all':
+            filtered_products = [p for p in filtered_products if p['category'] == category]
+        
+        if farmer_id:
+            filtered_products = [p for p in filtered_products if p['farmerId'] == farmer_id]
+        
+        if search:
+            filtered_products = [
+                p for p in filtered_products 
+                if search in p['productName'].lower() or search in p['description'].lower()
+            ]
+        
+        if status:
+            filtered_products = [p for p in filtered_products if p['status'] == status]
+        
+        return jsonify({
+            'success': True,
+            'products': filtered_products,
+            'total': len(filtered_products)
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error fetching products: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/products/<product_id>', methods=['GET'])
+def get_product(product_id):
+    """Get specific product by ID"""
+    try:
+        product = next(
+            (p for p in farmer_products if p['id'] == product_id),
+            None
+        )
+        
+        if not product:
+            return jsonify({
+                'success': False,
+                'error': 'Product not found'
+            }), 404
+        
+        # Increment view count
+        product['views'] += 1
+        
+        return jsonify({
+            'success': True,
+            'product': product
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error fetching product {product_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/products/<product_id>', methods=['PUT'])
+def update_product(product_id):
+    """Update product (farmer only)"""
+    try:
+        data = request.get_json()
+        
+        product = next(
+            (p for p in farmer_products if p['id'] == product_id),
+            None
+        )
+        
+        if not product:
+            return jsonify({
+                'success': False,
+                'error': 'Product not found'
+            }), 404
+        
+        # Update fields
+        updateable_fields = [
+            'productName', 'description', 'price', 'quantity',
+            'organicCertified', 'deliveryAvailable', 'status'
+        ]
+        
+        for field in updateable_fields:
+            if field in data:
+                product[field] = data[field]
+        
+        product['updatedAt'] = datetime.now().isoformat()
+        
+        logger.info(f"📝 Product updated: {product_id}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Product updated successfully',
+            'product': product
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error updating product {product_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/products/<product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    """Delete product (farmer only)"""
+    try:
+        global farmer_products
+        
+        product = next(
+            (p for p in farmer_products if p['id'] == product_id),
+            None
+        )
+        
+        if not product:
+            return jsonify({
+                'success': False,
+                'error': 'Product not found'
+            }), 404
+        
+        farmer_products = [p for p in farmer_products if p['id'] != product_id]
+        
+        logger.info(f"🗑️ Product deleted: {product_id}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Product deleted successfully'
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error deleting product {product_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
+@app.route('/api/products/farmer/<farmer_id>', methods=['GET'])
+def get_farmer_products(farmer_id):
+    """Get all products by specific farmer"""
+    try:
+        products = [p for p in farmer_products if p['farmerId'] == farmer_id]
+        
+        return jsonify({
+            'success': True,
+            'products': products,
+            'total': len(products)
+        })
+        
+    except Exception as e:
+        logger.error(f"❌ Error fetching farmer products {farmer_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""
@@ -1719,6 +1980,12 @@ if __name__ == '__main__':
     print("   📋 Contract Applications (GET): /api/contract-farming/applications")
     print("   🔢 Contract Calculator (POST): /api/contract-farming/calculate")
     print("   📊 Contract Stats (GET): /api/contract-farming/stats")
+    print("   🛒 Create Product (POST): /api/products")
+    print("   📦 Get Products (GET): /api/products")
+    print("   🔍 Get Product by ID (GET): /api/products/<id>")
+    print("   ✏️ Update Product (PUT): /api/products/<id>")
+    print("   🗑️ Delete Product (DELETE): /api/products/<id>")
+    print("   👨‍🌾 Farmer Products (GET): /api/products/farmer/<id>")
     print("=" * 60)
     if disease_service_available:
         print("🎉 REAL DISEASE DETECTION ACTIVE with your trained CNN model!")

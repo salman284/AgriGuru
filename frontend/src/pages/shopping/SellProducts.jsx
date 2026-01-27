@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './SellProducts.css';
 
 const SellProducts = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     productName: '',
     category: 'vegetables',
@@ -21,6 +23,8 @@ const SellProducts = () => {
 
   const [previewImage, setPreviewImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const categories = [
     { value: 'vegetables', label: '🥬 Vegetables', icon: '🥬' },
@@ -70,20 +74,58 @@ const SellProducts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
     
-    // Here you would typically send the data to your backend
-    console.log('Product submission:', formData);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setSubmitted(true);
-    
-    // Reset form after 3 seconds and redirect
-    setTimeout(() => {
-      setSubmitted(false);
-      navigate('/marketplace');
-    }, 3000);
+    try {
+      // Create FormData for file upload
+      const submitData = new FormData();
+      submitData.append('productName', formData.productName);
+      submitData.append('category', formData.category);
+      submitData.append('description', formData.description);
+      submitData.append('price', formData.price);
+      submitData.append('quantity', formData.quantity);
+      submitData.append('unit', formData.unit);
+      submitData.append('location', formData.location);
+      submitData.append('phoneNumber', formData.phoneNumber);
+      submitData.append('organicCertified', formData.organicCertified);
+      submitData.append('deliveryAvailable', formData.deliveryAvailable);
+      submitData.append('harvestDate', formData.harvestDate);
+      submitData.append('farmerId', user?.id || user?.email || 'unknown');
+      submitData.append('farmerName', user?.full_name || user?.name || 'Unknown Farmer');
+      
+      if (formData.productImage) {
+        submitData.append('productImage', formData.productImage);
+      }
+      
+      // Send to backend
+      const response = await fetch('http://localhost:5000/api/products', {
+        method: 'POST',
+        body: submitData,
+        credentials: 'include'
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('✅ Product created:', data.product);
+        setSubmitted(true);
+        
+        // Reset form and redirect after 3 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          navigate('/marketplace');
+        }, 3000);
+      } else {
+        setError(data.error || 'Failed to list product');
+        setIsSubmitting(false);
+      }
+      
+    } catch (error) {
+      console.error('❌ Error submitting product:', error);
+      setError('Error connecting to server. Please make sure backend is running.');
+      setIsSubmitting(false);
+    }
   };
 
   const calculateEstimatedEarnings = () => {
@@ -138,6 +180,26 @@ const SellProducts = () => {
                 <h3>Product Listed Successfully!</h3>
                 <p>Your product has been added to the marketplace. Redirecting...</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="error-banner" style={{
+            background: '#fee',
+            border: '1px solid #fcc',
+            borderRadius: '8px',
+            padding: '15px 20px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            <span style={{ fontSize: '24px' }}>❌</span>
+            <div>
+              <h3 style={{ margin: 0, color: '#c00' }}>Error</h3>
+              <p style={{ margin: '5px 0 0 0' }}>{error}</p>
             </div>
           </div>
         )}
@@ -394,11 +456,12 @@ const SellProducts = () => {
                 type="button"
                 className="btn-secondary"
                 onClick={() => navigate('/marketplace')}
+                disabled={isSubmitting}
               >
                 Cancel
               </button>
-              <button type="submit" className="btn-primary">
-                📤 List Product for Sale
+              <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? '⏳ Listing Product...' : '📤 List Product for Sale'}
               </button>
             </div>
           </form>

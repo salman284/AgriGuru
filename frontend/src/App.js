@@ -26,6 +26,8 @@ import KhetiSaath from './pages/khetisaath/KhetiSaath.jsx';
 import KhetiSaathFavorites from './pages/khetisaath/KhetiSaathFavorites.jsx';
 import Navbar from './components/Navbar/Navbar';
 import FloatingActions from './components/FloatingActions/FloatingActions';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import RoleRoute from './components/RoleRoute/RoleRoute';
 import './i18n/i18n'; // Initialize i18n
 
 // Layout component that includes Navbar and FloatingActions
@@ -55,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <Dash />
+        element: <RoleRoute allowedRoles={['farmer']}><Dash /></RoleRoute>
       },
       {
         path: "market-prices",
@@ -67,35 +69,35 @@ const router = createBrowserRouter([
       },
       {
         path: "cart",
-        element: <Cart />
+        element: <ProtectedRoute><Cart /></ProtectedRoute>
       },
       {
         path: "favorites",
-        element: <Favorites />
+        element: <ProtectedRoute><Favorites /></ProtectedRoute>
       },
       {
         path: "checkout",
-        element: <Checkout />
+        element: <ProtectedRoute><Checkout /></ProtectedRoute>
       },
       {
         path: "sell-products",
-        element: <SellProducts />
+        element: <RoleRoute allowedRoles={['farmer']}><SellProducts /></RoleRoute>
       },
       {
         path: "agrifarm",
-        element: <AgriContractForm />
+        element: <RoleRoute allowedRoles={['farmer']}><AgriContractForm /></RoleRoute>
       },
       {
         path: "contract-admin",
-        element: <ContractAdmin />
+        element: <RoleRoute allowedRoles={['farmer']}><ContractAdmin /></RoleRoute>
       },
       {
         path: "kheti-saath",
-        element: <KhetiSaath />
+        element: <RoleRoute allowedRoles={['farmer']}><KhetiSaath /></RoleRoute>
       },
       {
         path: "kheti-saath/favorites",
-        element: <KhetiSaathFavorites />
+        element: <RoleRoute allowedRoles={['farmer']}><KhetiSaathFavorites /></RoleRoute>
       },
       {
         path: "about",
@@ -103,7 +105,7 @@ const router = createBrowserRouter([
       },
       {
         path: "government-schemes",
-        element: <GovtSchemes />
+        element: <RoleRoute allowedRoles={['farmer']}><GovtSchemes /></RoleRoute>
       },
       {
         path: "login",
@@ -119,15 +121,15 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />
+        element: <ProtectedRoute><Profile /></ProtectedRoute>
       },
       {
         path: "settings",
-        element: <Settings />
+        element: <ProtectedRoute><Settings /></ProtectedRoute>
       },
       {
         path: "contacts",
-        element: <ADOFinder />
+        element: <RoleRoute allowedRoles={['farmer']}><ADOFinder /></RoleRoute>
       },
       {
         path: "*",

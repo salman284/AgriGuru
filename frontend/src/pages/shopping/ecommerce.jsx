@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import QuickView from '../../components/QuickView/QuickView';
 import './ecommerce.css';
 
 const Ecommerce = () => {
+  const { user } = useAuth();
   const { 
     addToCart, 
     toggleFavorite, 
@@ -20,81 +22,63 @@ const Ecommerce = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Sample farming equipment data
-  const products = [
-    // Farmer Fresh Products
-    {
-      id: 101,
-      name: 'Fresh Organic Tomatoes',
-      category: 'farmer-products',
-      price: 40,
-      originalPrice: 50,
-      image: `${process.env.PUBLIC_URL}/images/products/tomatoes.jpg`,
-      rating: 4.8,
-      reviews: 45,
-      description: 'Farm fresh organic tomatoes - 1kg',
-      specifications: ['Organic', 'Pesticide-Free', 'Fresh Harvest', 'Direct from Farm'],
-      features: [
-        'Harvested this morning',
-        'No chemical pesticides used',
-        'Grown with organic fertilizers',
-        'Direct from local farmers'
-      ],
-      inStock: true,
-      brand: 'Ramesh Farm',
-      farmerProduct: true,
-      location: 'Pune, Maharashtra'
-    },
-    {
-      id: 102,
-      name: 'Fresh Spinach Bundle',
-      category: 'farmer-products',
-      price: 20,
-      originalPrice: 25,
-      image: `${process.env.PUBLIC_URL}/images/products/spinach.jpg`,
-      rating: 4.7,
-      reviews: 32,
-      description: 'Fresh green spinach - 500g bundle',
-      specifications: ['Fresh', 'Pesticide-Free', 'Green & Healthy', 'Locally Grown'],
-      inStock: true,
-      brand: 'Sunita Farm',
-      farmerProduct: true,
-      location: 'Nashik, Maharashtra'
-    },
-    {
-      id: 103,
-      name: 'Organic Basmati Rice',
-      category: 'farmer-products',
-      price: 120,
-      originalPrice: 150,
-      image: `${process.env.PUBLIC_URL}/images/products/rice-bag.jpg`,
-      rating: 4.9,
-      reviews: 67,
-      description: 'Premium organic basmati rice - 5kg',
-      specifications: ['Organic Certified', 'Long Grain', 'Aromatic', 'Traditional Variety'],
-      inStock: true,
-      brand: 'Punjab Farms Co-op',
-      farmerProduct: true,
-      location: 'Amritsar, Punjab'
-    },
-    {
-      id: 104,
-      name: 'Farm Fresh Eggs (30 pcs)',
-      category: 'farmer-products',
-      price: 180,
-      originalPrice: 210,
-      image: `${process.env.PUBLIC_URL}/images/products/eggs.jpg`,
-      rating: 4.8,
-      reviews: 89,
-      description: 'Free-range chicken eggs - 30 pieces',
-      specifications: ['Free-Range', 'Omega-3 Rich', 'Fresh', 'Antibiotic-Free'],
-      inStock: true,
-      brand: 'Poultry Valley Farm',
-      farmerProduct: true,
-      location: 'Hyderabad, Telangana'
-    },
-    
+  // Fetch farmer products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/products', {
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Transform backend products to match frontend format
+          const transformedProducts = data.products.map(p => ({
+            id: p.id,
+            name: p.productName,
+            category: 'farmer-products',
+            price: p.price,
+            originalPrice: p.price * 1.2, // 20% markup for display
+            image: p.productImage || `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+            rating: 4.5,
+            reviews: p.views || 0,
+            description: p.description,
+            specifications: [
+              p.organicCertified ? 'Organic Certified' : 'Farm Fresh',
+              p.deliveryAvailable ? 'Delivery Available' : 'Pickup Only',
+              `${p.quantity} ${p.unit} available`,
+              p.location
+            ],
+            inStock: p.status === 'active',
+            brand: p.farmerName,
+            farmerProduct: true,
+            location: p.location,
+            phoneNumber: p.phoneNumber
+          }));
+          
+          setProducts(transformedProducts);
+        } else {
+          setError(data.error || 'Failed to load products');
+        }
+      } catch (err) {
+        console.error('❌ Error fetching products:', err);
+        setError('Failed to connect to server');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Equipment products (Tractors, Tools, Fertilizers, etc.) - Not farmer listings
+  const equipmentProducts = [
     // Tractors
     {
       id: 1,
@@ -295,7 +279,17 @@ const Ecommerce = () => {
     }
   ];
 
-  const categories = [
+  // Filter products based on user type
+  const userType = user?.userType || 'customer';
+  const isCustomer = userType === 'customer';
+  
+  // Customers only see farmer products, farmers see everything
+  const allProducts = isCustomer 
+    ? products  // Only farmer-listed products for customers
+    : [...products, ...equipmentProducts];  // All products for farmers
+
+  // Filter categories based on user type
+  const allCategories = [
     { id: 'all', name: 'All Products', icon: '🏪' },
     { id: 'farmer-products', name: 'Fresh From Farmers', icon: '🌾' },
     { id: 'tractors', name: 'Tractors', icon: '🚜' },
@@ -304,9 +298,14 @@ const Ecommerce = () => {
     { id: 'tools', name: 'Tools', icon: '🔧' },
     { id: 'irrigation', name: 'Irrigation', icon: '💧' }
   ];
+  
+  // Customers only see farmer-products category
+  const categories = isCustomer 
+    ? allCategories.filter(cat => cat.id === 'all' || cat.id === 'farmer-products')
+    : allCategories;
 
   // Filter and sort products
-  const filteredProducts = products
+  const filteredProducts = allProducts
     .filter(product => {
       const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -326,6 +325,17 @@ const Ecommerce = () => {
       }
     });
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="ecommerce-container">
+        <div style={{ textAlign: 'center', padding: '50px', fontSize: '1.2rem' }}>
+          <p>⏳ Loading marketplace products...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
     <div className="ecommerce-container">
@@ -334,6 +344,26 @@ const Ecommerce = () => {
         <div className="header-content">
           <h1>🌾 KisanMitra Marketplace</h1>
           <p>Your one-stop shop for all farming equipment and supplies</p>
+          
+          {/* Error Message */}
+          {error && (
+            <div style={{
+              background: '#fee',
+              border: '1px solid #fcc',
+              borderRadius: '8px',
+              padding: '15px 20px',
+              marginTop: '15px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}>
+              <span style={{ fontSize: '24px' }}>⚠️</span>
+              <div>
+                <h3 style={{ margin: 0, color: '#c00' }}>Error Loading Products</h3>
+                <p style={{ margin: '5px 0 0 0' }}>{error}</p>
+              </div>
+            </div>
+          )}
           
           {/* Sell Products Banner */}
           <div className="sell-banner">
