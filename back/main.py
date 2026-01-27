@@ -11,7 +11,6 @@ import smtplib
 import random
 import string
 import os
-import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from bson.objectid import ObjectId
@@ -105,12 +104,11 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agri
 
 # Connect to MongoDB with optional connection (won't crash if MongoDB is unavailable)
 try:
+    import ssl
     client = MongoClient(
-        app.config['MONGO_URI'], 
-        tls=True, 
-        tlsCAFile=certifi.where(), 
-        tlsAllowInvalidCertificates=True,
-        serverSelectionTimeoutMS=5000  # 5 second timeout
+        app.config['MONGO_URI'],
+        serverSelectionTimeoutMS=5000,  # 5 second timeout
+        tlsAllowInvalidCertificates=True
     )
     # Test the connection
     client.server_info()
@@ -287,6 +285,7 @@ def hello_world():
 
 
 @app.route('/api/signup', methods=['POST'])
+@require_database
 def signup():
     """User registration endpoint"""
     try:
@@ -350,7 +349,6 @@ def signup():
     except Exception as e:
         return jsonify({"success": False, "message": f"Registration failed: {str(e)}"}), 500
 
-@app.route('/api/send-otp', methods=['POST'])
 @app.route('/api/send-otp', methods=['POST'])
 @require_database
 def send_otp():

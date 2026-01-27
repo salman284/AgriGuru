@@ -27,12 +27,37 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate password match
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords don't match!");
       return;
     }
 
+    // Validate password strength
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long!");
+      return;
+    }
+    
+    if (!/[A-Z]/.test(formData.password)) {
+      alert("Password must contain at least one uppercase letter!");
+      return;
+    }
+    
+    if (!/[a-z]/.test(formData.password)) {
+      alert("Password must contain at least one lowercase letter!");
+      return;
+    }
+    
+    if (!/[0-9]/.test(formData.password)) {
+      alert("Password must contain at least one number!");
+      return;
+    }
+
     try {
+      console.log('Attempting signup with:', { email: formData.email, fullName: formData.fullName });
+      
       const result = await signup(
         formData.email,
         formData.password,
@@ -40,6 +65,8 @@ const SignUp = () => {
         formData.phone,
         userType
       );
+      
+      console.log('Signup result:', result);
       
       if (result.success) {
         const successMsg = userType === 'farmer' ? '✅ Welcome, Farmer! Your account has been created.' : `✅ ${result.message}`;
@@ -49,8 +76,8 @@ const SignUp = () => {
         alert(`❌ Registration failed: ${result.message}`);
       }
     } catch (error) {
-      alert('❌ Error connecting to the server');
-      console.error(error);
+      alert('❌ Error connecting to the server. Make sure backend is running on http://localhost:5001');
+      console.error('Signup error:', error);
     }
   };
 
@@ -140,7 +167,11 @@ const SignUp = () => {
             onChange={handleChange}
             required
             placeholder="Create a password"
+            minLength="8"
           />
+          <small style={{color: '#666', fontSize: '12px'}}>
+            Must be 8+ characters with uppercase, lowercase & number
+          </small>
         </div>
 
         <div className="input-group">
