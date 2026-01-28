@@ -1,14 +1,9 @@
 Flask==3.0.0
 Flask-CORS==4.0.0
-torch==2.5.1
-torchvision==0.20.1
---extra-index-url https://download.pytorch.org/whl/cpu
 Pillow>=10.2.0
 requests>=2.31.0
 python-dotenv>=1.0.0
 geocoder>=1.38.1
-transformers>=4.35.2
-accelerate>=0.24.1
 gunicorn
 # EfficientNet and PlantDisease training dependencies
 tensorflow>=2.16.0
