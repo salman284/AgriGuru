@@ -99,7 +99,8 @@ const SellProducts = () => {
       }
       
       // Send to backend
-      const response = await fetch('http://localhost:5000/api/products', {
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/products`, {
         method: 'POST',
         body: submitData,
         credentials: 'include'

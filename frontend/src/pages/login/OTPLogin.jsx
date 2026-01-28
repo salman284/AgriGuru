@@ -23,7 +23,8 @@ const OTPLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5001/api/send-otp', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/send-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +57,8 @@ const OTPLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5001/api/verify-otp', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/verify-otp`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -105,7 +107,8 @@ const OTPLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5001/api/send-otp', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/send-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

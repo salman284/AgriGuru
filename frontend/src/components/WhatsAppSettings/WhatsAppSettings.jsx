@@ -85,7 +85,8 @@ const WhatsAppSettings = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5001/api/whatsapp/update-preferences', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await axios.post(`${API_URL}/api/whatsapp/update-preferences`, {
         whatsapp_number: whatsappNumber,
         enabled: isEnabled,
         alert_preferences: alertPreferences
@@ -121,7 +122,8 @@ const WhatsAppSettings = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5001/api/whatsapp/verify', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await axios.post(`${API_URL}/api/whatsapp/verify`, {
         whatsapp_number: whatsappNumber
       }, {
         withCredentials: true
@@ -147,7 +149,8 @@ const WhatsAppSettings = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5001/api/whatsapp/confirm', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await axios.post(`${API_URL}/api/whatsapp/confirm`, {
         verification_code: verificationCode
       }, {
         withCredentials: true
@@ -184,7 +187,8 @@ const WhatsAppSettings = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5001/api/test-whatsapp', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await axios.post(`${API_URL}/api/test-whatsapp`, {
         phone_number: whatsappNumber
       }, {
         withCredentials: true

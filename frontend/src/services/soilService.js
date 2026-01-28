@@ -2,13 +2,14 @@ import axios from 'axios';
 
 // For soil data, we'll use multiple APIs for comprehensive information
 const SOIL_API_BASE = 'https://rest.isric.org/soilgrids/v2.0/properties';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
 // const AGRO_API_BASE = 'https://api.agromonitoring.com/agro/1.0'; // For future use
 
 // Get soil information by coordinates
 export const getSoilData = async (lat, lon) => {
   try {
     // Fetch soil data from backend proxy
-    const response = await axios.get(`http://localhost:5000/api/soil-data?lat=${lat}&lon=${lon}`);
+    const response = await axios.get(`${API_BASE_URL.replace('/api', '')}/api/soil-data?lat=${lat}&lon=${lon}`);
     if (response.data && response.data.success && response.data.data) {
       const soilData = response.data.data;
       // If backend returns fallback demo data, use it as mock

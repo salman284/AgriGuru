@@ -15,7 +15,8 @@ const ContractAdmin = () => {
 
   const fetchApplications = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/contract-farming/applications');
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/contract-farming/applications`);
       const result = await response.json();
       
       if (result.success) {
@@ -30,7 +31,8 @@ const ContractAdmin = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/contract-farming/stats');
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/contract-farming/stats`);
       const result = await response.json();
       
       if (result.success) {
@@ -43,7 +45,8 @@ const ContractAdmin = () => {
 
   const updateApplicationStatus = async (contractId, newStatus, remarks = '') => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contract-farming/application/${contractId}/status`, {
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/contract-farming/application/${contractId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
