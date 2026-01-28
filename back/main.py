@@ -89,13 +89,25 @@ def check_crop_health(crop, location):
 
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"], 
+
+# Allow frontend URLs from environment variable or default to localhost
+frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+allowed_origins = [
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000", 
+    "http://localhost:3001", 
+    "http://127.0.0.1:3001",
+    frontend_url,
+    frontend_url.replace('http://', 'https://') if 'http://' in frontend_url else f"https://{frontend_url}"
+]
+
+CORS(app, origins=allowed_origins, 
      supports_credentials=True, 
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 # --- Initialize SocketIO ---
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"], async_mode="threading")
+socketio = SocketIO(app, cors_allowed_origins=allowed_origins, async_mode="threading")
 
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)

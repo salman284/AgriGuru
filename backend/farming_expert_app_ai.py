@@ -37,7 +37,19 @@ logger = logging.getLogger(__name__)
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001", "http://127.0.0.1:3001"])
+
+# Allow frontend URLs from environment variable or default to localhost
+frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+allowed_origins = [
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000", 
+    "http://localhost:3001", 
+    "http://127.0.0.1:3001",
+    frontend_url,
+    frontend_url.replace('http://', 'https://') if 'http://' in frontend_url else f"https://{frontend_url}"
+]
+
+CORS(app, origins=allowed_origins, supports_credentials=True)
 
 # --- Crop Health Analysis Endpoint ---
 from werkzeug.utils import secure_filename
