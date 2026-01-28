@@ -3,6 +3,9 @@ import googleAuthService from '../services/googleAuthService';
 
 const AuthContext = createContext();
 
+// Get API URL from environment variable
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -21,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/check-auth', {
+      const response = await fetch(`${API_URL}/api/check-auth`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.authenticated) {
         // Get full user profile
-        const profileResponse = await fetch('http://localhost:5001/api/profile', {
+        const profileResponse = await fetch(`${API_URL}/api/profile`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
@@ -59,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, userType = 'customer') => {
     try {
-      const response = await fetch('http://localhost:5001/api/login', {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -86,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (email, password, full_name, phone, userType = 'customer') => {
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
+      const response = await fetch(`${API_URL}/api/signup`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -111,7 +114,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch('http://localhost:5001/api/logout', {
+      await fetch(`${API_URL}/api/logout`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -129,7 +132,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
-      const response = await fetch('http://localhost:5001/api/profile', {
+      const response = await fetch(`${API_URL}/api/profile`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -158,7 +161,7 @@ export const AuthProvider = ({ children }) => {
       
       if (result.success && result.authCode) {
         // Send authorization code to backend
-        const response = await fetch('http://localhost:5001/api/google-login', {
+        const response = await fetch(`${API_URL}/api/google-login`, {
           method: 'POST',
           credentials: 'include',
           headers: {
