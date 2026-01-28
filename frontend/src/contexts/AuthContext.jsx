@@ -156,8 +156,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await googleAuthService.signIn();
       
-      if (result.success) {
-        // Send Google user data to backend for verification/registration
+      if (result.success && result.authCode) {
+        // Send authorization code to backend
         const response = await fetch('http://localhost:5001/api/google-login', {
           method: 'POST',
           credentials: 'include',
@@ -165,11 +165,7 @@ export const AuthProvider = ({ children }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            idToken: result.user.idToken,
-            email: result.user.email,
-            name: result.user.name,
-            googleId: result.user.id,
-            imageUrl: result.user.imageUrl
+            authCode: result.authCode
           })
         });
 

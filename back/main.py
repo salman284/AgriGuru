@@ -601,38 +601,81 @@ def logout():
 @app.route('/api/google-login', methods=['POST'])
 @require_database
 def google_login():
-    """Google OAuth login endpoint"""
+    """Google OAuth login endpoint - handles authorization code"""
     try:
         from google.oauth2 import id_token
-        from google.auth.transport import requests
+        from google.auth.transport import requests as google_requests
+        from google_auth_oauthlib.flow import Flow
+        import json
         
         data = request.get_json()
         
-        if not data.get('idToken'):
-            return jsonify({"success": False, "message": "Google ID token is required"}), 400
+        # Get Google Client ID
+        CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+        CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+        if not CLIENT_ID:
+            return jsonify({"success": False, "message": "Google OAuth not configured"}), 500
         
-        # Verify the Google ID token
-        try:
-            # Note: In production, replace with your actual Google client ID
-            CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
-            if not CLIENT_ID:
-                return jsonify({"success": False, "message": "Google OAuth not configured"}), 500
-            
-            # Verify the token
-            idinfo = id_token.verify_oauth2_token(
-                data['idToken'], 
-                requests.Request(), 
-                CLIENT_ID
-            )
-            
-            # Extract user information
-            google_id = idinfo['sub']
-            email = idinfo['email']
-            name = idinfo.get('name', '')
-            picture = idinfo.get('picture', '')
-            
-        except ValueError as e:
-            return jsonify({"success": False, "message": "Invalid Google token"}), 401
+        # Handle authorization code flow
+        if data.get('authCode'):
+            try:
+                # Exchange authorization code for credentials
+                flow = Flow.from_client_config(
+                    {
+                        "web": {
+                            "client_id": CLIENT_ID,
+                            "client_secret": CLIENT_SECRET,
+                            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                            "token_uri": "https://oauth2.googleapis.com/token",
+                            "redirect_uris": ["http://localhost:3000"]
+                        }
+                    },
+                    scopes=['openid',
+                            'https://www.googleapis.com/auth/userinfo.profile', 
+                            'https://www.googleapis.com/auth/userinfo.email']
+                )
+                
+                flow.redirect_uri = "postmessage"  # For popup flow
+                
+                # Exchange code for tokens
+                flow.fetch_token(code=data['authCode'])
+                credentials = flow.credentials
+                
+                # Verify ID token
+                idinfo = id_token.verify_oauth2_token(
+                    credentials.id_token, 
+                    google_requests.Request(), 
+                    CLIENT_ID
+                )
+                
+                # Extract user information
+                google_id = idinfo['sub']
+                email = idinfo['email']
+                name = idinfo.get('name', '')
+                picture = idinfo.get('picture', '')
+                
+            except Exception as e:
+                print(f"Authorization code exchange error: {str(e)}")
+                return jsonify({"success": False, "message": f"Failed to verify authorization code: {str(e)}"}), 401
+        
+        # Legacy: Handle direct ID token (for backward compatibility)
+        elif data.get('idToken'):
+            try:
+                idinfo = id_token.verify_oauth2_token(
+                    data['idToken'], 
+                    google_requests.Request(), 
+                    CLIENT_ID
+                )
+                
+                google_id = idinfo['sub']
+                email = idinfo['email']
+                name = idinfo.get('name', '')
+                picture = idinfo.get('picture', '')
+                
+            except ValueError as e:
+                return jsonify({"success": False, "message": "Invalid Google token"}), 401
+        else:
+            return jsonify({"success": False, "message": "Google authentication data is required"}), 400
         
         # Check if user exists
         user = users_collection.find_one({"email": email.lower()})

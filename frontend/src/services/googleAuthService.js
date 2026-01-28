@@ -1,73 +1,75 @@
-// Google OAuth Service
+// Google OAuth Service using Google Identity Services (GIS)
+// This fixes the "dpiframe_initialization_failed" error
 class GoogleAuthService {
   constructor() {
     this.clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    this.gapi = null;
     this.isInitialized = false;
   }
 
-  // Initialize Google API
+  // Initialize Google Identity Services
   async init() {
-    if (this.isInitialized) return;
+    if (this.isInitialized) return Promise.resolve();
 
     return new Promise((resolve, reject) => {
-      // Load Google API script
-      if (!window.gapi) {
-        const script = document.createElement('script');
-        script.src = 'https://apis.google.com/js/api.js';
-        script.onload = () => {
-          this.loadAuth2().then(resolve).catch(reject);
-        };
-        script.onerror = reject;
-        document.head.appendChild(script);
-      } else {
-        this.loadAuth2().then(resolve).catch(reject);
+      // Check if script is already loaded
+      if (window.google?.accounts?.id) {
+        this.isInitialized = true;
+        resolve();
+        return;
       }
+
+      // Load Google Identity Services script
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        this.isInitialized = true;
+        resolve();
+      };
+      script.onerror = () => reject(new Error('Failed to load Google Identity Services'));
+      document.head.appendChild(script);
     });
   }
 
-  async loadAuth2() {
-    return new Promise((resolve, reject) => {
-      window.gapi.load('auth2', {
-        callback: () => {
-          window.gapi.auth2.init({
-            client_id: this.clientId,
-            scope: 'profile email'
-          }).then(() => {
-            this.isInitialized = true;
-            resolve();
-          }).catch(reject);
-        },
-        onerror: reject
-      });
-    });
-  }
-
-  // Sign in with Google
+  // Sign in with Google using popup
   async signIn() {
     try {
       await this.init();
-      const authInstance = window.gapi.auth2.getAuthInstance();
-      const googleUser = await authInstance.signIn();
-      
-      const profile = googleUser.getBasicProfile();
-      const idToken = googleUser.getAuthResponse().id_token;
-      
-      return {
-        success: true,
-        user: {
-          id: profile.getId(),
-          name: profile.getName(),
-          email: profile.getEmail(),
-          imageUrl: profile.getImageUrl(),
-          idToken: idToken
-        }
-      };
+
+      return new Promise((resolve) => {
+        // Use the authorization code model with callback
+        const client = window.google.accounts.oauth2.initCodeClient({
+          client_id: this.clientId,
+          scope: 'openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+          ux_mode: 'popup',
+          callback: async (response) => {
+            if (response.error) {
+              console.error('Google sign-in error:', response);
+              resolve({
+                success: false,
+                error: response.error || 'Google sign-in failed'
+              });
+              return;
+            }
+
+            // Send the authorization code to backend
+            // Backend will exchange it for tokens
+            resolve({
+              success: true,
+              authCode: response.code
+            });
+          },
+        });
+
+        // Request authorization code
+        client.requestCode();
+      });
     } catch (error) {
-      console.error('Google sign-in error:', error);
+      console.error('Google sign-in initialization error:', error);
       return {
         success: false,
-        error: error.error || 'Google sign-in failed'
+        error: error.message || 'Google sign-in failed'
       };
     }
   }
@@ -75,22 +77,14 @@ class GoogleAuthService {
   // Sign out
   async signOut() {
     try {
-      if (this.isInitialized) {
-        const authInstance = window.gapi.auth2.getAuthInstance();
-        await authInstance.signOut();
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect();
       }
       return { success: true };
     } catch (error) {
       console.error('Google sign-out error:', error);
       return { success: false, error: 'Sign-out failed' };
     }
-  }
-
-  // Check if user is signed in
-  isSignedIn() {
-    if (!this.isInitialized) return false;
-    const authInstance = window.gapi.auth2.getAuthInstance();
-    return authInstance.isSignedIn.get();
   }
 }
 
