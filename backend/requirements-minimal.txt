@@ -1,0 +1,7 @@
+Flask==3.0.0
+Flask-CORS==4.0.0
+Pillow>=10.2.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+geocoder>=1.38.1
+gunicorn
