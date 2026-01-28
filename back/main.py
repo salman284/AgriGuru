@@ -117,10 +117,13 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agri
 # Connect to MongoDB with optional connection (won't crash if MongoDB is unavailable)
 try:
     import ssl
+    # Add ssl_cert_reqs parameter to fix SSL handshake issues
     client = MongoClient(
         app.config['MONGO_URI'],
         serverSelectionTimeoutMS=5000,  # 5 second timeout
-        tlsAllowInvalidCertificates=True
+        tls=True,
+        tlsAllowInvalidCertificates=True,
+        ssl_cert_reqs=ssl.CERT_NONE
     )
     # Test the connection
     client.server_info()
