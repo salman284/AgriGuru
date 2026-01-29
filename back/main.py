@@ -107,7 +107,7 @@ CORS(app, origins=allowed_origins,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 # --- Initialize SocketIO ---
-socketio = SocketIO(app, cors_allowed_origins=allowed_origins, async_mode="threading")
+socketio = SocketIO(app, cors_allowed_origins=allowed_origins, async_mode="eventlet")
 
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -1181,40 +1181,6 @@ def send_bulk_whatsapp_alert():
         return jsonify({"success": False, "message": f"Error sending bulk WhatsApp alerts: {str(e)}"}), 500
 
 
-if __name__ == '__main__':
-    # Create indexes for better performance (only if database is available)
-    if client:
-        try:
-            users_collection.create_index("email", unique=True)
-            users_collection.create_index("created_at")
-            users_collection.create_index("is_active")
-            print("✅ Database indexes created successfully!")
-        except Exception as e:
-            print(f"ℹ️ Indexes may already exist: {e}")
-    else:
-        print("⚠️ Skipping database index creation (MongoDB not available)")
-
-    print("🚀 Starting AgriGuru Authentication & Chat API on port 5001...")
-    print("📊 Available endpoints:")
-    print("   POST /api/signup - Register new user")
-    print("   POST /api/login - User login")
-    print("   POST /api/logout - User logout")
-    print("   GET /api/profile - Get user profile")
-    print("   PUT /api/profile - Update user profile")
-    print("   POST /api/change-password - Change password")
-    print("   GET /api/check-auth - Check authentication status")
-    print("   GET /api/test-db - Test database connection and view users")
-    print("🔐 OTP Authentication endpoints:")
-    print("   POST /api/send-otp - Send OTP via email")
-    print("   POST /api/verify-otp - Verify OTP code")
-    print("   POST /api/signup-with-otp - Complete signup with OTP")
-    print("💬 Real-time chat enabled at ws://localhost:5001/socket.io/")
-    print("🌐 Server running at: http://localhost:5001")
-    print("🔍 Test database: http://localhost:5001/api/test-db")
-
-    # Use SocketIO to run the app (enables WebSocket)
-    socketio.run(app, debug=True, host='0.0.0.0', port=5001)
-
 # --- SocketIO event handlers for real-time chat ---
 @socketio.on('connect')
 def handle_connect():
@@ -1276,6 +1242,42 @@ def handle_typing(data):
     username = data.get('username')
     if room and username:
         emit('typing', {'username': username, 'room': room}, room=room, include_self=False)
+
+
+if __name__ == '__main__':
+    # Create indexes for better performance (only if database is available)
+    if client:
+        try:
+            users_collection.create_index("email", unique=True)
+            users_collection.create_index("created_at")
+            users_collection.create_index("is_active")
+            print("✅ Database indexes created successfully!")
+        except Exception as e:
+            print(f"ℹ️ Indexes may already exist: {e}")
+    else:
+        print("⚠️ Skipping database index creation (MongoDB not available)")
+
+    print("🚀 Starting AgriGuru Authentication & Chat API on port 5001...")
+    print("📊 Available endpoints:")
+    print("   POST /api/signup - Register new user")
+    print("   POST /api/login - User login")
+    print("   POST /api/logout - User logout")
+    print("   GET /api/profile - Get user profile")
+    print("   PUT /api/profile - Update user profile")
+    print("   POST /api/change-password - Change password")
+    print("   GET /api/check-auth - Check authentication status")
+    print("   GET /api/test-db - Test database connection and view users")
+    print("🔐 OTP Authentication endpoints:")
+    print("   POST /api/send-otp - Send OTP via email")
+    print("   POST /api/verify-otp - Verify OTP code")
+    print("   POST /api/signup-with-otp - Complete signup with OTP")
+    port = int(os.getenv('PORT', 5001))
+    print(f"💬 Real-time chat enabled at ws://localhost:{port}/socket.io/")
+    print(f"🌐 Server running at: http://localhost:{port}")
+    print(f"🔍 Test database: http://localhost:{port}/api/test-db")
+
+    # Use SocketIO to run the app (enables WebSocket)
+    socketio.run(app, debug=True, host='0.0.0.0', port=port)
 
 # WhatsApp Test Route
 @app.route('/api/test-whatsapp', methods=['POST'])
@@ -2294,9 +2296,5 @@ def direct_farming_query():
             "message": f"Query processing error: {str(e)}"
         }), 500
 
-if __name__ == '__main__':
-    print("🌾 AgriGuru Farming Assistant Server Starting...")
-    print("📱 JotForm WhatsApp Agent: READY")
-    print("🚀 Server running on: http://localhost:5001")
-    print("🔗 JotForm Webhook URL: http://your-domain.com/api/jotform/webhook")
-    app.run(debug=True, host='0.0.0.0', port=5001)
+# Note: Server is started by the if __name__ == '__main__' block above (line ~1184)
+# This ensures SocketIO is properly initialized for WebSocket support

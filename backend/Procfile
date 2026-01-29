@@ -1,1 +1,1 @@
-web: python farming_expert_app_ai.py
+web: gunicorn --bind 0.0.0.0:$PORT farming_expert_app_ai:app
