@@ -116,15 +116,16 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agri
 
 # Connect to MongoDB with optional connection (won't crash if MongoDB is unavailable)
 try:
-    import ssl
-    # Add ssl_cert_reqs parameter to fix SSL handshake issues
+    # MongoDB URI handles all connection parameters
+    # Atlas: mongodb+srv://user:pass@cluster.mongodb.net/db?retryWrites=true&w=majority
+    # Local: mongodb://localhost:27017/agrigurudb
+    mongo_uri = app.config['MONGO_URI']
+    
     client = MongoClient(
-        app.config['MONGO_URI'],
-        serverSelectionTimeoutMS=5000,  # 5 second timeout
-        tls=True,
-        tlsAllowInvalidCertificates=True,
-        ssl_cert_reqs=ssl.CERT_NONE
+        mongo_uri,
+        serverSelectionTimeoutMS=5000
     )
+    
     # Test the connection
     client.server_info()
     db = client.agrigurudb
