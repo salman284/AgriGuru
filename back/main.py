@@ -107,7 +107,10 @@ CORS(app, origins=allowed_origins,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 # --- Initialize SocketIO ---
-socketio = SocketIO(app, cors_allowed_origins=allowed_origins, async_mode="eventlet")
+socketio = SocketIO(
+    app,
+    cors_allowed_origins=allowed_origins
+)
 
 # Configuration
 app.config['SECRET_KEY'] = secrets.token_hex(16)
