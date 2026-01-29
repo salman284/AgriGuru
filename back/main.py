@@ -326,6 +326,7 @@ def signup():
         password = data['password']
         full_name = data['full_name'].strip()
         phone = data.get('phone', '').strip()
+        user_type = data.get('userType', 'customer')  # Get userType from request
         
         # Validate email format
         if not is_valid_email(email):
@@ -351,6 +352,7 @@ def signup():
             "password_hash": password_hash,
             "full_name": full_name,
             "phone": phone,
+            "userType": user_type,
             "created_at": datetime.utcnow(),
             "last_login": None,
             "is_active": True,
@@ -495,6 +497,7 @@ def signup_with_otp():
         full_name = data['full_name'].strip()
         phone = data.get('phone', '').strip()
         otp = data['otp'].strip()
+        user_type = data.get('userType', 'customer')  # Get userType from request
         
         # Verify OTP first
         if not verify_otp(email, otp, 'signup'):
@@ -519,6 +522,7 @@ def signup_with_otp():
             "password_hash": password_hash,
             "full_name": full_name,
             "phone": phone,
+            "userType": user_type,
             "created_at": datetime.utcnow(),
             "last_login": None,
             "is_active": True,
@@ -577,6 +581,7 @@ def login():
         
         email = data['email'].lower().strip()
         password = data['password']
+        user_type = data.get('userType', 'customer')  # Get userType from request
         
         # Find user in database
         user = users_collection.find_one({"email": email})
@@ -589,16 +594,17 @@ def login():
         
         # Check password
         if check_password_hash(user["password_hash"], password):
-            # Update last login
+            # Update last login and userType
             users_collection.update_one(
                 {"_id": user["_id"]},
-                {"$set": {"last_login": datetime.utcnow()}}
+                {"$set": {"last_login": datetime.utcnow(), "userType": user_type}}
             )
             
             # Create session
             session.permanent = True
             session['user_id'] = str(user["_id"])
             session['user_email'] = user["email"]
+            session['userType'] = user_type
             
             return jsonify({
                 "success": True,
@@ -608,7 +614,8 @@ def login():
                     "email": user["email"],
                     "full_name": user["full_name"],
                     "phone": user.get("phone"),
-                    "profile": user.get("profile", {})
+                    "profile": user.get("profile", {}),
+                    "userType": user_type
                 }
             }), 200
         else:
