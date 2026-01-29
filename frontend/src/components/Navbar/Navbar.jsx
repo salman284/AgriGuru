@@ -21,8 +21,8 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Get user type (default to customer if not set)
-  const userType = user?.userType || 'customer';
+  // Get user type (default to farmer if not set)
+  const userType = user?.userType || 'farmer';
   const isFarmer = userType === 'farmer';
   const isCustomer = userType === 'customer';  
   console.log('🧭 Navbar - User:', user);

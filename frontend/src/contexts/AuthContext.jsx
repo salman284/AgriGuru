@@ -94,6 +94,9 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       console.log('📥 Login response:', data);
+      console.log('📥 Response status:', response.status);
+      console.log('📥 data.success:', data.success);
+      console.log('📥 data.message:', data.message);
 
       if (data.success && data.user && Object.keys(data.user).length > 0) {
         // Backend should return userType, but fallback to what was sent

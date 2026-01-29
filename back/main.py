@@ -673,11 +673,12 @@ def google_login():
                 flow.fetch_token(code=data['authCode'])
                 credentials = flow.credentials
                 
-                # Verify ID token
+                # Verify ID token with clock skew tolerance
                 idinfo = id_token.verify_oauth2_token(
                     credentials.id_token, 
                     google_requests.Request(), 
-                    CLIENT_ID
+                    CLIENT_ID,
+                    clock_skew_in_seconds=10  # Allow 10 seconds clock skew
                 )
                 
                 # Extract user information
@@ -696,7 +697,8 @@ def google_login():
                 idinfo = id_token.verify_oauth2_token(
                     data['idToken'], 
                     google_requests.Request(), 
-                    CLIENT_ID
+                    CLIENT_ID,
+                    clock_skew_in_seconds=10  # Allow 10 seconds clock skew
                 )
                 
                 google_id = idinfo['sub']
@@ -786,6 +788,10 @@ def get_profile():
             # Remove sensitive data
             del user["password_hash"]
             user["_id"] = str(user["_id"])
+            
+            # Ensure userType exists (fallback to session or customer)
+            if "userType" not in user:
+                user["userType"] = session.get('userType', 'customer')
             
             return jsonify({"success": True, "user": user}), 200
         else:
