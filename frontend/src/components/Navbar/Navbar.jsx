@@ -24,8 +24,9 @@ const Navbar = () => {
   // Get user type (default to customer if not set)
   const userType = user?.userType || 'customer';
   const isFarmer = userType === 'farmer';
-  const isCustomer = userType === 'customer';
-
+  const isCustomer = userType === 'customer';  
+  console.log('🧭 Navbar - User:', user);
+  console.log('🧭 Navbar - userType:', userType, 'isFarmer:', isFarmer);
   return (
     <nav className="navbar">
 

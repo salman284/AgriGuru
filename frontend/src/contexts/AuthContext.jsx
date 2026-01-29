@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
+      console.log('🔍 Checking auth status...');
       const response = await fetch(`${API_URL}/api/check-auth`, {
         credentials: 'include',
         headers: {
@@ -31,6 +32,8 @@ export const AuthProvider = ({ children }) => {
         }
       });
       const data = await response.json();
+      console.log('📥 Check-auth response:', data);
+      
       if (data.authenticated) {
         // Get full user profile
         const profileResponse = await fetch(`${API_URL}/api/profile`, {
@@ -41,13 +44,18 @@ export const AuthProvider = ({ children }) => {
         });
         if (profileResponse.ok) {
           const profileData = await profileResponse.json();
+          console.log('📥 Profile data:', profileData);
+          
           if (profileData.user && Object.keys(profileData.user).length > 0) {
             // Ensure userType exists (fallback to customer or localStorage)
             const storedUserType = localStorage.getItem('userType');
+            console.log('💾 Stored userType from localStorage:', storedUserType);
+            
             const userWithType = {
               ...profileData.user,
               userType: profileData.user.userType || storedUserType || 'customer'
             };
+            console.log('👤 Setting user with userType:', userWithType.userType);
             setUser(userWithType);
             
             // Store userType in localStorage
@@ -64,7 +72,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('❌ Auth check failed:', error);
       setUser(null);
     } finally {
       setLoading(false);
@@ -73,6 +81,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, userType = 'customer') => {
     try {
+      console.log('🔐 Login attempt with userType:', userType);
+      
       const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         credentials: 'include',
@@ -83,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
+      console.log('📥 Login response:', data);
 
       if (data.success && data.user && Object.keys(data.user).length > 0) {
         // Backend should return userType, but fallback to what was sent
@@ -90,10 +101,12 @@ export const AuthProvider = ({ children }) => {
           ...data.user, 
           userType: data.user.userType || userType 
         };
+        console.log('👤 Setting user with userType:', userWithType.userType);
         setUser(userWithType);
         
         // Store userType in localStorage
         localStorage.setItem('userType', userWithType.userType);
+        console.log('💾 Stored userType in localStorage:', userWithType.userType);
         
         return { success: true, message: data.message };
       } else {
@@ -101,6 +114,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: data.message };
       }
     } catch (error) {
+      console.error('❌ Login error:', error);
       return { success: false, message: 'Connection error. Please try again.' };
     }
   };
