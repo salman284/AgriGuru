@@ -42,7 +42,18 @@ export const AuthProvider = ({ children }) => {
         if (profileResponse.ok) {
           const profileData = await profileResponse.json();
           if (profileData.user && Object.keys(profileData.user).length > 0) {
-            setUser(profileData.user);
+            // Ensure userType exists (fallback to customer or localStorage)
+            const storedUserType = localStorage.getItem('userType');
+            const userWithType = {
+              ...profileData.user,
+              userType: profileData.user.userType || storedUserType || 'customer'
+            };
+            setUser(userWithType);
+            
+            // Store userType in localStorage
+            if (userWithType.userType) {
+              localStorage.setItem('userType', userWithType.userType);
+            }
           } else {
             setUser(null);
           }
@@ -74,9 +85,16 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (data.success && data.user && Object.keys(data.user).length > 0) {
-        // Add userType to user object
-        const userWithType = { ...data.user, userType };
+        // Backend should return userType, but fallback to what was sent
+        const userWithType = { 
+          ...data.user, 
+          userType: data.user.userType || userType 
+        };
         setUser(userWithType);
+        
+        // Store userType in localStorage
+        localStorage.setItem('userType', userWithType.userType);
+        
         return { success: true, message: data.message };
       } else {
         setUser(null);
@@ -121,6 +139,9 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
         }
       });
+      
+      // Clear localStorage
+      localStorage.removeItem('userType');
       
       setUser(null);
       return { success: true, message: 'Logged out successfully' };
