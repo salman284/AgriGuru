@@ -1,6 +1,11 @@
 // Enhanced AI Service for AgriGuru Farming Expert
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
 
+// Debug logging for development only
+if (process.env.NODE_ENV !== 'production') {
+  console.log('🔍 AI Backend URL:', API_BASE_URL);
+}
+
 class EnhancedAIService {
   /**
    * Multilingual AI Chat endpoint using Enhanced Annapurna
@@ -251,9 +256,15 @@ class EnhancedAIService {
    */
   async getModelInfo() {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      
       const response = await fetch(`${API_BASE_URL}/model-info`, {
-        method: 'GET'
+        method: 'GET',
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -389,9 +400,15 @@ class EnhancedAIService {
    */
   async checkServerStatus() {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      
       const response = await fetch(`${API_BASE_URL.replace('/api', '')}/`, {
-        method: 'GET'
+        method: 'GET',
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       return response.ok;
     } catch (error) {
       console.error('Server status check failed:', error);
