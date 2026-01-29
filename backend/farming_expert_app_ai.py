@@ -45,6 +45,8 @@ allowed_origins = [
     "http://127.0.0.1:3000", 
     "http://localhost:3001", 
     "http://127.0.0.1:3001",
+    "https://agri-guru-ten.vercel.app",  # Vercel production
+    "https://agri-guru-7wvt9bkfg-shriom17s-projects.vercel.app",  # Vercel preview
     frontend_url,
     frontend_url.replace('http://', 'https://') if 'http://' in frontend_url else f"https://{frontend_url}"
 ]

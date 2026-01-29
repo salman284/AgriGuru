@@ -15,6 +15,8 @@ class EnhancedAIService {
    */
   async chat(message, context = {}) {
     try {
+      console.log('📤 Sending chat request to:', `${API_BASE_URL}/chat`);
+      
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: {
@@ -28,11 +30,14 @@ class EnhancedAIService {
         timeout: 20000 // 20 second timeout for AI processing
       });
 
+      console.log('📥 Chat response status:', response.status);
+
       if (!response.ok) {
         throw new Error(`Backend responded with status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('✅ Chat response received');
       
       // Handle multilingual response data
       return {
@@ -47,7 +52,7 @@ class EnhancedAIService {
         timestamp: data.timestamp || new Date().toISOString()
       };
     } catch (error) {
-      console.error('AI Chat error:', error);
+      console.error('❌ AI Chat error:', error.name, error.message);
       
       return {
         success: false,
@@ -403,15 +408,21 @@ class EnhancedAIService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
       
-      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/`, {
+      const baseUrl = API_BASE_URL.replace('/api', '');
+      console.log('🔍 Checking backend status at:', baseUrl);
+      
+      const response = await fetch(`${baseUrl}/`, {
         method: 'GET',
-        signal: controller.signal
+        signal: controller.signal,
+        mode: 'cors'
       });
       
       clearTimeout(timeoutId);
+      console.log('✅ Backend response status:', response.status);
       return response.ok;
     } catch (error) {
-      console.error('Server status check failed:', error);
+      console.error('❌ Backend check failed:', error.name, error.message);
+      console.error('📍 URL attempted:', API_BASE_URL.replace('/api', ''));
       return false;
     }
   }
