@@ -193,8 +193,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (userType = 'customer') => {
     try {
+      console.log('🔐 Google login attempt with userType:', userType);
       const result = await googleAuthService.signIn();
       
       if (result.success && result.authCode) {
@@ -206,14 +207,26 @@ export const AuthProvider = ({ children }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            authCode: result.authCode
+            authCode: result.authCode,
+            userType: userType
           })
         });
 
         const data = await response.json();
+        console.log('📥 Google login response:', data);
 
         if (data.success && data.user) {
-          setUser(data.user);
+          // Ensure userType is set
+          const userWithType = {
+            ...data.user,
+            userType: data.user.userType || userType
+          };
+          setUser(userWithType);
+          
+          // Store userType in localStorage
+          localStorage.setItem('userType', userWithType.userType);
+          console.log('💾 Stored userType in localStorage:', userWithType.userType);
+          
           return { success: true, message: 'Google login successful' };
         } else {
           return { success: false, message: data.message || 'Google login failed' };
@@ -222,7 +235,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: result.error || 'Google authentication failed' };
       }
     } catch (error) {
-      console.error('Google login error:', error);
+      console.error('❌ Google login error:', error);
       return { success: false, message: 'Google login failed. Please try again.' };
     }
   };

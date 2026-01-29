@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './GoogleLoginButton.css';
 
-const GoogleLoginButton = ({ onSuccess, onError }) => {
+const GoogleLoginButton = ({ onSuccess, onError, userType = 'customer' }) => {
   const { loginWithGoogle } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      const result = await loginWithGoogle();
+      const result = await loginWithGoogle(userType);
       if (result.success) {
         onSuccess && onSuccess(result);
       } else {

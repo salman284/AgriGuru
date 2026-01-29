@@ -641,6 +641,7 @@ def google_login():
         import json
         
         data = request.get_json()
+        user_type = data.get('userType', 'customer')  # Get userType from request
         
         # Get Google Client ID
         CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
@@ -715,18 +716,18 @@ def google_login():
         user = users_collection.find_one({"email": email.lower()})
         
         if user:
-            # User exists, update Google ID if not set
+            # User exists, update Google ID, last login, and userType
+            update_fields = {
+                "last_login": datetime.utcnow(),
+                "userType": user_type
+            }
             if not user.get('google_id'):
-                users_collection.update_one(
-                    {"_id": user["_id"]},
-                    {"$set": {"google_id": google_id, "last_login": datetime.utcnow()}}
-                )
-            else:
-                # Just update last login
-                users_collection.update_one(
-                    {"_id": user["_id"]},
-                    {"$set": {"last_login": datetime.utcnow()}}
-                )
+                update_fields["google_id"] = google_id
+            
+            users_collection.update_one(
+                {"_id": user["_id"]},
+                {"$set": update_fields}
+            )
         else:
             # Create new user
             user_data = {
@@ -737,6 +738,7 @@ def google_login():
                 "is_active": True,
                 "email_verified": True,  # Google accounts are pre-verified
                 "password_hash": None,  # No password for Google users
+                "userType": user_type,  # Save userType
                 "created_at": datetime.utcnow(),
                 "last_login": datetime.utcnow(),
                 "profile": {
@@ -755,6 +757,7 @@ def google_login():
         session.permanent = True
         session['user_id'] = str(user["_id"])
         session['user_email'] = user["email"]
+        session['userType'] = user_type
         
         return jsonify({
             "success": True,
@@ -765,7 +768,8 @@ def google_login():
                 "full_name": user["full_name"],
                 "phone": user.get("phone", ""),
                 "profile_image": user.get("profile_image", ""),
-                "profile": user.get("profile", {})
+                "profile": user.get("profile", {}),
+                "userType": user_type
             }
         }), 200
         

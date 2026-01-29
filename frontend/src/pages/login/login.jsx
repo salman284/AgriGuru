@@ -113,6 +113,7 @@ const Login = () => {
         </div>
         
         <GoogleLoginButton 
+          userType={userType}
           onSuccess={handleGoogleSuccess}
           onError={handleGoogleError}
         />
