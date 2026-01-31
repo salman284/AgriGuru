@@ -28,6 +28,178 @@ const CustomerMarketplace = () => {
   const [contactInfo, setContactInfo] = useState({ name: '', phone: '', message: '' });
   const [showContactModal, setShowContactModal] = useState(false);
 
+  // Default products
+  const defaultProducts = [
+    {
+      id: 'DEFAULT001',
+      name: 'Fresh Tomatoes',
+      category: 'vegetables',
+      price: 40,
+      originalPrice: 50,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.5,
+      reviews: 45,
+      description: 'Fresh, juicy red tomatoes directly from the farm. Perfect for salads and cooking.',
+      unit: 'kg',
+      quantity: 50,
+      inStock: true,
+      farmerId: 'FARMER001',
+      farmerName: 'Ramesh Kumar',
+      location: 'Punjab',
+      phoneNumber: '+91-98765-43210',
+      organicCertified: true,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-25'
+    },
+    {
+      id: 'DEFAULT002',
+      name: 'Organic Potatoes',
+      category: 'vegetables',
+      price: 30,
+      originalPrice: 35,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.7,
+      reviews: 62,
+      description: 'Premium quality organic potatoes, freshly harvested. Great for all your cooking needs.',
+      unit: 'kg',
+      quantity: 100,
+      inStock: true,
+      farmerId: 'FARMER002',
+      farmerName: 'Sunita Devi',
+      location: 'Haryana',
+      phoneNumber: '+91-98765-43211',
+      organicCertified: true,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-20'
+    },
+    {
+      id: 'DEFAULT003',
+      name: 'Fresh Onions',
+      category: 'vegetables',
+      price: 35,
+      originalPrice: 40,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.3,
+      reviews: 38,
+      description: 'Quality red onions with rich flavor. Essential ingredient for every kitchen.',
+      unit: 'kg',
+      quantity: 80,
+      inStock: true,
+      farmerId: 'FARMER003',
+      farmerName: 'Amit Singh',
+      location: 'Maharashtra',
+      phoneNumber: '+91-98765-43212',
+      organicCertified: false,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-22'
+    },
+    {
+      id: 'DEFAULT004',
+      name: 'Green Spinach',
+      category: 'vegetables',
+      price: 25,
+      originalPrice: 30,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.6,
+      reviews: 52,
+      description: 'Fresh green spinach leaves, rich in iron and nutrients. Organically grown.',
+      unit: 'kg',
+      quantity: 30,
+      inStock: true,
+      farmerId: 'FARMER004',
+      farmerName: 'Priya Sharma',
+      location: 'Uttar Pradesh',
+      phoneNumber: '+91-98765-43213',
+      organicCertified: true,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-28'
+    },
+    {
+      id: 'DEFAULT005',
+      name: 'Fresh Cauliflower',
+      category: 'vegetables',
+      price: 45,
+      originalPrice: 55,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.4,
+      reviews: 41,
+      description: 'White, firm cauliflower heads. Perfect for parathas, curries, and stir-fries.',
+      unit: 'kg',
+      quantity: 40,
+      inStock: true,
+      farmerId: 'FARMER005',
+      farmerName: 'Rajesh Patel',
+      location: 'Gujarat',
+      phoneNumber: '+91-98765-43214',
+      organicCertified: false,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-26'
+    },
+    {
+      id: 'DEFAULT006',
+      name: 'Green Peas',
+      category: 'vegetables',
+      price: 60,
+      originalPrice: 70,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.8,
+      reviews: 55,
+      description: 'Sweet and tender green peas. Freshly shelled and ready to cook.',
+      unit: 'kg',
+      quantity: 25,
+      inStock: true,
+      farmerId: 'FARMER006',
+      farmerName: 'Meena Devi',
+      location: 'Himachal Pradesh',
+      phoneNumber: '+91-98765-43215',
+      organicCertified: true,
+      deliveryAvailable: false,
+      harvestDate: '2026-01-29'
+    },
+    {
+      id: 'DEFAULT007',
+      name: 'Fresh Carrots',
+      category: 'vegetables',
+      price: 50,
+      originalPrice: 60,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.5,
+      reviews: 48,
+      description: 'Crunchy orange carrots, rich in vitamins. Great for salads and juices.',
+      unit: 'kg',
+      quantity: 60,
+      inStock: true,
+      farmerId: 'FARMER007',
+      farmerName: 'Vikram Singh',
+      location: 'Rajasthan',
+      phoneNumber: '+91-98765-43216',
+      organicCertified: true,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-24'
+    },
+    {
+      id: 'DEFAULT008',
+      name: 'Green Capsicum',
+      category: 'vegetables',
+      price: 55,
+      originalPrice: 65,
+      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      rating: 4.2,
+      reviews: 33,
+      description: 'Fresh green bell peppers. Add crunch and flavor to your dishes.',
+      unit: 'kg',
+      quantity: 35,
+      inStock: true,
+      farmerId: 'FARMER008',
+      farmerName: 'Anita Verma',
+      location: 'Karnataka',
+      phoneNumber: '+91-98765-43217',
+      organicCertified: false,
+      deliveryAvailable: true,
+      harvestDate: '2026-01-27'
+    }
+  ];
+
   // Fetch products from backend
   useEffect(() => {
     fetchProducts();
@@ -43,7 +215,7 @@ const CustomerMarketplace = () => {
       
       const data = await response.json();
       
-      if (data.success) {
+      if (data.success && data.products.length > 0) {
         // Transform backend products to match frontend format
         const transformedProducts = data.products.map(p => ({
           id: p.id,
@@ -67,13 +239,16 @@ const CustomerMarketplace = () => {
           harvestDate: p.harvestDate
         }));
         
-        setProducts(transformedProducts);
+        // Combine backend products with default products
+        setProducts([...transformedProducts, ...defaultProducts]);
       } else {
-        setError(data.error || 'Failed to load products');
+        // If no backend products, use only default products
+        setProducts(defaultProducts);
       }
     } catch (err) {
       console.error('❌ Error fetching products:', err);
-      setError('Failed to connect to server');
+      // On error, show default products
+      setProducts(defaultProducts);
     } finally {
       setLoading(false);
     }
