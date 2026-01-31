@@ -73,6 +73,9 @@ const Navbar = () => {
               <li className="navbar-item">
                 <Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`}>{t('navbar.contact_ado')}</Link>
               </li>
+              <li className="navbar-item">
+                <Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`}>🛒 {t('navbar.marketplace')}</Link>
+              </li>
             </>
           )}
           
@@ -80,9 +83,19 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/market-prices" className={`navbar-link ${isActive('/market-prices') ? 'active' : ''}`}>{t('navbar.market_prices')}</Link>
           </li>
-          <li className="navbar-item">
-            <Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`}>🛒 {t('navbar.marketplace')}</Link>
-          </li>
+          
+          {/* Customer-only menu items */}
+          {isCustomer && (
+            <>
+              <li className="navbar-item">
+                <Link to="/customer-marketplace" className={`navbar-link ${isActive('/customer-marketplace') ? 'active' : ''}`}>🌾 Shop Fresh</Link>
+              </li>
+              <li className="navbar-item">
+                <Link to="/my-orders" className={`navbar-link ${isActive('/my-orders') ? 'active' : ''}`}>📦 My Orders</Link>
+              </li>
+            </>
+          )}
+          
           <li className="navbar-item">
             <Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>{t('navbar.about')}</Link>
           </li>
@@ -122,12 +135,21 @@ const Navbar = () => {
                 <li><Link to="/government-schemes" className={`navbar-link ${isActive('/government-schemes') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.government')}</Link></li>
                 <li><Link to="/kheti-saath" className={`navbar-link ${isActive('/kheti-saath') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🚜 {t('navbar.kheti_saath')}</Link></li>
                 <li><Link to="/contacts" className={`navbar-link ${isActive('/contacts') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>👨‍🌾 {t('navbar.contact_ado')}</Link></li>
+                <li><Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🛒 {t('navbar.marketplace')}</Link></li>
               </>
             )}
             
             {/* Visible to all users */}
             <li><Link to="/market-prices" className={`navbar-link ${isActive('/market-prices') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>📊 {t('navbar.market_prices')}</Link></li>
-            <li><Link to="/marketplace" className={`navbar-link ${isActive('/marketplace') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🛒 {t('navbar.marketplace')}</Link></li>
+            
+            {/* Customer-only mobile menu items */}
+            {isCustomer && (
+              <>
+                <li><Link to="/customer-marketplace" className={`navbar-link ${isActive('/customer-marketplace') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>🌾 Shop Fresh</Link></li>
+                <li><Link to="/my-orders" className={`navbar-link ${isActive('/my-orders') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>📦 My Orders</Link></li>
+              </>
+            )}
+            
             <li><Link to="/about" className={`navbar-link ${isActive('/about') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>{t('navbar.about')}</Link></li>
           </ul>
           {/* Auth section for mobile dropdown */}

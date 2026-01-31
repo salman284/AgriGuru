@@ -15,6 +15,8 @@ import Profile from './pages/profile';
 import Settings from './pages/settings/Settings.jsx';
 import ADOFinder from './pages/contacts/ADOFinder.jsx';
 import Ecommerce from './pages/shopping/ecommerce.jsx';
+import CustomerMarketplace from './pages/shopping/CustomerMarketplace.jsx';
+import MyOrders from './pages/shopping/MyOrders.jsx';
 import Cart from './pages/shopping/Cart.jsx';
 import Favorites from './pages/shopping/Favorites.jsx';
 import Checkout from './pages/shopping/Checkout.jsx';
@@ -65,7 +67,15 @@ const router = createBrowserRouter([
       },
       {
         path: "marketplace",
-        element: <Ecommerce />
+        element: <RoleRoute allowedRoles={['farmer']}><Ecommerce /></RoleRoute>
+      },
+      {
+        path: "customer-marketplace",
+        element: <CustomerMarketplace />
+      },
+      {
+        path: "my-orders",
+        element: <ProtectedRoute><MyOrders /></ProtectedRoute>
       },
       {
         path: "cart",
