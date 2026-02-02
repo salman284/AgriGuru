@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import MarketplaceChatBot from '../../components/MarketplaceChatBot/MarketplaceChatBot';
 import './CustomerMarketplace.css';
 
 const CustomerMarketplace = () => {
@@ -617,6 +618,9 @@ const CustomerMarketplace = () => {
           </div>
         </div>
       )}
+
+      {/* Shopping Assistant ChatBot */}
+      <MarketplaceChatBot products={products} />
     </div>
   );
 };
