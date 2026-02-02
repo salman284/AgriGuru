@@ -9,20 +9,13 @@ import AIChat from "../../components/AIChat/AIChat"
 import WeatherWidget from "../../components/WeatherWidget/WeatherWidget"
 import UserChat from "../../components/UserChat/UserChat"
 
-import ChatBox from "../../components/chatBox/chat"
 import { useEffect, useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
   const { user: currentUser } = useAuth();
-  const [users, setUsers] = useState([]);
   const [showWeatherModal, setShowWeatherModal] = useState(false);
-
-  useEffect(() => {
-    // TODO: Fetch users if needed
-    setUsers([{ id: 1, name: "Demo Farmer" }, { id: 2, name: "Other Farmer" }]);
-  }, []);
 
   const handleGetStarted = () => {
     navigate('/dashboard');
@@ -169,7 +162,6 @@ const Home = () => {
       </div>
       {/* Farmer ChatBar (floating icon and chat) */}
       {/* Always render ChatBox, but pass currentUser as null until login. ChatBox will handle hiding itself. */}
-      <ChatBox currentUser={currentUser} users={users} />
       
       {/* User-to-User Chat Component */}
       <UserChat />

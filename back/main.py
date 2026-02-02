@@ -942,13 +942,20 @@ def get_all_users():
         return jsonify({"success": False, "message": "Not authenticated"}), 401
     
     try:
+        if users_collection is None:
+            return jsonify({"success": False, "message": "Database not available"}), 503
+        
         current_user_id = session['user_id']
         
         # Get all active users except current user
+        # Also include users without is_active field (for backward compatibility)
         users = list(users_collection.find(
             {
                 "_id": {"$ne": ObjectId(current_user_id)},
-                "is_active": True
+                "$or": [
+                    {"is_active": True},
+                    {"is_active": {"$exists": False}}
+                ]
             },
             {
                 "email": 1,
@@ -963,6 +970,8 @@ def get_all_users():
         for user in users:
             user['id'] = str(user['_id'])
             del user['_id']
+        
+        print(f"[API] /api/users - Found {len(users)} users (excluding current user {current_user_id})")
         
         return jsonify({
             "success": True,

@@ -105,15 +105,23 @@ const UserChat = () => {
 
     const fetchUsers = async () => {
       try {
+        console.log('🔍 Fetching users from:', `${SOCKET_URL}/api/users`);
         const response = await fetch(`${SOCKET_URL}/api/users`, {
           credentials: 'include'
         });
+        
+        console.log('📥 Response status:', response.status);
         const data = await response.json();
+        console.log('📥 Response data:', data);
+        
         if (data.success) {
+          console.log('✅ Users loaded:', data.users.length);
           setAllUsers(data.users.filter(u => u.id !== currentUser.id));
+        } else {
+          console.error('❌ Failed to fetch users:', data.message);
         }
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('❌ Error fetching users:', error);
       }
     };
 
