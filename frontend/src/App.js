@@ -27,18 +27,16 @@ import ContractAdmin from './pages/agrifarm/ContractAdmin.jsx';
 import KhetiSaath from './pages/khetisaath/KhetiSaath.jsx';
 import KhetiSaathFavorites from './pages/khetisaath/KhetiSaathFavorites.jsx';
 import Navbar from './components/Navbar/Navbar';
-import FloatingActions from './components/FloatingActions/FloatingActions';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import RoleRoute from './components/RoleRoute/RoleRoute';
 import './i18n/i18n'; // Initialize i18n
 
-// Layout component that includes Navbar and FloatingActions
+// Layout component that includes Navbar
 function Layout() {
   return (
     <div className="App">
       <Navbar />
       <Outlet />
-      <FloatingActions />
     </div>
   );
 }
