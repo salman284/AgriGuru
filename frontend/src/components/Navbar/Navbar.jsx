@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
-import './Navbar.css';
-import logo from './logo.png'; 
+import './Navbar.css'; 
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'; 
 import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
 
@@ -44,7 +43,7 @@ const Navbar = () => {
 
         <div className="navbar-logo">
           <Link to="/" className="logo-link">
-            <img src={logo} alt="AgriGuru Logo" className="logo-image" />
+            <img src="/logo.png" alt="AgriGuru Logo" className="logo-image" />
             <h2>KisanMitra</h2>
           </Link>
         </div>
