@@ -162,7 +162,7 @@ const CustomerMarketplace = () => {
       category: 'vegetables',
       price: 50,
       originalPrice: 60,
-      image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`,
+      image: `${process.env.PUBLIC_URL}/images/products/carrots.jpg`,
       rating: 4.5,
       reviews: 48,
       description: 'Crunchy orange carrots, rich in vitamins. Great for salads and juices.',
