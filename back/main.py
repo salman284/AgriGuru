@@ -935,6 +935,219 @@ def test_db():
 
 # ---------------------- WhatsApp API Endpoints ----------------------
 
+@app.route('/api/users', methods=['GET'])
+def get_all_users():
+    """Get all users for chat (excluding current user)"""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    try:
+        current_user_id = session['user_id']
+        
+        # Get all active users except current user
+        users = list(users_collection.find(
+            {
+                "_id": {"$ne": ObjectId(current_user_id)},
+                "is_active": True
+            },
+            {
+                "email": 1,
+                "full_name": 1,
+                "userType": 1,
+                "profile_image": 1,
+                "last_login": 1
+            }
+        ).limit(100))
+        
+        # Convert ObjectId to string
+        for user in users:
+            user['id'] = str(user['_id'])
+            del user['_id']
+        
+        return jsonify({
+            "success": True,
+            "users": users
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error fetching users: {str(e)}"
+        }), 500
+
+
+@app.route('/api/users/search', methods=['GET'])
+def search_users():
+    """Search users by name or email"""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    try:
+        query = request.args.get('q', '').strip()
+        current_user_id = session['user_id']
+        
+        if not query:
+            return jsonify({"success": True, "users": []}), 200
+        
+        # Search by name or email (case-insensitive)
+        users = list(users_collection.find(
+            {
+                "_id": {"$ne": ObjectId(current_user_id)},
+                "is_active": True,
+                "$or": [
+                    {"full_name": {"$regex": query, "$options": "i"}},
+                    {"email": {"$regex": query, "$options": "i"}}
+                ]
+            },
+            {
+                "email": 1,
+                "full_name": 1,
+                "userType": 1,
+                "profile_image": 1
+            }
+        ).limit(20))
+        
+        # Convert ObjectId to string
+        for user in users:
+            user['id'] = str(user['_id'])
+            del user['_id']
+        
+        return jsonify({
+            "success": True,
+            "users": users
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error searching users: {str(e)}"
+        }), 500
+
+
+@app.route('/api/chat/history', methods=['GET'])
+def get_chat_history():
+    """Get chat history between two users"""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    try:
+        user_id = request.args.get('userId')
+        other_user_id = request.args.get('otherUserId')
+        limit = int(request.args.get('limit', 50))
+        
+        if not user_id or not other_user_id:
+            return jsonify({"success": False, "message": "Missing parameters"}), 400
+        
+        # Get messages between the two users
+        messages = list(chat_messages_collection.find(
+            {
+                "type": "private",
+                "$or": [
+                    {"senderId": user_id, "recipientId": other_user_id},
+                    {"senderId": other_user_id, "recipientId": user_id}
+                ]
+            }
+        ).sort("timestamp", 1).limit(limit))
+        
+        # Convert ObjectId to string
+        for msg in messages:
+            msg['_id'] = str(msg['_id'])
+        
+        return jsonify({
+            "success": True,
+            "messages": messages
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error fetching chat history: {str(e)}"
+        }), 500
+
+
+@app.route('/api/chat/mark-read', methods=['POST'])
+def mark_messages_read():
+    """Mark messages as read"""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    try:
+        data = request.get_json()
+        user_id = data.get('userId')
+        other_user_id = data.get('otherUserId')
+        
+        if not user_id or not other_user_id:
+            return jsonify({"success": False, "message": "Missing parameters"}), 400
+        
+        # Mark all unread messages from other user as read
+        result = chat_messages_collection.update_many(
+            {
+                "type": "private",
+                "senderId": other_user_id,
+                "recipientId": user_id,
+                "read": False
+            },
+            {"$set": {"read": True}}
+        )
+        
+        return jsonify({
+            "success": True,
+            "marked_count": result.modified_count
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error marking messages as read: {str(e)}"
+        }), 500
+
+
+@app.route('/api/chat/unread-counts', methods=['GET'])
+def get_unread_counts():
+    """Get unread message counts for current user"""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    try:
+        user_id = request.args.get('userId')
+        
+        if not user_id:
+            return jsonify({"success": False, "message": "Missing userId"}), 400
+        
+        # Aggregate unread messages by sender
+        pipeline = [
+            {
+                "$match": {
+                    "type": "private",
+                    "recipientId": user_id,
+                    "read": False
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$senderId",
+                    "count": {"$sum": 1}
+                }
+            }
+        ]
+        
+        results = list(chat_messages_collection.aggregate(pipeline))
+        
+        # Convert to dictionary
+        unread_counts = {item['_id']: item['count'] for item in results}
+        
+        return jsonify({
+            "success": True,
+            "unreadCounts": unread_counts
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error fetching unread counts: {str(e)}"
+        }), 500
+
+
 @app.route('/api/whatsapp/update-preferences', methods=['POST'])
 def update_whatsapp_preferences():
     """Update user WhatsApp alert preferences"""
@@ -1209,6 +1422,9 @@ def send_bulk_whatsapp_alert():
 
 
 # --- SocketIO event handlers for real-time chat ---
+# Track online users
+online_users = {}  # {userId: {sid: sid, userName: name, userType: type}}
+
 @socketio.on('connect')
 def handle_connect():
     print(f"[SOCKET] Client connected: {request.sid}")
@@ -1216,6 +1432,119 @@ def handle_connect():
 @socketio.on('disconnect')
 def handle_disconnect():
     print(f"[SOCKET] Client disconnected: {request.sid}")
+    # Remove from online users
+    disconnected_user = None
+    for user_id, user_data in list(online_users.items()):
+        if user_data.get('sid') == request.sid:
+            disconnected_user = user_id
+            del online_users[user_id]
+            break
+    
+    if disconnected_user:
+        emit('online_users', [
+            {'userId': uid, 'userName': data['userName'], 'userType': data.get('userType', 'user')}
+            for uid, data in online_users.items()
+        ], broadcast=True)
+
+@socketio.on('user_online')
+def handle_user_online(data):
+    """User comes online"""
+    user_id = data.get('userId')
+    user_name = data.get('userName')
+    user_type = data.get('userType', 'user')
+    
+    if user_id:
+        online_users[user_id] = {
+            'sid': request.sid,
+            'userName': user_name,
+            'userType': user_type
+        }
+        print(f"[SOCKET] User online: {user_name} (ID: {user_id}, Type: {user_type})")
+        
+        # Broadcast updated online users list
+        emit('online_users', [
+            {'userId': uid, 'userName': data['userName'], 'userType': data.get('userType', 'user')}
+            for uid, data in online_users.items()
+        ], broadcast=True)
+
+@socketio.on('user_offline')
+def handle_user_offline(data):
+    """User goes offline"""
+    user_id = data.get('userId')
+    if user_id and user_id in online_users:
+        del online_users[user_id]
+        print(f"[SOCKET] User offline: {user_id}")
+        
+        # Broadcast updated online users list
+        emit('online_users', [
+            {'userId': uid, 'userName': data['userName'], 'userType': data.get('userType', 'user')}
+            for uid, data in online_users.items()
+        ], broadcast=True)
+
+@socketio.on('private_message')
+def handle_private_message(data):
+    """Handle private message between users"""
+    sender_id = data.get('senderId')
+    sender_name = data.get('senderName')
+    recipient_id = data.get('recipientId')
+    message = data.get('message')
+    timestamp = data.get('timestamp', datetime.utcnow().isoformat())
+    
+    print(f"[SOCKET] Private message from {sender_name} (ID: {sender_id}) to {recipient_id}: {message}")
+    
+    if sender_id and recipient_id and message:
+        # Store message in database
+        if chat_messages_collection is not None:
+            private_msg_doc = {
+                'type': 'private',
+                'senderId': sender_id,
+                'senderName': sender_name,
+                'recipientId': recipient_id,
+                'message': message,
+                'timestamp': timestamp,
+                'read': False
+            }
+            chat_messages_collection.insert_one(private_msg_doc)
+        
+        # Send to recipient if online
+        if recipient_id in online_users:
+            recipient_sid = online_users[recipient_id]['sid']
+            emit('private_message', {
+                'senderId': sender_id,
+                'senderName': sender_name,
+                'recipientId': recipient_id,
+                'message': message,
+                'timestamp': timestamp
+            }, room=recipient_sid)
+        
+        # Confirm to sender
+        emit('private_message', {
+            'senderId': sender_id,
+            'senderName': sender_name,
+            'recipientId': recipient_id,
+            'message': message,
+            'timestamp': timestamp
+        })
+
+@socketio.on('typing')
+def handle_typing_indicator(data):
+    """Handle typing indicator for private chat"""
+    user_id = data.get('userId')
+    user_name = data.get('userName')
+    recipient_id = data.get('recipientId')
+    room = data.get('room')  # For group chat compatibility
+    
+    if recipient_id and recipient_id in online_users:
+        # Private chat typing
+        recipient_sid = online_users[recipient_id]['sid']
+        emit('user_typing', {
+            'userId': user_id,
+            'userName': user_name,
+            'recipientId': recipient_id
+        }, room=recipient_sid)
+    elif room:
+        # Group chat typing
+        emit('typing', {'username': user_name, 'room': room}, room=room, include_self=False)
 
 @socketio.on('join')
 def handle_join(data):
@@ -1246,14 +1575,16 @@ def handle_chat_message(data):
     print(f"[SOCKET] chat_message from {username} in room {room}: {message} (image={'yes' if image else 'no'})")
     if room and username and (message or image):
         # Store message in DB
-        chat_doc = {
-            'room': room,
-            'username': username,
-            'message': message,
-            'image': image,
-            'timestamp': timestamp
-        }
-        chat_messages_collection.insert_one(chat_doc)
+        if chat_messages_collection is not None:
+            chat_doc = {
+                'type': 'group',
+                'room': room,
+                'username': username,
+                'message': message,
+                'image': image,
+                'timestamp': timestamp
+            }
+            chat_messages_collection.insert_one(chat_doc)
         # Broadcast to room (include sender)
         emit('chat_message', {
             'room': room,
@@ -1262,13 +1593,6 @@ def handle_chat_message(data):
             'image': image,
             'timestamp': timestamp
         }, room=room, include_self=True)
-
-@socketio.on('typing')
-def handle_typing(data):
-    room = data.get('room')
-    username = data.get('username')
-    if room and username:
-        emit('typing', {'username': username, 'room': room}, room=room, include_self=False)
 
 
 if __name__ == '__main__':

@@ -7,6 +7,7 @@ import backGround from "./homebg.avif"
 import Navbar from "../../components/Navbar/Navbar"
 import AIChat from "../../components/AIChat/AIChat"
 import WeatherWidget from "../../components/WeatherWidget/WeatherWidget"
+import UserChat from "../../components/UserChat/UserChat"
 
 import ChatBox from "../../components/chatBox/chat"
 import { useEffect, useState } from "react";
@@ -169,6 +170,10 @@ const Home = () => {
       {/* Farmer ChatBar (floating icon and chat) */}
       {/* Always render ChatBox, but pass currentUser as null until login. ChatBox will handle hiding itself. */}
       <ChatBox currentUser={currentUser} users={users} />
+      
+      {/* User-to-User Chat Component */}
+      <UserChat />
+      
       {/* AI Chat Component */}
       <AIChat />
       
