@@ -133,6 +133,17 @@ const Dash = () => {
               Organic Fertilizers
             </a>
           </li>
+          <li>
+            <a 
+              href="#drone"
+              onClick={e => {
+                e.preventDefault();
+                openModal('drone');
+              }}
+            >
+              🚁 Drone Control
+            </a>
+          </li>
         </ul>
       </div>
       <div className="main-content">
@@ -224,6 +235,20 @@ const Dash = () => {
             >
               <IrrigationWidget />
             </div>
+            <div
+              id="drone"
+              className="widget"
+              onClick={() => openModal('drone')}
+            >
+              <div className="widget-content">
+                <h3>🚁 Drone Control</h3>
+                <p>Monitor and control agricultural drones</p>
+                <div className="widget-stats">
+                  <span>Status: Ready</span>
+                  <span>Battery: 85%</span>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Yield Prediction - Full Width Row */}
@@ -255,6 +280,7 @@ const Dash = () => {
                 {activeModal === 'irrigation' && '💧 Smart Irrigation System'}
                 {activeModal === 'fertilizer' && '🧪 Fertilizer Optimizer'}
                 {activeModal === 'fertilizers' && '🧪 Organic Fertilizers'}
+                {activeModal === 'drone' && '🚁 Drone Control Center'}
               </h2>
               <button className="modal-close" onClick={closeModal}>
                 ✕
@@ -317,6 +343,71 @@ const Dash = () => {
                     >
                       📥 Download PDF Guide
                     </a>
+                  </div>
+                </div>
+              )}
+              {activeModal === 'drone' && (
+                <div className="drone-control-panel">
+                  <div className="drone-status">
+                    <h3>🛰️ Drone Status</h3>
+                    <div className="status-grid">
+                      <div className="status-item">
+                        <span className="status-label">Connection:</span>
+                        <span className="status-value connected">✓ Connected</span>
+                      </div>
+                      <div className="status-item">
+                        <span className="status-label">Battery:</span>
+                        <span className="status-value">85%</span>
+                      </div>
+                      <div className="status-item">
+                        <span className="status-label">GPS Signal:</span>
+                        <span className="status-value">Strong</span>
+                      </div>
+                      <div className="status-item">
+                        <span className="status-label">Altitude:</span>
+                        <span className="status-value">0m</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="drone-controls">
+                    <h3>🎮 Flight Controls</h3>
+                    <div className="control-buttons">
+                      <button className="drone-btn takeoff">🛫 Take Off</button>
+                      <button className="drone-btn land">🛬 Land</button>
+                      <button className="drone-btn return">🏠 Return Home</button>
+                      <button className="drone-btn emergency">⚠️ Emergency Stop</button>
+                    </div>
+                    
+                    <div className="direction-controls">
+                      <div className="direction-pad">
+                        <button className="dir-btn up">↑</button>
+                        <div className="middle-row">
+                          <button className="dir-btn left">←</button>
+                          <div className="center-dot"></div>
+                          <button className="dir-btn right">→</button>
+                        </div>
+                        <button className="dir-btn down">↓</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="drone-missions">
+                    <h3>📋 Quick Missions</h3>
+                    <div className="mission-buttons">
+                      <button className="mission-btn">🌾 Field Survey</button>
+                      <button className="mission-btn">💧 Irrigation Check</button>
+                      <button className="mission-btn">🐛 Pest Detection</button>
+                      <button className="mission-btn">📸 Aerial Photo</button>
+                    </div>
+                  </div>
+
+                  <div className="drone-camera">
+                    <h3>📹 Camera Feed</h3>
+                    <div className="camera-placeholder">
+                      <p>Live camera feed will appear here</p>
+                      <span style={{fontSize: '48px'}}>📷</span>
+                    </div>
                   </div>
                 </div>
               )}

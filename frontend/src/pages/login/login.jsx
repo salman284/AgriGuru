@@ -54,7 +54,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login to AgriGuru</h2>
+        <h2>Login to KisanMitra</h2>
         
         {/* User Type Selection */}
         <div className="user-type-selection">

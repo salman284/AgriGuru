@@ -29,7 +29,7 @@ const MyOrders = () => {
               unit: 'kg',
               price: 60,
               farmerName: 'Ramesh Kumar',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/tomatoes.jpeg'
             },
             {
               id: 2,
@@ -38,7 +38,7 @@ const MyOrders = () => {
               unit: 'kg',
               price: 30,
               farmerName: 'Sunita Devi',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/potatoes.jpeg'
             }
           ],
           deliveryAddress: '123 Main Street, Delhi, 110001',
@@ -63,7 +63,7 @@ const MyOrders = () => {
               unit: 'kg',
               price: 40,
               farmerName: 'Amit Singh',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/spinach.jpeg'
             },
             {
               id: 4,
@@ -72,7 +72,7 @@ const MyOrders = () => {
               unit: 'kg',
               price: 50,
               farmerName: 'Priya Sharma',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/cauliflower.jpeg'
             }
           ],
           deliveryAddress: '456 Garden Road, Mumbai, 400001',
@@ -96,7 +96,7 @@ const MyOrders = () => {
               unit: 'kg',
               price: 80,
               farmerName: 'Rajesh Patel',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/Basmati Rice.jpg'
             },
             {
               id: 6,
@@ -105,7 +105,7 @@ const MyOrders = () => {
               unit: 'liters',
               price: 60,
               farmerName: 'Meena Devi',
-              image: `${process.env.PUBLIC_URL}/images/products/placeholder.jpg`
+              image: '/images/products/tomatoes.jpeg'
             }
           ],
           deliveryAddress: '789 Village Road, Pune, 411001',
