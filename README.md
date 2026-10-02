@@ -1,4 +1,4 @@
-﻿# 🌾 KisanMitra
+# 🌾 KisanMitra
 
 AI-powered smart farming platform designed to support Indian farmers, agricultural officers, and rural communities.
 
